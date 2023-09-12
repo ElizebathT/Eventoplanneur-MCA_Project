@@ -23,6 +23,7 @@ urlpatterns = [
     path('reg_provider/',views.reg_provider,name='reg_provider'),
     path('reg_attendee/',views.reg_attendee,name='reg_attendee'),
     path('org_profile/',views.org_profile,name='org_profile'),
-    
+    path('check_aicte_id/', views.check_aicte_id, name='check_aicte_id'),
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

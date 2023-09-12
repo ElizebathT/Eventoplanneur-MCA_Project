@@ -119,14 +119,6 @@
                             <input type="text" id="speaker_name_{{ speaker.id }}" name="speakers-{{ speaker.id }}-speaker_name" class="form-control" value="{{ speaker.speaker_name }}" required>
                         </div>
                     {% endfor %}
-                    {% comment %}                      
-                      <!-- Loop through the speakers associated with the webinar -->
-                      {% for speaker_form in form.speakers %}
-                          <div class="speaker">
-                              <input type="text" id="designation_{{ forloop.counter }}" name="speakers-{{ forloop.counter }}-designation" class="form-control" value="{{ speaker_form.designation.value }}" required>
-                              <input type="text" id="speaker_name_{{ forloop.counter }}" name="speakers-{{ forloop.counter }}-speaker_name" class="form-control" value="{{ speaker_form.speaker_name.value }}" required>
-                          </div>
-                      {% endfor %}  {% endcomment %}
                   </div>
               </div>
               

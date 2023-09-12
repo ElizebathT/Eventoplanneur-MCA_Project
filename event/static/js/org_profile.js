@@ -54,13 +54,13 @@ document.addEventListener("DOMContentLoaded", function() {
         function validateWebsiteInput() {
             isValidWebsite(website.value, websiteError);
         }
-
-        aicte.addEventListener("input", function() {
-            validateField(aicte, aicteError, validateAicte);
-        });
         aicte.addEventListener("input", function() {
             isValidateAicte(aicte, aicteError);
         });
+        aicte.addEventListener("input", function() {
+            validateField(aicte, aicteError, validateAicte);
+        });
+        
 
         college.addEventListener("change",toggleFieldVisibility);
 
@@ -101,12 +101,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
     async function isValidWebsite(website, websiteError) {
-        var response = await fetch(website);
-        if (response.status === 200) {
-        websiteError.innerText="The website exists.";
-        } else {
-            websiteError.innerText="The website does not exist.";
-        }
+        // var response = await fetch(website);
+        // if (response.status === 200) {
+        // websiteError.innerText="The website exists.";
+        // } else {
+        //     websiteError.innerText="The website does not exist.";
+        // }
+
+
+        
     // var urlRegex = /^(https?:\/\/)?([a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})+)(\/[^\s]*)?$/;
     // if (!urlRegex.test(website)) {
     //     websiteError.innerText = "Invalid Website"; // Invalid URL format
@@ -191,17 +194,6 @@ document.addEventListener("DOMContentLoaded", function() {
             return "";
         }
         function isValidateAicte(aicte, aicteError) {
-            fetch(`/check_aicte_id/${aicte}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.exists) {
-                        aicteError.innerText="AICTE ID exists in the database.";
-                    } else {
-                        aicteError.innerText="AICTE ID does not exist in the database.";
-                    }
-                })
-                .catch(error => {
-                    aicteError.innerText="An error occurred:"+error;
-                });
+           
         }
 });

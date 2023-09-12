@@ -45,6 +45,7 @@ class EventOrganizer(models.Model):
     college = models.BooleanField(default=True) 
     aicte = models.CharField(max_length=255, blank=True, null=True)
     org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
+    location = models.CharField(max_length=100,null=True)
     def __str__(self):
         return self.name
     

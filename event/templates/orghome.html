@@ -29,7 +29,7 @@
           <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
           <li class="nav-item">
               {% if user.is_authenticated %}
-              <a class="nav-link" >User: {{ user.name }}</a>
+              <a class="nav-link" >User: {{ user.email }}</a>
               <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
               {% endif %}
             </li>

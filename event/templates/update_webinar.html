@@ -89,8 +89,8 @@
             <span id="organizer_nameError" class="error-text"></span>
         </div></td><td>
         <div class="mb-3">
-            <label for="organizer_contact" class="form-label">Contact number:</label>
-            <input type="text" id="organizer_contact" name="organizer_contact" value="{{form.organizer_contact.value}}" class="form-control" required>
+            <label for="phone_number" class="form-label">Contact number:</label>
+            <input type="text" id="phone_number" name="phone_number" value="{{form.phone_number.value}}" class="form-control" required>
             <span id="contactError" class="error-text"></span>
         </div></td></tr><tr><td>
         <div class="mb-3">
@@ -104,10 +104,17 @@
             <span id="posterError" class="error-text"></span>
           </div></td></tr>
           <tr><td>
-            <div class="mb-3">
-                <label for="speaker" class="form-label">Speaker:</label>
-                <input type="text" id="speaker" name="speaker" class="form-control" value="{{form.speaker.value}}" required>
-            <span id="speakerError" class="error-text"></span>
+            <div class="form-group">
+              <label for="speakers">Speakers:</label>
+              <div id="speakers-container">
+                {% for speaker in speakers %}
+                  <div class="speaker" style="display: flex;">
+                    <input type="text" style="width: 60px;" id="designation_{{ speaker.id }}" name="speakers-{{ speaker.id }}-designation" class="form-control" value="{{ speaker.designation }}" required>
+                    <input type="text" id="speaker_name_{{ speaker.id }}" name="speakers-{{ speaker.id }}-speaker_name" class="form-control" value="{{ speaker.speaker_name }}" required>
+                  </div>
+                {% endfor %}
+              </div>
+              <button type="button" id="add-speaker" class="btn btn-secondary">+</button>
             </div></td>
             <td>
               <div class="mb-3">

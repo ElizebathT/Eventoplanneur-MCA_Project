@@ -33,7 +33,7 @@
           <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
           <li class="nav-item">
             {% if user.is_authenticated %}
-            <a class="nav-link" >User: {{ user.name }}</a>
+            <a class="nav-link" >User: {{ user.email }}</a>
             <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
             {% endif %}
           </li>
@@ -54,18 +54,18 @@
   
           <div class="mb-3">
               <label for="aicte" class="form-label">AICTE Id:</label>
-              <input type="text" id="aicte" name="aicte" value="{{form.aicte.value}}" class="form-control">
+              <input type="text" id="aicte" name="aicte_id" value="{{form.aicte.value}}" class="form-control">
               <span id="aicteError" class="error-text"></span>              
           </div>
             <div class="mb-3">
                 <label for="name" class="form-label">Name:</label>
-                <input type="text" id="name" name="name" value="{{ user.name }}" class="form-control" required>
+                <input type="text" id="name" name="name" value="{{ form.name.value }}" class="form-control" required>
                 <span id="nameError" class="error-text"></span>
             </div>
     
             <div class="mb-3">
                 <label for="email" class="form-label">Email:</label>
-                <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" disabled>
+                <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" >
                 <span id="emailError" class="error-text"></span>
             </div>
 
@@ -96,6 +96,40 @@
     
             <input type="submit" class="btn btn-primary" value="Submit">
         </form> 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#aicte').on('blur', function() {
+        var aicte_id = $(this).val();
+        
+        $.ajax({
+            url: '/check_aicte_id/',
+            data: { 'aicte_id': aicte_id },
+            dataType: 'json',
+            success: function(data) {
+                if (data.valid) {
+                    // AICTE ID is valid, you can display the AICTE name
+                    aicteError.innerText="";
+                    $('#name').val( data.name);
+                    $('#location').val(data.location);
+                    $('#address').val(data.address);
+                } else {
+                    // AICTE ID is not valid, you can display an error message
+                    aicteError.innerText="AICTE ID is not valid.";
+                    $('#name').val( "");
+                    $('#location').val("");
+                    $('#address').val("");
+                }
+            },
+            error: function() {
+                // Handle AJAX error
+                alert('An error occurred while checking AICTE ID.');
+            }
+        });
+    });
+});
+</script>
+
         {% if messages %}
 <div class="alert alert-danger">
   

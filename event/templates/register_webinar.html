@@ -160,23 +160,7 @@
                 <input type="text" id="poster" name="poster" class="form-control" required>
               <span id="posterError" class="error-text"></span>
             </div></td></tr>
-            <tr><td>
-              {% comment %} <div class="form-group">
-                <label for="speakers">Speakers:</label>
-                <div id="speakers-container">
-                    <!-- Initial Speaker -->
-                    <div class="speaker">
-                        <select name="designation" class="form-control">
-                            <option value="Mr">Mr</option>
-                            <option value="Ms">Ms</option>
-                            <option value="Mrs">Mrs</option>
-                            <option value="Dr">Dr</option>
-                        </select>
-                        <input type="text" name="speaker_name" id="speaker_name" class="form-control">
-                    </div>
-                </div>
-                <span id="speakerError" class="error-text"></span> {% endcomment %}
-                <div class="form-group">
+            <tr><td><div class="form-group">
                   <label for="speakers">Speakers:</label>
                   <div id="speakers-container">
                     <div class="speaker" style="display:flex;">
@@ -203,6 +187,8 @@
           <button id="sendButton" type="submit">Register</button></td><td>
           <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr>
       </form>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      
       <script>
         // JavaScript to dynamically add more speaker fields
         document.getElementById('add-speaker').addEventListener('click', function() {

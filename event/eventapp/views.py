@@ -11,8 +11,9 @@ from django.contrib.auth import logout as auth_logout
 from django.forms import modelformset_factory
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.core.mail import send_mail
 # import requests
-# from django.http import JsonResponse
+from django.http import JsonResponse
 
 def is_valid_email(email):
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -158,31 +159,14 @@ def login(request):
     
     return render(request, 'login.html')
 
-# @login_required
-# def org_profile(request):
-#     orgs = request.user
-#     TaskFormSet = modelformset_factory(EventOrganizer, form=Organizer, extra=0)
-#     formset = None  # Initialize formset to None
-
-#     if request.method == 'POST':
-#         try:
-#             # Attempt to get the user's existing profile
-#             formset = TaskFormSet(request.POST, queryset=EventOrganizer.objects.filter(org_user=orgs))
-#         except EventOrganizer.DoesNotExist:
-#             # If the profile doesn't exist, create a new one
-#             formset = TaskFormSet(request.POST)            
-#         if formset.is_valid():
-#             formset.save()
-#             messages.success(request, "Profile updated successfully")
-#             return HttpResponseRedirect(reverse('some_success_view_name'))  # Redirect to a success view
-#         else:
-#             messages.error(request, "Profile not saved. Please check the form.")
-    
-#     return render(request, 'org_profile.html', {'formset': formset})
 
 @login_required
 def webinar(request):
-    # update_webinar = Webinar.objects.all()
+    try:
+        user_profile = EventOrganizer.objects.get(org_user=request.user)
+    except EventOrganizer.DoesNotExist:
+        # If the user does not have a profile, redirect them to the profile creation page
+        return redirect('eventapp:org_profile') 
     orgs=request.user
     update_webinar=Webinar.objects.filter(org_user=orgs)
     context = {'update_webinar': update_webinar}
@@ -193,44 +177,26 @@ def view_webinar(request,update_id):
     form=WebinarForm(request.POST or None,instance=task)
     speakers = task.speakers.all()
     return render(request,'view_webinar.html',{'form':form,'speakers': speakers})
-# def view_webinar(request, update_id):
-#     # Retrieve the Webinar instance
-#     webinar = get_object_or_404(Webinar, id=update_id)
 
-#     # Retrieve all associated Speaker instances
-#     speakers = webinar.speakers.all()
+# def delete_webinar(request,del_id):
+#     task=Webinar.objects.get(id=del_id)
+#     task.delete()
+#     return redirect('eventapp:webinar')
 
-#     if request.method == 'POST':
-#         form = WebinarForm(request.POST, instance=webinar)
-#         if form.is_valid():
-#             form.save()
-#             # Handle form submission, e.g., redirect to a success page
-#             return redirect('success_url')
-#     else:
-#         form = WebinarForm(instance=webinar)
+@login_required
+def delete_webinar(request, del_id):
+    webinar = Webinar.objects.get(id=del_id)
+    organizer_email = webinar.org_user.email  
+    subject = 'Webinar Deleted'
+    message = f'The webinar "{webinar.title}" on {webinar.date} at {webinar.time} has been deleted.'
+    from_email = 'mailtoshowvalidationok@gmail.com'  
+    recipient_list = [organizer_email]
 
-#     return render(request, 'view_webinar.html', {'webinar': webinar, 'speakers': speakers, 'form': form})
+    send_mail(subject, message, from_email, recipient_list)
+    webinar.delete()
 
-
-# def view_webinar(request, update_id):
-#     # Get the Webinar instance to view/update
-#     webinar = get_object_or_404(Webinar, id=update_id)
-
-#     if request.method == 'POST':
-#         form = WebinarForm(request.POST, instance=webinar)
-#         if form.is_valid():
-#             form.save()
-#             # Handle form submission, e.g., redirect to a success page
-#             return redirect('success_url')
-#     else:
-#         form = WebinarForm(instance=webinar)
-
-#     return render(request, 'view_webinar.html', {'webinar': webinar, 'form': form})
-
-def delete_webinar(request,del_id):
-    task=Webinar.objects.get(id=del_id)
-    task.delete()
     return redirect('eventapp:webinar')
+
 
 @login_required
 def register_webinar(request):
@@ -252,6 +218,36 @@ def register_webinar(request):
                     speaker_name=speakers_name[i]
                 )
                 webinar.speakers.add(speaker)  # Add the speaker to the webinar
+            recipient_email = request.user.email
+            subject = 'Webinar Registration Confirmation'
+            message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} at {webinar.time}.'
+            from_email = 'mailtoshowvalidationok@gmail.com'  # Replace with your email address
+            recipient_list = [recipient_email]  # Use the organizer's email or another recipient
+
+            send_mail(subject, message, from_email, recipient_list)
+
+            interested_users = ['elizebaththomasv@gmail.com', 'elizatom9@gmail.com']  # Replace with actual email addresses
+            webinar_link = 'http://127.0.0.1:8000/'  # Replace with the actual webinar details page URL
+            email_subject = f'Upcoming Webinar: {webinar.title}'
+            email_message = f'Hello,\n\nThere is an upcoming webinar that you may be interested in: {webinar.title} on {webinar.date} at {webinar.time}.\n\nYou can find more details and register for the webinar here: {webinar_link}.\n\nPoster Link: {webinar.poster}'
+            from_email = 'elizatom9@gmail.com' 
+            send_mail(email_subject, email_message, from_email, interested_users)
+
+            # hosting_department = webinar.department  # Assuming this is the hosting department
+            # matching_colleges = AICTE.objects.filter(departments=hosting_department)
+
+            # # Find matching colleges based on specified programs
+            # specified_programs = webinar.programs_offered.all()
+            # matching_colleges |= AICTE.objects.filter(programs_offered__in=specified_programs)
+
+            # # Send emails to matching colleges
+            # for college in matching_colleges:
+            #     subject = 'Webinar Notification'
+            #     message = f'There is an upcoming webinar: {webinar.title} on {webinar.date} at {webinar.time} that may be of interest to your college. You can find more details and register for the webinar here: {webinar_link}'
+            #     from_email = 'your@email.com'  # Replace with your email address
+            #     recipient_list = [college.email]  # Use the college's email or another recipient
+
+            #     send_mail(subject, message, from_email, recipient_list)
 
             messages.success(request, "Webinar saved successfully")
             return redirect('eventapp:register_webinar')
@@ -261,26 +257,32 @@ def register_webinar(request):
     else:
         form = WebinarForm()
     return render(request, 'register_webinar.html', {'form': form})
+
+
 @login_required
 def org_profile(request):
-    orgs=request.user
+    org_user = request.user
+
     try:
-        task=EventOrganizer.objects.get(org_user=orgs)
+        organizer_instance = EventOrganizer.objects.get(org_user=org_user)
     except EventOrganizer.DoesNotExist:
-        if request.method == "POST":
-            form = Organizer(request.POST)
-            if form.is_valid():
-                event_organizer = form.save(commit=False)
-                event_organizer.org_user = orgs  # Set the user association
-                event_organizer.save()
-                return redirect('eventapp:org_profile')
+        organizer_instance = None
+
+    if request.method == "POST":
+        if organizer_instance:
+            form = Organizer(request.POST, instance=organizer_instance)
         else:
-            form = Organizer()
-    else:
-        form=Organizer(request.POST or None,instance=task)
+            form = Organizer(request.POST)
+
         if form.is_valid():
-            form.save()
+            event_organizer = form.save(commit=False)
+            event_organizer.org_user = org_user
+            event_organizer.save()
             return redirect('eventapp:org_profile')
+
+    else:
+        form = Organizer(instance=organizer_instance)
+
     return render(request, 'org_profile.html', {'form': form})
 
 def update_org_profile(request):
@@ -293,26 +295,37 @@ def update_org_profile(request):
     return render(request,'update_webinar.html',{'form':form})
 
 
-def update_webinar(request,update_id):
-    task=Webinar.objects.get(id=update_id)
-    form=WebinarForm(request.POST or None,instance=task)
-    if form.is_valid():
-        org=form.save(commit=False)
-        org.org_user=request.user
-        form.save()
-        return redirect('eventapp:webinar')
-    return render(request,'update_webinar.html',{'form':form})
+def update_webinar(request, update_id):
+    webinar = Webinar.objects.get(id=update_id)
+    if request.method == 'POST':
+        form = WebinarForm(request.POST, instance=webinar)
+        if form.is_valid():
+            form.save()
 
-# def check_aicte(request):
-#     if request.method == 'POST':
-#         aicte = request.POST.get('aicte')
-#         print(aicte)
-#         if AICTE.objects.filter(aicte=aicte).exists():
-#             messages.error(request, "Email already exists.")
-#     return render(request, 'org_profile.html')
+            # Update speakers
+            for speaker in webinar.speakers.all():
+                designation_field = f"speakers-{speaker.id}-designation"
+                name_field = f"speakers-{speaker.id}-speaker_name"
+                speaker.designation = request.POST.get(designation_field)
+                speaker.speaker_name = request.POST.get(name_field)
+                speaker.save()
+
+            messages.success(request, "Webinar and speakers updated successfully")
+            return redirect('eventapp:update_webinar', update_id=update_id)
+        else:
+            messages.error(request, form.errors)
+    else:
+        form = WebinarForm(instance=webinar)
+
+    speakers = webinar.speakers.all()
+    return render(request, 'update_webinar.html', {'form': form, 'speakers': speakers})
 
 
-# def proxy_to_external_domain(request):
-#     url = request.GET.get('url')
-#     response = requests.get(url)
-#     return JsonResponse({'data': response.text})
+def check_aicte_id(request):
+    aicte_id = request.GET.get('aicte_id')
+    
+    try:
+        aicte = AICTE.objects.get(aicte_id=aicte_id)
+        return JsonResponse({'valid': True, 'name': aicte.name, 'location': aicte.location,'address': aicte.address})
+    except AICTE.DoesNotExist:
+        return JsonResponse({'valid': False, 'name': None, 'location': None,'address': None})
