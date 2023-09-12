@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventoPlanneur</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/x-icon">
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+</head>
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" >
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:login' %}">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:registration' %}">Register</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <section class="hero-section">
+    <h1 class="hero-heading">Welcome to Our Event Planning Service</h1>
+    <p class="hero-tagline">Creating unforgettable experiences for all occasions</p>
+  </section>
+  <section class="about-section" id="about">
+    <p class="about-description">
+        Welcome to EventoPlanneur! We are passionate about creating unforgettable experiences for your special occasions. Our mission is to bring your vision to life and make every moment truly remarkable. With a team of dedicated professionals, we are committed to turning your dreams into reality.
+    </p><br>
+    <div class="team-members">
+        <a href="{% url 'eventapp:reg_provider' %}">
+            <div class="team-member">
+                <img class="team-image" src="{% static 'images/user1.jpg' %}" alt="Service Provider">
+                <div class="team-description">
+                    <h3 class="team-name">Service Provider</h3>
+                    <p>Do you offer unique services that can enhance events and create memorable experiences? Join as a Service Provider and showcase your expertise to a wide audience. Whether you specialize in catering, photography, entertainment, decor, or any other event-related service, our platform provides you with a platform to connect with event organizers and showcase your offerings. Collaborate, build your portfolio, and become an integral part of creating extraordinary events. Sign up today and be a part of making every event unforgettable!</p>
+                </div>
+            </div>
+        </a>
+    
+        <a href="{% url 'eventapp:reg_organizer' %}">
+            <div class="team-member">
+                <img class="team-image" src="{% static 'images/user2.jpg' %}" alt="Event Organizer">
+                <div class="team-description">
+                    <h3 class="team-name">Event Organizer</h3>
+                    <p>Are you passionate about planning and executing unforgettable events? Join as an Event Organizer and bring your creative ideas to life. Collaborate with clients, vendors, and partners to create seamless and memorable experiences for a wide range of events, from weddings and conferences to festivals and corporate gatherings. Whether you're an experienced event planner or looking to launch your career in the dynamic world of event management, our platform provides the tools and resources you need to succeed. Get started today and make every event a masterpiece!</p>
+                </div>
+            </div>
+        </a>
+        <a href="{% url 'eventapp:reg_attendee' %}">
+            <div class="team-member">
+                <img class="team-image" src="{% static 'images/user3.jpg' %}" alt="Attendee">
+                <div class="team-description">
+                    <h3 class="team-name">Attendee</h3>
+                    <p>Experience the excitement of being part of incredible events as an Attendee. Explore a variety of events, from conferences and workshops to concerts and festivals. Register and participate in events that match your interests and preferences. Connect with fellow attendees, engage in meaningful discussions, and create unforgettable memories. Our platform offers a seamless experience to discover, register, and engage in events that matter to you. Join us today and be a part of the event community!</p>
+                </div>
+            </div>
+        </a>
+    </div>
+  </section>
+ 
+
+<section class="cta-section">
+    <h2 class="cta-heading">Ready to Get Started?</h2>
+    <p class="cta-description">
+        Explore our services and make your next event extraordinary. Join us in creating memorable moments together!
+    </p>
+    <a id="services" class="cta-button" href="">Explore Services</a>
+</section>
+<section class="featured-section">
+    <div class="feature">
+        <img class="feature-image" src="{% static 'images/plan.jpg' %}" alt="Feature 1">
+        <h2 class="feature-title">Event Planning</h2>
+    </div>
+    <div class="feature">
+        <img class="feature-image" src="{% static 'images/booking.jpg' %}" alt="Feature 2">
+        <h2 class="feature-title">Service Booking</h2>
+    </div>
+    <div class="feature">
+        <img class="feature-image" src="{% static 'images/register.png' %}" alt="Feature 3">
+        <h2 class="feature-title">Event Registration</h2>
+    </div>
+</section>
+<section class="testimonials-section" id="reviews">
+    <div class="testimonial">
+        <p class="testimonial-text">EventoPlanneur made family meet absolutely magical! Their attention to detail and creative ideas exceeded our expectations.</p>
+        <p class="testimonial-author">Sarah and John</p>
+    </div>
+    <div class="testimonial">
+        <p class="testimonial-text">We couldn't have asked for a better event planning team. They turned our corporate event into a memorable experience for all attendees.</p>
+        <p class="testimonial-author">Michael Smith</p>
+    </div>
+    <div class="testimonial">
+        <p class="testimonial-text">Exceptional service from start to finish. EventoPlanneur's dedication and professionalism made our company anniversary celebration truly special.</p>
+        <p class="testimonial-author">Emily and David</p>
+    </div>
+</section>
+<section class="blog-section">
+    <div class="blog-post">
+        <h2 class="post-title">10 Tips for Planning a Successful Corporate Event</h2>
+        <p class="post-date">Published on August 10, 2023</p>
+        <p class="post-content">Planning a corporate event requires careful attention to detail and a strategic approach. In this article, we provide you with valuable tips to ensure your next corporate event is a resounding success...</p>
+    </div>
+    <div class="blog-post">
+        <h2 class="post-title">Navigating Event Venue Selection: Finding the Ideal Space</h2>
+        <p class="post-date">Published on July 28, 2023</p>
+        <p class="post-content">Choosing the right venue for your event is a crucial decision that can greatly impact its success. Discover key factors to consider when selecting the perfect event venue...</p>
+    </div>
+</section>
+<section class="contact-section" id="contact">
+    <div class="contact-details">
+        <h2 class="contact-heading">Contact Us</h2>
+        <p class="contact-info">Have questions or need assistance? Feel free to get in touch with us.</p>
+        <div class="contact-form">
+            <form action="submit_form.php" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="name">Your Name:</label>
+                    <input class="form-input" type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="email">Your Email:</label>
+                    <input class="form-input" type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="message">Message:</label>
+                    <textarea class="form-message" id="message" name="message" rows="4" required></textarea>
+                </div>
+                <button class="form-button" type="submit">Send Message</button>
+            </form>
+        </div>
+        <div class="social-media">
+            <a class="social-link" href="https://www.facebook.com/yourpage" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a class="social-link" href="https://www.twitter.com/yourpage" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a class="social-link" href="https://www.instagram.com/yourpage" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a class="social-link" href="https://www.linkedin.com/company/yourpage" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </div>
+</section>
+
+
+  <footer class="footer">
+    <div class="footer-nav">
+        <a href="terms.html">Terms of Use</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="faq.html">FAQ</a>
+    </div>
+    <p class="copyright">&copy; 2023 EventoPlanneur. All rights reserved.</p>
+    <p class="disclaimer">Disclaimer: The information provided on this website is for general informational purposes only and should not be considered as professional advice.</p>
+</footer>
+
+
+</body>
+
+</html>

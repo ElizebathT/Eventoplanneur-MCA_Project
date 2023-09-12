@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Webinar</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+    
+</head>
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="#clients">Clients</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          
+          <li>
+                  <a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+  <div class="events">
+    <form method="POST" id="webinar">
+        {% csrf_token %}
+        <table>
+          <tr>
+            <td>
+              <div class="mb-3">
+              <label for="title" class="form-label">Title:</label>
+              <input type="text" id="title" name="title" class="form-control" value="{{form.title.value}}" required>
+              <span id="titleError" class="error-text"></span>
+          </div>
+        </td>
+        <td>
+          <div class="mb-3">
+            <label for="time" class="form-label">Time:</label>
+            <input type="time" id="time" name="time" class="form-control" value="{{form.time.value|date:'H:i' }}">
+            <span id="timeError" class="error-text"></span>
+          </div></td>
+        
+        
+        </tr><tr><td>
+          <div class="mb-3">
+              <label for="date" class="form-label">Date:</label>
+              <input type="date" id="date" name="date" class="form-control" value="{{ form.date.value|date:'Y-m-d' }}" required>
+              <span id="event_dateError" class="error-text"></span>
+          </div></td><td>
+            <div class="mb-3">
+                <label for="deadline" class="form-label">Deadline:</label>
+                <input type="date" id="deadline" name="deadline" class="form-control" value="{{form.deadline.value|date:'Y-m-d'}}" required>
+              <span id="deadlineError" class="error-text"></span>
+            </div></td></tr><tr><td>
+            <div class="mb-3">
+                <label for="event_type"  class="form-label">Event Type:</label>
+                {% comment %} <select id="event_type" name="event_type" value="{{form.event_type.value}}" class="form-control">
+                  <option value="Offline">Offline</option>
+                  <option value="Online">Online</option>
+                </select> {% endcomment %}
+                <input type="text" id="event_type" name="event_type" class="form-control" value="{{form.event_type.value}}" required>
+                <span id="event_typeError" class="error-text"></span>
+            </div></td><td>
+          <div class="mb-3" id="loc" >
+              <label for="location" class="form-label">Location:</label>
+              <input type="text" id="location" name="location" value="{{form.location.value}}" class="form-control">
+              <span id="locationError" class="error-text"></span>
+          </div>
+        <div class="mb-3" id="url_div">
+                <label for="livestream" class="form-label">Livestream Link:</label>
+                <input type="text" id="livestream" name="livestream" value="{{form.livestream.value}}"class="form-control">
+                <span id="urlError" class="error-text"></span>
+            </div></td>
+          </tr><tr><td>
+          <div class="mb-3">
+              <label for="organizer_name" class="form-label">Organizer Name:</label>
+              <input type="text" id="organizer_name" name="organizer_name" class="form-control" value="{{form.title.value}}" required>
+              <span id="organizer_nameError" class="error-text"></span>
+          </div></td><td>
+          <div class="mb-3">
+              <label for="phone_number" class="form-label">Contact number:</label>
+              <input type="text" id="phone_number" name="phone_number" value="{{form.phone_number.value}}" class="form-control" required>
+              <span id="contactError" class="error-text"></span>
+          </div></td></tr><tr><td>
+          <div class="mb-3">
+              <label for="fee" class="form-label">Fee:</label>
+              <input type="number" id="fee" name="fee" class="form-control" value="{{form.fee.value}}" required>
+              <span id="feeError" class="error-text"></span>
+          </div></td><td>
+            <div class="mb-3">
+                <label for="poster" class="form-label">Poster( Image URL ):</label>
+                <input type="text" id="poster" name="poster" class="form-control" value="{{form.poster.value}}" required>
+              <span id="posterError" class="error-text"></span>
+            </div></td></tr>
+            <tr><td>
+              
+                <div class="form-group">
+                  <label for="speaker_name">Speakers:</label>
+                  <div id="">
+                    {% for speaker in speakers %}
+                        <div class="speaker" style="display:flex;">
+                            <input type="text" style="width:60px;" id="designation_{{ speaker.id }}" name="speakers-{{ speaker.id }}-designation" class="form-control" value="{{ speaker.designation }}" required>
+                            <input type="text" id="speaker_name_{{ speaker.id }}" name="speakers-{{ speaker.id }}-speaker_name" class="form-control" value="{{ speaker.speaker_name }}" required>
+                        </div>
+                    {% endfor %}
+                    {% comment %}                      
+                      <!-- Loop through the speakers associated with the webinar -->
+                      {% for speaker_form in form.speakers %}
+                          <div class="speaker">
+                              <input type="text" id="designation_{{ forloop.counter }}" name="speakers-{{ forloop.counter }}-designation" class="form-control" value="{{ speaker_form.designation.value }}" required>
+                              <input type="text" id="speaker_name_{{ forloop.counter }}" name="speakers-{{ forloop.counter }}-speaker_name" class="form-control" value="{{ speaker_form.speaker_name.value }}" required>
+                          </div>
+                      {% endfor %}  {% endcomment %}
+                  </div>
+              </div>
+              
+              
+              <td>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <textarea id="description" name="description" class="form-control" rows="4" cols="50" >{{form.description.value}}</textarea>
+                <span id="descriptionError" class="error-text"></span>
+                </div></td>
+            </tr><tr><td></table>
+              <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+          var event_type = document.getElementById("event_type");
+          var loc = document.getElementById("loc");
+          var url_div = document.getElementById("url_div");
+          if (event_type.value === 'Online') { 
+            loc.style.display = 'none';
+            url_div.style.display = 'block';
+        } else {
+            loc.style.display = 'block';
+            url_div.style.display = 'none';
+        }
+          handleLocationChange(event_type,loc,url_div);
+      });
+      function handleLocationChange(event_type,loc,url_div) {
+        if (event_type.value === 'Online') { 
+            loc.style.display = 'none';
+            url_div.style.display = 'block';
+        } else {
+            loc.style.display = 'block';
+            url_div.style.display = 'none';
+        }
+    }
+  </script>
+  
+  </div>
+</div>
+<footer class="bg-dark text-white text-center py-3">
+    <div class="container">
+      &copy; 2023 EventoPlanneur. All rights reserved.
+    </div>
+  </footer>
+  
+
+</body>
+</html>

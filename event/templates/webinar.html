@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webinars</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="containers">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          <li class="nav-item">
+            {% if user.is_authenticated %}
+            <a class="nav-link" >User: {{ user.name }}</a>
+            <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+      <div class="events">
+        <a href="{% url 'eventapp:register_webinar' %}"><button id="sendButton" style="width:100%;">Host a Webinar</button></a><br>
+        {% block content %}
+        <h4>My Webinars</h4>
+        {% for i in update_webinar %}
+        <strong>{{ i.title }}</strong><br>
+        Date: {{ i.date|date:"F j, Y" }}<br>
+        Time: {{ i.time }}<br>
+         <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'view_webinar' i.id %}">View</a></button>
+         <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'update_webinar' i.id %}">Update</a></button>
+         <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'delete_webinar' i.id %}">Delete</a></button><br>
+          {% endfor %}
+          {% endblock %}
+      </div>
+      <div class="sidebar">
+        <div class="notifications">
+            <h4>Notifications</h4>
+            <ul id="notificationList">
+                <li><strong>Upcoming Webinar: </strong>Digital Transformation:<br> Navigating the Future of Business</li>
+                <li><strong>Don't forget!: </strong>Webinar on Cybersecurity Essentials: <br>Safeguarding Your Digital Presence is just around the corner.</li>
+                <li><strong>Upcoming Webinar: </strong>Mindful Wellness: <br>Strategies for a Balanced Life</li>
+            </ul>
+        </div>
+        <div class="chatbot">
+            <h4>Chatbot</h4>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Sample chatbot messages will be added dynamically here -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <button id="sendButton">Send</button>
+            </div>
+        </div>
+      </div>
+      
+    </div>
+    
+</body>
+</html>

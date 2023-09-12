@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="icon" href="{% static 'images/logo.jpg' %}" type="image/x-icon">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  
+  <div class="login-box">
+    <div class="image-container">
+        <img src="{% static 'images/logo.jpg' %}" alt="Site Logo">
+      </div>
+    <h2>Register</h2>
+    <form id="login-form" method="POST" action="{% url 'eventapp:reg_organizer' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+        <span id="emailError" class="error-text"></span>
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        <span id="passwordError" class="error-text"></span>
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
+        <span id="confirmPasswordError" class="error-text"></span>
+    </div>
+      <button type="submit" class="btn btn-primary btn-block register-btn">Register</button>
+      <p class="text-center mt-3"><a href="{% url 'eventapp:login' %}">Already have an account? <b>Login</b></a></p>
+    </form>
+    {% if messages %}
+<div class="alert alert-danger">
+  
+    {% for message in messages %}
+      {{ message }} 
+    {% endfor %}
+</div>
+{% endif %}
+  </div>
+  <script src="{% static 'js/validation.js' %}"></script>
+</body>
+</html>

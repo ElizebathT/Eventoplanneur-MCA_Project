@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Host Webinar</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+    
+</head>
+<style>
+  /* Style for the form container */
+  #webinar {
+      display: flex;
+      flex-direction: column;
+      max-width:auto;
+      color:white;
+  }
+  h4{
+    color:white;
+  }
+  td{
+    width:50%;
+  }
+  .events{
+    background-color: rgba(52, 58, 64, 0.7);
+    radius:5px;
+  }
+  /* Style for form labels */
+  .form-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+  }
+  #sendButton {
+    background-color: #fda085;
+}
+  /* Style for form inputs */
+  .mb-3 {
+      margin-bottom: 15px;
+  }
+
+  /* Style for error text */
+  .error-text {
+      color: orange;
+  }
+
+  /* Style for buttons */
+  #sendButton {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+  }
+  span{
+    color:orange;
+  }
+  #sendButton a {
+      color: white;
+      text-decoration: none;
+  }
+</style>
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="#clients">Clients</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          
+          <li>
+                  <a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="events">
+        <h4>Host a Webinar</h4>
+        <form method="post" id="webinar" action="{% url 'eventapp:register_webinar' %}">
+          {% csrf_token %}
+          <table>
+          <tr>
+            <td>
+              <div class="mb-3">
+              <label for="title" class="form-label">Title<span>*</span>:</label>
+              <input type="text" id="title" name="title" class="form-control" required>
+              <span id="titleError" class="error-text"></span>
+          </div>
+        </td>
+        <td>
+          <div class="mb-3">
+            <label for="time" class="form-label">Time<span>*</span>:</label>
+            <input type="time" id="time" name="time" class="form-control">
+            <span id="timeError" class="error-text"></span>
+          </div></td>
+        
+        
+        </tr><tr><td>
+          <div class="mb-3">
+              <label for="date" class="form-label">Date<span>*</span>:</label>
+              <input type="date" id="date" name="date" class="form-control" required>
+              <span id="event_dateError" class="error-text"></span>
+          </div></td><td>
+            <div class="mb-3">
+                <label for="deadline" class="form-label">Deadline<span>*</span>:</label>
+                <input type="date" id="deadline" name="deadline" class="form-control" required>
+              <span id="deadlineError" class="error-text"></span>
+            </div></td></tr><tr><td>
+            <div class="mb-3">
+                <label for="event_type"  class="form-label">Event Type<span>*</span>:</label>
+                <select id="event_type" name="event_type" class="form-control">
+                  <option value="Offline">Offline</option>
+                  <option value="Online">Online</option>
+                </select>
+                <span id="event_typeError" class="error-text"></span>
+            </div></td><td>
+          <div class="mb-3" id="loc">
+              <label for="location" class="form-label">Location:</label>
+              <input type="text" id="location" name="location" class="form-control">
+              <span id="locationError" class="error-text"></span>
+          </div>
+            <div class="mb-3" id="url_div" style="display:none">
+                <label for="livestream" class="form-label">Livestream Link:</label>
+                <input type="text" id="livestream" name="livestream" class="form-control">
+                <span id="urlError" class="error-text"></span>
+            </div></td>
+          </tr><tr><td>
+          <div class="mb-3">
+              <label for="organizer_name" class="form-label">Organizer Name<span>*</span>:</label>
+              <input type="text" id="organizer_name" name="organizer_name" class="form-control" value="{{user.name}}" required>
+              <span id="organizer_nameError" class="error-text"></span>
+          </div></td><td>
+          <div class="mb-3">
+              <label for="phone_number" class="form-label">Contact number<span>*</span>:</label>
+              <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+              <span id="phone_numberError" class="error-text"></span>
+          </div></td></tr><tr><td>
+          <div class="mb-3">
+              <label for="fee" class="form-label">Fee<span>*</span>:</label>
+              <input type="number" id="fee" name="fee" class="form-control" required>
+              <span id="feeError" class="error-text"></span>
+          </div></td><td>
+            <div class="mb-3">
+                <label for="poster" class="form-label">Poster( Image URL )<span>*</span>:</label>
+                <input type="text" id="poster" name="poster" class="form-control" required>
+              <span id="posterError" class="error-text"></span>
+            </div></td></tr>
+            <tr><td>
+              {% comment %} <div class="form-group">
+                <label for="speakers">Speakers:</label>
+                <div id="speakers-container">
+                    <!-- Initial Speaker -->
+                    <div class="speaker">
+                        <select name="designation" class="form-control">
+                            <option value="Mr">Mr</option>
+                            <option value="Ms">Ms</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Dr">Dr</option>
+                        </select>
+                        <input type="text" name="speaker_name" id="speaker_name" class="form-control">
+                    </div>
+                </div>
+                <span id="speakerError" class="error-text"></span> {% endcomment %}
+                <div class="form-group">
+                  <label for="speakers">Speakers:</label>
+                  <div id="speakers-container">
+                    <div class="speaker" style="display:flex;">
+                      <select name="speakers_designation[]" class="form-control" style="width:100px;">
+                        <option value="Mr">Mr</option>
+                        <option value="Ms">Ms</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Dr">Dr</option>
+                      </select>
+                      <input type="text" name="speakers_name[]" id="speaker_name" class="form-control" style="width:250px;"required>
+                    </div>
+                  </div>
+                  <span id="speakerError" class="error-text"></span>
+                <button type="button" id="add-speaker" class="btn btn-secondary">+</button>
+            </div></td>
+              <td>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description<span>*</span>:</label>
+                    <textarea id="description" name="description" class="form-control" rows="4" cols="50" required></textarea>
+                <span id="descriptionError" class="error-text"></span>
+                </div></td>
+            </tr><tr><td>
+              <span>* Required fields</span><br>
+          <button id="sendButton" type="submit">Register</button></td><td>
+          <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr>
+      </form>
+      <script>
+        // JavaScript to dynamically add more speaker fields
+        document.getElementById('add-speaker').addEventListener('click', function() {
+            const speakersContainer = document.getElementById('speakers-container');
+            const newSpeaker = document.createElement('div');
+            newSpeaker.classList.add('speaker');
+            newSpeaker.innerHTML = `
+            <div class="speaker" style="display:flex;">
+              <select name="speakers_designation[]" class="form-control" style="width:100px;">
+                <option value="Mr">Mr</option>
+                <option value="Ms">Ms</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Dr">Dr</option>
+              </select>
+              <input type="text" name="speakers_name[]" id="speaker_name" class="form-control" style="width:250px;"required>
+            </div>
+            `;
+            speakersContainer.appendChild(newSpeaker);
+        });
+    </script>
+    
+<script src="{% static 'js/webinar.js' %}"></script>
+      {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+    </div>
+    
+</div>
+</body>
+</html>
