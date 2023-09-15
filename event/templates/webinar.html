@@ -27,7 +27,7 @@
           <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
           <li class="nav-item">
             {% if user.is_authenticated %}
-            <a class="nav-link" >User: {{ user.name }}</a>
+            <a class="nav-link" >User: {{ user.email }}</a>
             <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
             {% endif %}
           </li>
@@ -40,17 +40,20 @@
         <a href="{% url 'eventapp:register_webinar' %}"><button id="sendButton" style="width:100%;">Host a Webinar</button></a><br>
         {% block content %}
         <h4>My Webinars</h4>
+        <div class="row">
         {% for i in update_webinar %}
+        <div class="col-md-3">
+          <div class="card" style="width:250px;padding: 5px;">
         <strong>{{ i.title }}</strong><br>
         Date: {{ i.date|date:"F j, Y" }}<br>
-        Time: {{ i.time }}<br>
-         <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'view_webinar' i.id %}">View</a></button>
-         <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'update_webinar' i.id %}">Update</a></button>
+        Time: {{ i.time }}<br><br>
+         <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'view_webinar' i.id %}">View</a></button><br>
+         <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'update_webinar' i.id %}">Update</a></button><br>
          <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'delete_webinar' i.id %}">Delete</a></button><br>
-          {% endfor %}
+          </div></div>{% endfor %}
           {% endblock %}
       </div>
-      <div class="sidebar">
+      {% comment %} <div class="sidebar">
         <div class="notifications">
             <h4>Notifications</h4>
             <ul id="notificationList">
@@ -69,7 +72,7 @@
                 <button id="sendButton">Send</button>
             </div>
         </div>
-      </div>
+      </div> {% endcomment %}
       
     </div>
     

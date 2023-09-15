@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Host Webinar</title>
+  <title>Host Conference</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
@@ -90,8 +90,8 @@
   </nav>
   <div class="container">
     <div class="events">
-        <h4>Host a Webinar</h4>
-        <form method="post" id="webinar" action="{% url 'eventapp:register_webinar' %}">
+        <h4>Host a Conference</h4>
+        <form method="post" id="webinar" action="{% url 'eventapp:register_conference' %}">
           {% csrf_token %}
           <table>
           <tr>
@@ -101,26 +101,34 @@
               <input type="text" id="title" name="title" class="form-control" required>
               <span id="titleError" class="error-text"></span>
           </div>
-        </td>
-        <td>
-          <div class="mb-3">
-            <label for="time" class="form-label">Time<span>*</span>:</label>
-            <input type="time" id="time" name="time" class="form-control">
-            <span id="timeError" class="error-text"></span>
-          </div></td>
-        
-        
+          </td><td>
+            <div class="mb-3">
+                <label for="organizer_name" class="form-label">Organizer Name<span>*</span>:</label>
+                <input type="text" id="organizer_name" name="organizer_name" class="form-control" value="{{user.name}}" required>
+                <span id="organizer_nameError" class="error-text"></span>
+            </div></td>
         </tr><tr><td>
           <div class="mb-3">
-              <label for="date" class="form-label">Date<span>*</span>:</label>
-              <input type="date" id="date" name="date" class="form-control" required>
-              <span id="event_dateError" class="error-text"></span>
+              <label for="start_date" class="form-label">Start Date<span>*</span>:</label>
+              <input type="date" id="start_date" name="start_date" class="form-control" required>
+              <span id="start_dateError" class="error-text"></span>
           </div></td><td>
+          <div class="mb-3">
+            <label for="start_time" class="form-label">Start Time<span>*</span>:</label>
+            <input type="time" id="start_time" name="start_time" class="form-control">
+            <span id="timeError" class="error-text"></span>
+          </div></td></tr><tr><td>
             <div class="mb-3">
-                <label for="deadline" class="form-label">Deadline<span>*</span>:</label>
-                <input type="date" id="deadline" name="deadline" class="form-control" required>
-              <span id="deadlineError" class="error-text"></span>
-            </div></td></tr><tr><td>
+                <label for="end_date" class="form-label">End Date<span>*</span>:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" required>
+              <span id="end_dateError" class="error-text"></span>
+            </div></td><td>
+            <div class="mb-3">
+                <label for="end_time" class="form-label">End Time<span>*</span>:</label>
+                <input type="time" id="end_time" name="end_time" class="form-control">
+                <span id="end_timeError" class="error-text"></span>
+              </div></td>
+        </tr><tr><td>
             <div class="mb-3">
                 <label for="event_type"  class="form-label">Event Type<span>*</span>:</label>
                 <select id="event_type" name="event_type" class="form-control">
@@ -131,20 +139,22 @@
             </div></td><td>
           <div class="mb-3" id="loc">
               <label for="location" class="form-label">Location:</label>
-              <input type="text" id="location" name="location" class="form-control" default="None">
+              <input type="text" id="location" name="location" class="form-control">
               <span id="locationError" class="error-text"></span>
           </div>
             <div class="mb-3" id="url_div" style="display:none">
                 <label for="livestream" class="form-label">Livestream Link:</label>
-                <input type="text" id="livestream" name="livestream" class="form-control" >
+                <input type="text" id="livestream" name="livestream" class="form-control">
                 <span id="urlError" class="error-text"></span>
             </div></td>
-          </tr><tr><td>
-          <div class="mb-3">
-              <label for="organizer_name" class="form-label">Organizer Name<span>*</span>:</label>
-              <input type="text" id="organizer_name" name="organizer_name" class="form-control" required>
-              <span id="organizer_nameError" class="error-text"></span>
-          </div></td><td>
+          </tr><tr>
+            <td>
+                <div class="mb-3">
+                    <label for="deadline" class="form-label">Deadline<span>*</span>:</label>
+                    <input type="date" id="deadline" name="deadline" class="form-control" required>
+                  <span id="deadlineError" class="error-text"></span>
+                </div></td>
+                <td>
           <div class="mb-3">
               <label for="phone_number" class="form-label">Contact number<span>*</span>:</label>
               <input type="text" id="phone_number" name="phone_number" class="form-control" required>
@@ -185,7 +195,7 @@
             </tr><tr><td>
               <span>* Required fields</span><br>
           <button id="sendButton" type="submit">Register</button></td><td>
-          <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr>
+          <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:conference' %}">Back</a></button></td></tr>
       </form>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       
@@ -210,7 +220,7 @@
         });
     </script>
     
-<script src="{% static 'js/webinar.js' %}"></script>
+<script src="{% static 'js/conference.js' %}"></script>
       {% if messages %}
     <ul class="messages">
         {% for message in messages %}

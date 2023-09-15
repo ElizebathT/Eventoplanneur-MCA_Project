@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     function validateForm() {
         
-        if (emailError.innerText || nameError.innerText || phone_numberError.innerText || locationError.innerText || websiteError.innerText || departmentsError.innerText || programs_offeredError.innerText || accreditationError.innerText ) {
+        if (emailError.innerText || nameError.innerText || phone_numberError.innerText || locationError.innerText || websiteError.innerText || departmentsError.innerText ||aicteError.innerText || programs_offeredError.innerText || accreditationError.innerText ) {
             return false; // Return false to prevent form submission
         }
 

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Webinar, EventOrganizer
+from .models import Webinar, EventOrganizer, Conference
 
 class WebinarForm(forms.ModelForm):
     class Meta:
@@ -14,3 +14,10 @@ class Organizer(forms.ModelForm):
         model = EventOrganizer
         fields = '__all__'
 
+class ConferenceForm(forms.ModelForm):
+    class Meta:
+        model = Conference
+        fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(ConferenceForm, self).__init__(*args, **kwargs)
+        self.fields['speakers'].widget = forms.SelectMultiple(attrs={'class': 'form-control'})

@@ -10,6 +10,7 @@ app_name = 'eventapp'
 urlpatterns = [
     path('', views.index, name='index'),
     path('orghome/', views.orghome, name='orghome'),
+    path('attendeehome/', views.attendeehome, name='attendeehome'),
     path('login/', views.login, name='login'),
     path('registration/', views.registration, name='registration'),
     path('logout/',views.logout,name='logout'),
@@ -24,6 +25,9 @@ urlpatterns = [
     path('reg_attendee/',views.reg_attendee,name='reg_attendee'),
     path('org_profile/',views.org_profile,name='org_profile'),
     path('check_aicte_id/', views.check_aicte_id, name='check_aicte_id'),
-
+    path('conference/',views.conference,name='conference'),
+    path('register_conference/',views.register_conference,name='register_conference'),
+    path('listwebinars/',views.listwebinars,name='listwebinars'),
+    path('events/',views.events,name='events'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

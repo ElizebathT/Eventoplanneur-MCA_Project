@@ -2,10 +2,10 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-    background-size: cover;
     background-position: center;
     color: #ad6341;
+    background-image: url("/static/images/bg.gif");
+    background-size: cover;
 }
 
 .nav {

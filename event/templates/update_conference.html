@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Update Webinar</title>
+  <title>Update Conference</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
@@ -38,7 +38,7 @@
   </nav>
   <div class="container">
   <div class="events">
-    <h4>Update Webinar</h4>
+    <h4>Update Conference</h4>
     <form method="POST" id="webinar" >
       {% csrf_token %}
       <table>
@@ -52,44 +52,57 @@
       </td>
       <td>
         <div class="mb-3">
-          <label for="time" class="form-label">Time:</label>
-          <input type="time" id="time" name="time" class="form-control" value="{{form.time.value|date:'H:i' }}">
-          <span id="timeError" class="error-text"></span>
+            <label for="organizer_name" class="form-label">Organizer Name:</label>
+            <input type="text" id="organizer_name" name="organizer_name" class="form-control" value="{{form.title.value}}" required>
+            <span id="organizer_nameError" class="error-text"></span>
         </div></td>
       
       
       </tr><tr><td>
         <div class="mb-3">
-            <label for="date" class="form-label">Date:</label>
-            <input type="date" id="date" name="date" class="form-control" value="{{ form.date.value|date:'Y-m-d' }}" required>
-            <span id="event_dateError" class="error-text"></span>
-        </div></td><td>
-          <div class="mb-3">
-              <label for="deadline" class="form-label">Deadline:</label>
-              <input type="date" id="deadline" name="deadline" class="form-control" value="{{form.deadline.value|date:'Y-m-d'}}" required>
-            <span id="deadlineError" class="error-text"></span>
-          </div></td></tr><tr><td>
-          <div class="mb-3">
-              <label for="event_type"  class="form-label">Event Type:</label>
-              <input type="text" id="event_type" name="event_type" class="form-control" value="{{form.event_type.value}}" required>
-              <span id="event_typeError" class="error-text"></span>
-          </div></td><td>
-        <div class="mb-3" id="loc">
-            <label for="location" class="form-label">Location:</label>
-            <input type="text" id="location" name="location" value="{{form.location.value}}" class="form-control" >
-            <span id="locationError" class="error-text"></span>
-        </div>
-        <div class="mb-3" id="url_div">
-                <label for="livestream" class="form-label">Livestream Link:</label>
-                <input type="text" id="livestream" name="livestream" value="{{form.livestream.value}}"class="form-control">
-                <span id="urlError" class="error-text"></span>
-            </div></td>
-        </tr><tr><td>
+        <label for="start_date" class="form-label">Start Date<span>*</span>:</label>
+        <input type="date" id="start_date" name="start_date" class="form-control" value="{{ form.start_date.value|date:'Y-m-d' }}" required>
+        <span id="start_dateError" class="error-text"></span>
+    </div></td>
+    <td>
         <div class="mb-3">
-            <label for="organizer_name" class="form-label">Organizer Name:</label>
-            <input type="text" id="organizer_name" name="organizer_name" class="form-control" value="{{form.organizer_name.value}}" required>
-            <span id="organizer_nameError" class="error-text"></span>
+          <label for="start_time" class="form-label">Start Time<span>*</span>:</label>
+          <input type="time" id="start_time" name="start_time" value="{{ form.start_time.value|date:'H:i' }}"class="form-control">
+          <span id="timeError" class="error-text"></span>
+        </div></td></tr>
+        <tr><td>
+            <div class="mb-3">
+                <label for="end_date" class="form-label">End Date<span>*</span>:</label>
+                <input type="date" id="end_date" name="end_date" value="{{ form.end_date.value|date:'Y-m-d' }}"class="form-control" required>
+              <span id="end_dateError" class="error-text"></span>
+            </div></td><td>
+            <div class="mb-3">
+                <label for="end_time" class="form-label">End Time<span>*</span>:</label>
+                <input type="time" id="end_time" name="end_time" value="{{ form.end_time.value|date:'H:i' }}"class="form-control">
+                <span id="end_timeError" class="error-text"></span>
+              </div></td>
+        </tr><tr><td>
+          <div class="mb-3">
+            <label for="event_type"  class="form-label">Event Type:</label>
+            <input type="text" id="event_type" name="event_type" class="form-control" value="{{form.event_type.value}}" required>
+            <span id="event_typeError" class="error-text"></span>
         </div></td><td>
+      <div class="mb-3">
+          <label for="location" class="form-label">Location:</label>
+          <input type="text" id="location" name="location" value="{{form.location.value}}" class="form-control">
+          <span id="locationError" class="error-text"></span>
+      </div>
+      <div class="mb-3" id="url_div">
+              <label for="livestream" class="form-label">Livestream Link:</label>
+              <input type="text" id="livestream" name="livestream" value="{{form.livestream.value}}"class="form-control">
+              <span id="urlError" class="error-text"></span>
+          </div></td>
+        </tr><tr><td>
+            <div class="mb-3">
+                <label for="deadline" class="form-label">Deadline<span>*</span>:</label>
+                <input type="date" id="deadline" name="deadline" class="form-control" value="{{ form.deadline.value|date:'Y-m-d' }}"required>
+              <span id="deadlineError" class="error-text"></span>
+            </div></td><td>
         <div class="mb-3">
             <label for="phone_number" class="form-label">Contact number:</label>
             <input type="text" id="phone_number" name="phone_number" value="{{form.phone_number.value}}" class="form-control" required>
@@ -126,42 +139,10 @@
               </div></td>
           </tr><tr><td></table> 
             <button id="sendButton" type="submit">Update</button></td><td>
-            <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr>
+            <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:conference' %}">Back</a></button></td></tr>
   </form>
-  {% if messages %}
-  <ul class="messages">
-   {% for message in messages %}
-   <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-   {% endfor %}
-   </ul>
-  {% endif %}
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'js/webinar.js' %}"></script>
-<script>
-  $(document).ready(function() {
-      var event_type = document.getElementById("event_type");
-      var loc = document.getElementById("loc");
-      var url_div = document.getElementById("url_div");
-      if (event_type.value === 'Online') { 
-        loc.style.display = 'none';
-        url_div.style.display = 'block';
-    } else {
-        loc.style.display = 'block';
-        url_div.style.display = 'none';
-    }
-      handleLocationChange(event_type,loc,url_div);
-  });
-  function handleLocationChange(event_type,loc,url_div) {
-    if (event_type.value === 'Online') { 
-        loc.style.display = 'none';
-        url_div.style.display = 'block';
-        
-    } else {
-        loc.style.display = 'block';
-        url_div.style.display = 'none';
-    }
-}
-</script>
+    
+<script src="{% static 'js/conference.js' %}"></script>
   </div>
 </div> 
 

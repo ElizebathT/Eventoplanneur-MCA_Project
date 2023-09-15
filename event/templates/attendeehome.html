@@ -1,0 +1,78 @@
+{% load static %}
+{% if user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+</head>
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:events' %}">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" >User: {{ user.email }}</a>
+              <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+              {% endif %}
+            </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="contact-section" id="contact">
+    <div class="contact-details">
+        <h2 class="contact-heading">Contact Us</h2>
+        <p class="contact-info">Have questions or need assistance? Feel free to get in touch with us.</p>
+        <div class="contact-form">
+            <form action="submit_form.php" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="name">Your Name:</label>
+                    <input class="form-input" type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="email">Your Email:</label>
+                    <input class="form-input" type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="message">Message:</label>
+                    <textarea class="form-message" id="message" name="message" rows="4" required></textarea>
+                </div>
+                <button class="form-button" type="submit">Send Message</button>
+            </form>
+        </div>
+        <div class="social-media">
+            <a class="social-link" href="https://www.facebook.com/yourpage" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a class="social-link" href="https://www.twitter.com/yourpage" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a class="social-link" href="https://www.instagram.com/yourpage" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a class="social-link" href="https://www.linkedin.com/company/yourpage" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </div>
+</section>
+  <footer class="bg-dark text-white text-center py-3">
+    <div class="container">
+      &copy; 2023 EventoPlanneur. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
+{% endif %}
