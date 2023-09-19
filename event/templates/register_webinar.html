@@ -124,21 +124,23 @@
             <div class="mb-3">
                 <label for="event_type"  class="form-label">Event Type<span>*</span>:</label>
                 <select id="event_type" name="event_type" class="form-control">
-                  <option value="Offline">Offline</option>
                   <option value="Online">Online</option>
+                  <option value="Offline">Offline</option>
+                  
                 </select>
                 <span id="event_typeError" class="error-text"></span>
             </div></td><td>
-          <div class="mb-3" id="loc">
-              <label for="location" class="form-label">Location:</label>
+              <div class="mb-3" id="url_div" >
+                <label for="livestream" class="form-label">Livestream Link:</label>
+                <input type="text" id="livestream" name="livestream" class="form-control" default="None" >
+                <span id="urlError" class="error-text"></span>
+            </div>
+          <div class="mb-3" id="loc" style="display:none">
+              <label for="location" class="form-label" >Location:</label>
               <input type="text" id="location" name="location" class="form-control" default="None">
               <span id="locationError" class="error-text"></span>
           </div>
-            <div class="mb-3" id="url_div" style="display:none">
-                <label for="livestream" class="form-label">Livestream Link:</label>
-                <input type="text" id="livestream" name="livestream" class="form-control" >
-                <span id="urlError" class="error-text"></span>
-            </div></td>
+            </td>
           </tr><tr><td>
           <div class="mb-3">
               <label for="organizer_name" class="form-label">Organizer Name<span>*</span>:</label>
@@ -189,7 +191,33 @@
       </form>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       
-      <script>
+      <script>       
+        
+          $(document).ready(function() {
+              var event_type = document.getElementById("event_type");
+              var loc = document.getElementById("loc");
+              var url_div = document.getElementById("url_div");
+              var livestream=document.getElementById("livestream");
+              if (event_type.value === 'Online') { 
+                loc.style.display = 'none';
+                url_div.style.display = 'block';
+            } else {
+                loc.style.display = 'block';
+                url_div.style.display = 'none';
+                livestream.innerText='https://www.xyz.com';
+            }
+              handleLocationChange(event_type,loc,url_div);
+          });
+          function handleLocationChange(event_type,loc,url_div) {
+            if (event_type.value === 'Online') { 
+                loc.style.display = 'none';
+                url_div.style.display = 'block';
+                
+            } else {
+                loc.style.display = 'block';
+                url_div.style.display = 'none';
+            }
+        }
         // JavaScript to dynamically add more speaker fields
         document.getElementById('add-speaker').addEventListener('click', function() {
             const speakersContainer = document.getElementById('speakers-container');

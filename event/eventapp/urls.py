@@ -29,5 +29,7 @@ urlpatterns = [
     path('register_conference/',views.register_conference,name='register_conference'),
     path('listwebinars/',views.listwebinars,name='listwebinars'),
     path('events/',views.events,name='events'),
+    path('verify/',views.verify,name='verify'),
+    path('registered_webinar/',views.registered_webinar,name='registered_webinar'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -7,6 +7,7 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path('update_webinar/<int:update_id>',views.update_webinar,name='update_webinar'),
     path('view_webinar/<int:update_id>',views.view_webinar,name='view_webinar'),
+    path('register_for_webinar/<int:webinar_id>',views.register_for_webinar,name='register_for_webinar'),
     path('delete_webinar/<int:del_id>',views.delete_webinar,name='delete_webinar'),
     path('update_conference/<int:update_id>',views.update_conference,name='update_conference'),
     path('view_conference/<int:view_id>',views.view_conference,name='view_conference'),

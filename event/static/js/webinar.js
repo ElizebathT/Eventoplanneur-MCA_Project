@@ -10,11 +10,12 @@ document.addEventListener("DOMContentLoaded", function() {
     var location = document.getElementById("location");
     var loc = document.getElementById("loc");
     var url_div = document.getElementById("url_div");
+    var url=document.getElementById("livestream");
     var locationError = document.getElementById("locationError");
     var organizer_name = document.getElementById("organizer_name");
     var organizer_nameError = document.getElementById("organizer_nameError");
     var phone_number = document.getElementById("phone_number");
-    var phone_numberError = document.getElementById("contactError");
+    var phone_numberError = document.getElementById("phone_numberError");
     var livestream = document.getElementById("livestream");
     var fee = document.getElementById("fee");
     var feeError = document.getElementById("feeError");
@@ -28,10 +29,15 @@ document.addEventListener("DOMContentLoaded", function() {
     date.addEventListener("input", function() {
         event_dateError.innerText = validateEvent_date(date.value);
     });
+    
+    phone_number.addEventListener("input", function() {
+        phone_numberError.innerText = validateContact(phone_number.value);
+    });
     event_type.addEventListener('change', function () {
         if (event_type.value === 'Online') {
             loc.style.display = 'none';
             url_div.style.display = 'block';
+
         } 
         else {
             loc.style.display = 'block';
@@ -45,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
     //     speakerError.innerText = validateSpeaker(speaker_name.value);
     // });
     location.addEventListener("input", function() {
+        url.innerText="None";
         locationError.innerText = validateLocation(location.value);
     });
     livestream.addEventListener("input", function() {
@@ -54,9 +61,6 @@ document.addEventListener("DOMContentLoaded", function() {
         feeError.innerText = validateFee(fee.value);
     });
    
-    phone_number.addEventListener("input", function() {
-        phone_numberError.innerText = validateContact(phone_number.value);
-    });
     organizer_name.addEventListener("input", function() {
         organizer_nameError.innerText = validateOrganizer(organizer_name.value);
     });

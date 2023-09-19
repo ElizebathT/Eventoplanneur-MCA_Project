@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
 #from .models import User
-from .models import CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference
+from .models import CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration
 import re
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User,auth
@@ -9,12 +9,13 @@ from .forms import WebinarForm, Organizer,ConferenceForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.forms import modelformset_factory
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.urls import reverse
 from django.core.mail import send_mail
 from django.utils import timezone
 # import requests
 from django.http import JsonResponse
+from django.utils.crypto import get_random_string
 
 def is_valid_email(email):
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -48,80 +49,106 @@ def registration(request):
         
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Email already exists.")
-        elif email and password and user_type:
-            user = CustomUser(email=email)
-            user.set_password(password)
-            if user_type == 'eventOrganizer':
-                user.is_organizer = True
-            elif user_type == 'serviceProvider':
-                user.is_provider = True
-            elif user_type == 'attendee':
-                user.is_provider = True
-            user.save()
-            return redirect('/')
+        user = CustomUser.objects.create_user(email=email, password=password)
+        token = get_random_string(length=32)
+        user.verification_token = token
+        user.is_verified = False
+        if user_type == 'eventOrganizer':
+            user.is_organizer = True
+        elif user_type == 'serviceProvider':
+            user.is_provider = True
+        elif user_type == 'attendee':
+            user.is_provider = True
+        user.save()
+        send_mail(
+            'Email Verification',
+            f'Click the following link to verify your email: {request.build_absolute_uri("/verify/")}?token={token}',
+            'mailtoshowvalidationok@gmail.com',
+            [email],
+            fail_silently=False,
+        )
+        return redirect('eventapp:verify')
     return render(request, 'register.html')
 
 def reg_organizer(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        if not is_valid_email(email):
-            messages.error(request, 'Invalid email')
-            return render(request, 'reg_organizer.html') 
-        if not is_valid_password(password):
-            messages.error(request, 'Password must be at least 8 characters long and contain at least one number, one symbol, and one capital letter')
-            return render(request, 'reg_organizer.html')
-        
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Email already exists.")
-        elif email and password:
-            user = CustomUser(email=email)
-            user.set_password(password)
-            user.is_organizer="True"
-            user.save()
-            return redirect('eventapp:login')
+        user = CustomUser.objects.create_user(email=email, password=password)
+        token = get_random_string(length=32)
+        user.verification_token = token
+        user.is_verified = False
+        user.is_organizer=True
+        user.save()
+        send_mail(
+            'Email Verification',
+            f'Click the following link to verify your email: {request.build_absolute_uri("/verify/")}?token={token}',
+            'mailtoshowvalidationok@gmail.com',
+            [email],
+            fail_silently=False,
+        )
+
+        return redirect('eventapp:verify')
+
     return render(request, 'reg_organizer.html')
 
+def verify(request):
+    token = request.GET.get('token')
+    user = CustomUser.objects.filter(verification_token=token).first()
+    if user:
+        user.is_verified = True
+        user.verification_token = None
+        user.save()
+        return redirect('/')  # Redirect to login page after successful verification
+    else:
+        return render(request, 'invalid_token.html')  # Handle invalid token
+    
 def reg_attendee(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        if not is_valid_email(email):
-            messages.error(request, 'Invalid email')
-            return render(request, 'reg_attendee.html') 
-        if not is_valid_password(password):
-            messages.error(request, 'Password must be at least 8 characters long and contain at least one number, one symbol, and one capital letter')
-            return render(request, 'reg_attendee.html')
-        
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Email already exists.")
-        elif email and password:
-            user = CustomUser(email=email)
-            user.set_password(password)
-            user.is_attendee="True"
-            user.save()
-            return redirect('eventapp:login')
+        user = CustomUser.objects.create_user(email=email, password=password)
+        token = get_random_string(length=32)
+        user.verification_token = token
+        user.is_verified = False
+        user.is_attendee=True
+        user.save()
+        send_mail(
+            'Email Verification',
+            f'Click the following link to verify your email: {request.build_absolute_uri("/verify/")}?token={token}',
+            'mailtoshowvalidationok@gmail.com',
+            [email],
+            fail_silently=False,
+        )
+
+        return redirect('eventapp:verify')
     return render(request, 'reg_attendee.html')
 
 def reg_provider(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        if not is_valid_email(email):
-            messages.error(request, 'Invalid email')
-            return render(request, 'reg_provider.html') 
-        if not is_valid_password(password):
-            messages.error(request, 'Password must be at least 8 characters long and contain at least one number, one symbol, and one capital letter')
-            return render(request, 'reg_provider.html')
-        
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Email already exists.")
-        elif email and password:
-            user = CustomUser(email=email)
-            user.set_password(password)
-            user.is_provider="True"
-            user.save()
-            return redirect('eventapp:login')
+        user = CustomUser.objects.create_user(email=email, password=password)
+        token = get_random_string(length=32)
+        user.verification_token = token
+        user.is_verified = False
+        user.is_provider=True
+        user.save()
+        send_mail(
+            'Email Verification',
+            f'Click the following link to verify your email: {request.build_absolute_uri("/verify/")}?token={token}',
+            'mailtoshowvalidationok@gmail.com',
+            [email],
+            fail_silently=False,
+        )
+
+        return redirect('eventapp:verify')
     return render(request, 'reg_provider.html')
 
 def index(request):
@@ -144,7 +171,7 @@ def login(request):
                     
         if email and password:
             user = authenticate(request, email=email, password=password)
-            if user is not None:
+            if user is not None and user.is_verified:
                 auth_login(request, user)
                 request.session['user_id'] = user.id
                 # request.session['user_type'] = 'organizer' 
@@ -157,7 +184,7 @@ def login(request):
             else:
                 try:
                     user = CustomUser.objects.get(email=email)
-                    messages.error(request, "Incorrect password")
+                    messages.error(request, "Email not verified or Incorrect password")
                 except CustomUser.DoesNotExist:
                     messages.error(request, "Email not registered")
         else:
@@ -168,11 +195,6 @@ def login(request):
 
 @login_required
 def webinar(request):
-    try:
-        user_profile = EventOrganizer.objects.get(org_user=request.user)
-    except EventOrganizer.DoesNotExist:
-        # If the user does not have a profile, redirect them to the profile creation page
-        return redirect('eventapp:org_profile') 
     orgs=request.user
     update_webinar=Webinar.objects.filter(org_user=orgs)
     context = {'update_webinar': update_webinar}
@@ -324,6 +346,8 @@ def update_webinar(request, update_id):
 
     if request.method == 'POST':
         form = WebinarForm(request.POST, instance=webinar)
+        if 'event_type' in request.POST and request.POST['event_type'] == 'Offline':
+            form.fields['livestream'].initial = 'None'
         if form.is_valid():
             # Save the updated webinar
             new_date=request.POST.get('date')
@@ -512,7 +536,7 @@ def update_conference(request, update_id):
 def listwebinars(request):
     # Filter webinars whose date is greater than today
     today = timezone.now().date()
-    allwebinars = Webinar.objects.filter(date__gt=today)
+    allwebinars = Webinar.objects.filter(deadline__gt=today)
     context = {'allwebinars': allwebinars}
     return render(request, 'listwebinars.html', context)
 
@@ -521,3 +545,30 @@ def listwebinars(request):
 def events(request):
     webinars=Webinar.objects.all().order_by('-date')[:8]
     return render(request, 'events.html', {'webinars': webinars})
+
+def register_for_webinar(request, webinar_id):
+    user = request.user
+    webinar = Webinar.objects.get(pk=webinar_id)
+
+    # Check if the user is already registered for this webinar
+    if not WebinarRegistration.objects.filter(user=user, webinar=webinar).exists():
+        WebinarRegistration.objects.create(user=user, webinar=webinar)
+        messages.success(request, "Webinar registered successfully")
+        recipient_email = request.user.email
+        subject = 'Webinar Registration Confirmation'
+        message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} '
+        from_email = 'mailtoshowvalidationok@gmail.com'  # Replace with your email address
+        recipient_list = [recipient_email]  # Use the organizer's email or another recipient
+
+        send_mail(subject, message, from_email, recipient_list)
+        return redirect('eventapp:events')  # Redirect to the list of webinars or a confirmation page
+    else:
+        messages.success(request, "You are already registered for this webinar.")
+        return redirect('eventapp:events')
+    
+@login_required
+def registered_webinar(request):
+    user = request.user
+    webinar_registrations = WebinarRegistration.objects.filter(user=user)
+    context = {'webinar': webinar_registrations}
+    return render(request, 'registered_webinar.html', context)

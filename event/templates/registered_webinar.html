@@ -37,30 +37,25 @@
   </nav>
   <div style="margin-left:100px;margin-right:225px" >
     <div style="margin-top:50px;background-color:white;margin-left:25px;">
-    <h3 >Webinars</h3>
-    <a href="{% url 'eventapp:registered_webinar' %}" ><button id="sendButton" style="margin-left:300px;width:50%;">Registered Webinars</button></a><br><br>
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    <h3 >My Webinars</h3>
+    
     <div class="container" >
       
       <div class="row">
 
-        {% for i in webinars|slice:"-8:" %}
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;padding: 5px;">
-                <h4>{{ i.title }}</h4>
-                <p>Date: {{ i.date }}</p>
-                <p>Time: {{ i.time }}</p>
-                <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'view_webinar' i.id %}">View</a></button>
-                <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'register_for_webinar' i.id %}">Register</a></button>
-            </div>
-        </div>
-        {% endfor %}
+        {% for registration in webinar %}
+<div class="col-md-3">
+    <div class="card" style="width: 18rem; padding: 5px;">
+        <h4>{{ registration.webinar.title }}</h4>
+        <p>Date: {{ registration.webinar.date }}</p>
+        <!-- Add other webinar details as needed -->
+        <button id="sendButton">
+            <a style="text-decoration:none; color:white;" href="{% url 'view_webinar' registration.webinar.id %}">View</a>
+        </button>
+    </div>
+</div>
+{% endfor %}
+
         
       </div>
     </div>

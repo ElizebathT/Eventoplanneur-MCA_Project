@@ -31,6 +31,8 @@ class CustomUser(AbstractUser):
     is_organizer = models.BooleanField(default=False)
     is_provider = models.BooleanField(default=False)
     is_attendee = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
+    verification_token = models.CharField(max_length=100, blank=True, null=True)
     REQUIRED_FIELDS = []
     objects = CustomUserManager()  
     def __str__(self):
@@ -123,7 +125,7 @@ class Conference(models.Model):
     phone_number = models.CharField(max_length=20)
     fee = models.DecimalField(max_digits=10, decimal_places=2)
     poster = models.URLField()
-    livestream_link = models.URLField(blank=True, null=True)
+    livestream = models.CharField(max_length=100,blank=True, null=True)
     org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
     event_type = models.CharField(
         max_length=20, choices=[('Offline', 'Offline'), ('Online', 'Online')]
@@ -134,3 +136,6 @@ class Conference(models.Model):
         return self.title
 
 
+class WebinarRegistration(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE)
