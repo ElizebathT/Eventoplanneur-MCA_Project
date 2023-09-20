@@ -6,9 +6,14 @@ document.addEventListener("DOMContentLoaded", function() {
     var event_dateError = document.getElementById("event_dateError");
     var deadline = document.getElementById("deadline");
     var deadlineError = document.getElementById("deadlineError");
+    var max = document.getElementById("max_participants");
+    var maxError = document.getElementById("maxError");
     var webinar = document.getElementById("webinar");
     var location = document.getElementById("location");
     var loc = document.getElementById("loc");
+    var start_time = document.getElementById("start_time");
+    var end_time = document.getElementById("end_time");
+    var timeError = document.getElementById("timeError");
     var url_div = document.getElementById("url_div");
     var url=document.getElementById("livestream");
     var locationError = document.getElementById("locationError");
@@ -29,7 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
     date.addEventListener("input", function() {
         event_dateError.innerText = validateEvent_date(date.value);
     });
-    
+    max.addEventListener("input", function() {
+        maxError.innerText = validateMax(max.value);
+    });
+    end_time.addEventListener("input", function() {
+        timeError.innerText = validateTime(start_time.value,end_time.value);
+    });
     phone_number.addEventListener("input", function() {
         phone_numberError.innerText = validateContact(phone_number.value);
     });
@@ -75,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function validateForm() {
         
-        if (titleError.innerText || event_dateError.innerText || locationError.innerText || deadlineError.innerText || organizer_nameError.innerText || phone_numberError.innerText || feeError.innerText || urlError.innerText || speakerError.innerText ) {
+        if (titleError.innerText || timeError.innerText || event_dateError.innerText || locationError.innerText || deadlineError.innerText || organizer_nameError.innerText || phone_numberError.innerText || feeError.innerText || urlError.innerText || speakerError.innerText ) {
             return false; // Return false to prevent form submission
         }
 
@@ -83,9 +93,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function validateTitle(title) {
-        var pattern = /^[a-zA-Z,. ']*$/;
+        var pattern = /^[a-zA-Z,. 0-9']*$/;
         if (!(pattern.test(title))) {
-            return "Please enter only alphabets, space and commas";
+            return "Please enter only alphabets, numbers, space and commas";
             }
         title.innerText=title.toUpperCase;
         return "";
@@ -108,6 +118,15 @@ document.addEventListener("DOMContentLoaded", function() {
         var pattern = /^[0-9]+$/;
         if (fee<0) {
             return "Please enter only positive numbers";
+        }
+        return "";
+    }
+    function validateMax(max) {
+        if (max<=0) {
+            return "Please enter number of participants";
+        }
+        else if(max>5000){
+            return "Please enter number less than 5000";
         }
         return "";
     }
@@ -142,6 +161,12 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             return ""; // The input date is greater than the current date
         }
+    } 
+    function validateTime(start_time,end_time) {
+        if (end_time <= start_time) {
+            return "End time must be greater than start time.";
+          }
+        return ""
     } 
     function validateDeadline(event_date,deadline) {
         var todayDate = new Date();

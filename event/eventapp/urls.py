@@ -31,5 +31,6 @@ urlpatterns = [
     path('events/',views.events,name='events'),
     path('verify/',views.verify,name='verify'),
     path('registered_webinar/',views.registered_webinar,name='registered_webinar'),
+    path('gallery/',views.gallery,name='gallery'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -77,18 +77,21 @@ class Webinar(models.Model):
     event_type = models.CharField(max_length=10, choices=EVENT_TYPE_CHOICES, default='offline')
     description = models.TextField()
     date = models.DateField(default=None, blank=True, null=True)
-    time = models.TimeField()
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
     location = models.CharField(max_length=200, blank=True, null=True)
     poster = models.URLField(blank=True, null=True) 
-    organizer_name = models.CharField(max_length=100)  # Added organizer name field
+    organizer_name = models.CharField(max_length=100)  
     deadline = models.DateField(default=None, blank=True, null=True)
-    fee = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Added fee field
+    fee = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  
     speakers = models.ManyToManyField(Speaker, blank=True)
     org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
     livestream = models.URLField(blank=True, null=True)
     phone_number = models.CharField(max_length=15)
+    max_participants = models.PositiveIntegerField(null=True,default=50) 
     def __str__(self):
         return self.title
+
     
 class AICTE(models.Model):
     aicte_id = models.CharField(max_length=15, unique=True)

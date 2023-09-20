@@ -104,11 +104,22 @@
         </td>
         <td>
           <div class="mb-3">
-            <label for="time" class="form-label">Time<span>*</span>:</label>
-            <input type="time" id="time" name="time" class="form-control">
-            <span id="timeError" class="error-text"></span>
+              <label for="fee" class="form-label">Fee<span>*</span>:</label>
+              <input type="number" id="fee" name="fee" class="form-control" required>
+              <span id="feeError" class="error-text"></span>
+          </div></td></tr><tr>
+        <td>
+          <div class="mb-3">
+            <label for="start_time" class="form-label">Start Time<span>*</span>:</label>
+            <input type="time" id="start_time" name="start_time" class="form-control">
+            
           </div></td>
-        
+          <td>
+            <div class="mb-3">
+              <label for="end_time" class="form-label">End Time<span>*</span>:</label>
+              <input type="time" id="end_time" name="end_time" class="form-control">
+              <span id="timeError" class="error-text"></span>
+            </div></td>
         
         </tr><tr><td>
           <div class="mb-3">
@@ -152,16 +163,17 @@
               <input type="text" id="phone_number" name="phone_number" class="form-control" required>
               <span id="phone_numberError" class="error-text"></span>
           </div></td></tr><tr><td>
-          <div class="mb-3">
-              <label for="fee" class="form-label">Fee<span>*</span>:</label>
-              <input type="number" id="fee" name="fee" class="form-control" required>
-              <span id="feeError" class="error-text"></span>
-          </div></td><td>
             <div class="mb-3">
                 <label for="poster" class="form-label">Poster( Image URL )<span>*</span>:</label>
                 <input type="text" id="poster" name="poster" class="form-control" required>
               <span id="posterError" class="error-text"></span>
-            </div></td></tr>
+            </div></td>
+            <td>
+              <div class="mb-3">
+                  <label for="max_participants" class="form-label">Maximum Participants<span>*</span>:</label>
+                  <input type="number" id="max_participants" name="max_participants" class="form-control" required>
+                  <span id="maxError" class="error-text"></span>
+              </div></td></tr>
             <tr><td><div class="form-group">
                   <label for="speakers">Speakers:</label>
                   <div id="speakers-container">

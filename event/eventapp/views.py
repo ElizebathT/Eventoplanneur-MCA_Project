@@ -160,6 +160,9 @@ def orghome(request):
 def attendeehome(request):
     return render(request, 'attendeehome.html')
 
+def gallery(request):
+    return render(request, 'gallery.html')
+
 def logout(request):
     auth_logout(request)
     return redirect('/')
@@ -211,10 +214,10 @@ def delete_webinar(request, del_id):
     webinar = Webinar.objects.get(id=del_id)
     organizer_email = webinar.org_user.email  
     subject = 'Webinar Deleted'
-    message = f'The webinar "{webinar.title}" on {webinar.date} at {webinar.time} has been deleted.'
+    message = f'The webinar "{webinar.title}" on {webinar.date} at {webinar.start_time} has been deleted.'
     from_email = 'mailtoshowvalidationok@gmail.com'  
     recipient_list = [organizer_email]
-
+    # participants also 
     send_mail(subject, message, from_email, recipient_list)
     webinar.delete()
 
@@ -249,7 +252,7 @@ def register_webinar(request):
                     webinar.speakers.add(speaker)  # Add the speaker to the webinar
                 recipient_email = request.user.email
                 subject = 'Webinar Registration Confirmation'
-                message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} at {webinar.time}.'
+                message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} from {webinar.start_time} to {webinar.end_time}.'
                 from_email = 'mailtoshowvalidationok@gmail.com'  # Replace with your email address
                 recipient_list = [recipient_email]  # Use the organizer's email or another recipient
 
@@ -351,7 +354,7 @@ def update_webinar(request, update_id):
         if form.is_valid():
             # Save the updated webinar
             new_date=request.POST.get('date')
-            new_time=request.POST.get('time')
+            new_time=request.POST.get('start_time')
             if webinar.date != new_date or webinar.time != new_time:
                 # Send an email notification
                 subject = 'Webinar Date and Time Update'
@@ -361,8 +364,9 @@ def update_webinar(request, update_id):
 
                 # Send the email
                 send_mail(subject, message, from_email, recipient_email)
-
+            # max=request.POST.get('max_participants')
             web = form.save(commit=False)
+            # web.max_participants=max
             web.org_user = request.user
             web.save()
 
@@ -396,10 +400,10 @@ def check_aicte_id(request):
 
 @login_required
 def conference(request):
-    try:
-        user_profile = EventOrganizer.objects.get(org_user=request.user)
-    except EventOrganizer.DoesNotExist:
-        return redirect('eventapp:org_profile') 
+    # try:
+    #     user_profile = EventOrganizer.objects.get(org_user=request.user)
+    # except EventOrganizer.DoesNotExist:
+    #     return redirect('eventapp:org_profile') 
     orgs=request.user
     con=Conference.objects.filter(org_user=orgs)
     context = {'con': con}
@@ -549,23 +553,25 @@ def events(request):
 def register_for_webinar(request, webinar_id):
     user = request.user
     webinar = Webinar.objects.get(pk=webinar_id)
+    registration_count = WebinarRegistration.objects.filter(webinar=webinar).count()
+    if registration_count < webinar.max_participants:
+        if not WebinarRegistration.objects.filter(user=user, webinar=webinar).exists():
+            WebinarRegistration.objects.create(user=user, webinar=webinar)
+            messages.success(request, "Webinar registered successfully")
+            recipient_email = request.user.email
+            subject = 'Webinar Registration Confirmation'
+            message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} '
+            from_email = 'mailtoshowvalidationok@gmail.com'  
+            recipient_list = [recipient_email]  
 
-    # Check if the user is already registered for this webinar
-    if not WebinarRegistration.objects.filter(user=user, webinar=webinar).exists():
-        WebinarRegistration.objects.create(user=user, webinar=webinar)
-        messages.success(request, "Webinar registered successfully")
-        recipient_email = request.user.email
-        subject = 'Webinar Registration Confirmation'
-        message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} '
-        from_email = 'mailtoshowvalidationok@gmail.com'  # Replace with your email address
-        recipient_list = [recipient_email]  # Use the organizer's email or another recipient
-
-        send_mail(subject, message, from_email, recipient_list)
-        return redirect('eventapp:events')  # Redirect to the list of webinars or a confirmation page
+            send_mail(subject, message, from_email, recipient_list)
+            return redirect('eventapp:events') 
+        else:
+            messages.success(request, "You are already registered for this webinar.")
+            return redirect('eventapp:events')
     else:
-        messages.success(request, "You are already registered for this webinar.")
+        messages.error(request, "Webinar reached maximum number of participants")
         return redirect('eventapp:events')
-    
 @login_required
 def registered_webinar(request):
     user = request.user

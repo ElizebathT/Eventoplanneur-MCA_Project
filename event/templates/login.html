@@ -1,3 +1,4 @@
+{% load socialaccount %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -29,6 +30,7 @@
   <p class="forgot-password"><a href="{% url 'eventapp:reset_password' %}">Forgot Password?</a></p>
       <button type="submit" class="btn btn-primary btn-block register-btn">Login</button>
       <p class="text-center mt-3"> <a href="{% url 'eventapp:registration' %}">Don't have an account? <b>Register</b></a></p>
+      <button type="submit" class="btn btn-primary btn-block register-btn"<a href="{% provider_login_url 'google'%}?next=/">Login with Google</a><button>
       {% if messages %}
 <div class="alert alert-danger">
   <ul>

@@ -3,6 +3,10 @@ from django.urls import path, include
 from eventapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('accounts/', include('allauth.urls')),
+
+
     path('', include('eventapp.urls')),
     path("accounts/", include("django.contrib.auth.urls")),
     path('update_webinar/<int:update_id>',views.update_webinar,name='update_webinar'),

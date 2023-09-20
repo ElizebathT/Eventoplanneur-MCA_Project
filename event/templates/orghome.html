@@ -23,7 +23,7 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
           <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
           <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
@@ -72,12 +72,12 @@
     <div class="container">
       <h2 class="text-center mb-4">Featured Events</h2>
       <div class="row">
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 mb-4" ><a href="{% url 'view_webinar' 66 %}">
           <div class="feature">
             <img src="{% static 'images/conference1.jpg' %}" alt="Featured Event 1" class="feature-image">
             <h3 class="feature-title">Cyber Security Asia 2023</h3>
             <p class="feature-description">Join industry leaders for a groundbreaking summit on the future of technology.</p>
-          </div>
+          </a></div>
         </div>
         <div class="col-md-4 mb-4">
           <div class="feature">

@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webinars</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+</head>
+<style>
+    /* Add some basic styles for your gallery */
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        padding: 20px;
+    }
+
+    .gallery img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Style for image captions (optional) */
+    .caption {
+        text-align: center;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+</style>
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="containers">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          <li class="nav-item">
+            {% if user.is_authenticated %}
+            <a class="nav-link" >User: {{ user.email }}</a>
+            <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <h1>My Gallery</h1>
+  <div class="gallery">
+      <!-- Add your images here -->
+      <div>
+          <img src="image1.jpg" alt="Image 1">
+          <p class="caption">Image 1 Caption</p>
+      </div>
+      <div>
+          <img src="image2.jpg" alt="Image 2">
+          <p class="caption">Image 2 Caption</p>
+      </div>
+      <div>
+          <img src="image3.jpg" alt="Image 3">
+          <p class="caption">Image 3 Caption</p>
+      </div>
+      <!-- Add more images as needed -->
+  </div>
+</body>
+</html>

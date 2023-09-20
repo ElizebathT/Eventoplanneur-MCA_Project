@@ -46,7 +46,7 @@
           <div class="card" style="width:250px;padding: 5px;">
         <strong>{{ i.title }}</strong><br>
         Date: {{ i.date|date:"F j, Y" }}<br>
-        Time: {{ i.time }}<br><br>
+        Time: {{ i.start_time }}<br><br>
          <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'view_webinar' i.id %}">View</a></button><br>
          <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'update_webinar' i.id %}">Update</a></button><br>
          <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'delete_webinar' i.id %}">Delete</a></button><br>
