@@ -32,5 +32,8 @@ urlpatterns = [
     path('verify/',views.verify,name='verify'),
     path('registered_webinar/',views.registered_webinar,name='registered_webinar'),
     path('gallery/',views.gallery,name='gallery'),
+    path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+    path('paymentsuccess/', views.paymentsuccess, name='paymentsuccess'),
+    path('paymentfail/', views.paymentfail, name='paymentfail'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

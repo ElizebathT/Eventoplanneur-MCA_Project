@@ -18,6 +18,10 @@
       max-width:auto;
       color:white;
   }
+  body{
+    background: #111 !important;;
+    
+  }
   h4{
     color:white;
   }
@@ -40,20 +44,34 @@
   .mb-3 {
       margin-bottom: 15px;
   }
-
+  :root {
+    --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
+  }
   /* Style for error text */
   .error-text {
       color: orange;
   }
-
-  /* Style for buttons */
-  #sendButton {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
+  .btn {
+    border: 5px solid;
+    border-image-slice: 1;
+    background: var(--gradient) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    border-image-source:  var(--gradient) !important; 
+    text-decoration: none;
+    transition: all .4s ease;
   }
+  
+  .btn:hover, .btn:focus {
+        background: var(--gradient) !important;
+    -webkit-background-clip: none !important;
+    -webkit-text-fill-color: #fff !important;
+    border: 5px solid #fff !important; 
+    box-shadow: #222 1px 0 10px;
+    text-decoration: underline;
+  }
+  /* Style for buttons */
+ 
   span{
     color:orange;
   }
@@ -198,8 +216,9 @@
                 </div></td>
             </tr><tr><td>
               <span>* Required fields</span><br>
-          <button id="sendButton" type="submit">Register</button></td><td>
-          <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr>
+          <button  type="submit"><a class="btn mr-2">Register</a></button></td><td>
+            <button><a href="{% url 'eventapp:webinar' %}" class="btn mr-2"> Back </a></button>
+          {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
       </form>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       

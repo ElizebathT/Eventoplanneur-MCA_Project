@@ -1,5 +1,5 @@
 body {
-      background-image: url("/static/images/bg.gif");
+      background:linear-gradient(to left top, #DD2476 10%, #FF512F 90%) ;
       background-size: cover;
       display: flex;
       justify-content: center;

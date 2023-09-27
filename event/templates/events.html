@@ -9,11 +9,48 @@
   <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
 </head>
-
+<style>
+  
+  :root {
+    --gradient: linear-gradient(to left top, #F1D302 10%, #235789 90%) !important;
+  }
+  body{
+    background: #111 !important;;
+    
+  }
+  
+  .card {
+    background: #222;
+  border: 1px solid #F1D302;
+    color: rgba(250, 250, 250, 0.8);
+    margin-bottom: 2rem;
+    height:250px;
+  }
+  
+  .btn {
+    border: 5px solid;
+    border-image-slice: 1;
+    background: var(--gradient) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    border-image-source:  var(--gradient) !important; 
+    text-decoration: none;
+    transition: all .4s ease;
+  }
+  
+  .btn:hover, .btn:focus {
+        background: var(--gradient) !important;
+    -webkit-background-clip: none !important;
+    -webkit-text-fill-color: #fff !important;
+    border: 5px solid #fff !important; 
+    box-shadow: #222 1px 0 10px;
+    text-decoration: underline;
+  }
+</style>
 <body>
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="containers">
-      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+      <a class="navbar-brand" href="{% url 'eventapp:attendeehome' %}">
         <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
@@ -36,29 +73,29 @@
     </div>
   </nav>
   <div style="margin-left:100px;margin-right:225px" >
-    <div style="margin-top:50px;background-color:white;margin-left:25px;">
-    <h3 >Webinars</h3>
-    <a href="{% url 'eventapp:registered_webinar' %}" ><button id="sendButton" style="margin-left:300px;width:50%;">Registered Webinars</button></a><br><br>
+    <br>
+    <h3 style="margin-left:50px;color:white" >Webinars</h3>
+    <a href="{% url 'eventapp:registered_webinar' %}" ><button id="sendButton" style="margin-left:300px;width:50%;background:var(--gradient) !important;">Registered Webinars</button></a><br><br>
     {% if messages %}
-    <ul class="messages">
         {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
         {% endfor %}
-    </ul>
 {% endif %}
-    <div class="container" >
+    <div class="container mx-auto mt-4" >
       
       <div class="row">
 
-        {% for i in webinars|slice:"-8:" %}
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;padding: 5px;">
-                <h4>{{ i.title }}</h4>
-                <p>Date: {{ i.date }}</p>
-                <p>Time: {{ i.time }}</p>
-                <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'view_webinar' i.id %}">View</a></button>
-                <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'register_for_webinar' i.id %}">Register</a></button>
+        {% for i in webinars|slice:"-6:" %}
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">{{ i.title }}</h5>
+                <p class="card-text">Date: {{ i.date }}</p>
+                <p class="card-text">Time: {{ i.start_time }}</p>
+                <a class="btn mr-2" href="{% url 'view_webinar' i.id %}">View</a>
+                <a class="btn mr-2" href="{% url 'register_for_webinar' i.id %}">Register</a>
             </div>
+          </div>
         </div>
         {% endfor %}
         

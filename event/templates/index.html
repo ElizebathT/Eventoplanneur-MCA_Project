@@ -28,12 +28,11 @@
           <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
           {% if user.is_authenticated %}
           {% if user.is_organizer %}
-            <li class="nav-item"><a class="nav-link" href="#event-home">Event Home Page</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:orghome' %}">Home Page</a></li>
           {% endif %}
-          {% if user.is_provider %}
-            <li class="nav-item"><a class="nav-link" href="#organizer-home">Organizer Home Page</a></li>
+          {% if user.is_attendee %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:attendeehome' %}">Home Page</a></li>
           {% endif %}
-          <li class="nav-item">Welcome, {{ user.username }}</li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:logout' %}">Logout</a></li>
         {% else %}
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:login' %}">Login</a></li>

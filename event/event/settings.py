@@ -127,9 +127,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'mailtoshowvalidationok@gmail.com'
-EMAIL_HOST_PASSWORD = 'qtwpnirvgsxzhtdo'
-DEFAULT_FROM_EMAIL = 'mailtoshowvalidationok@gmail.com'
+EMAIL_HOST_USER = 'eventoplanneur@gmail.com'
+EMAIL_HOST_PASSWORD = 'lygchrjdbhqhjntk'
+DEFAULT_FROM_EMAIL = 'eventoplanneur@gmail.com'
 
 AUTH_USER_MODEL = 'eventapp.CustomUser'
 
@@ -169,3 +169,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'FIELDS': ['id', 'email', 'name'], 
     }
 }
+
+RAZOR_KEY_ID = 'rzp_test_H7TU1IPPpJ9393'
+RAZOR_KEY_SECRET = 'szjcsGnZLXAZfnPBx5lMNHlA'

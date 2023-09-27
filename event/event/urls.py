@@ -16,4 +16,6 @@ urlpatterns = [
     path('update_conference/<int:update_id>',views.update_conference,name='update_conference'),
     path('view_conference/<int:view_id>',views.view_conference,name='view_conference'),
     path('delete_conference/<int:del_id>',views.delete_conference,name='delete_conference'),
+    path('payment/<int:pay_id>', views.payment, name='payment'),
+    
 ]

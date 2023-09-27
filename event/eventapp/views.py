@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 #from .models import User
 from .models import CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration
 import re
+from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User,auth
 from .forms import WebinarForm, Organizer,ConferenceForm
@@ -17,6 +18,7 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.utils.crypto import get_random_string
 
+ 
 def is_valid_email(email):
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     if not re.match(pattern, email):
@@ -63,7 +65,7 @@ def registration(request):
         send_mail(
             'Email Verification',
             f'Click the following link to verify your email: {request.build_absolute_uri("/verify/")}?token={token}',
-            'mailtoshowvalidationok@gmail.com',
+            'eventoplanneur@gmail.com',
             [email],
             fail_silently=False,
         )
@@ -85,7 +87,7 @@ def reg_organizer(request):
         send_mail(
             'Email Verification',
             f'Click the following link to verify your email: {request.build_absolute_uri("/verify/")}?token={token}',
-            'mailtoshowvalidationok@gmail.com',
+            'eventoplanneur@gmail.com',
             [email],
             fail_silently=False,
         )
@@ -120,7 +122,7 @@ def reg_attendee(request):
         send_mail(
             'Email Verification',
             f'Click the following link to verify your email: {request.build_absolute_uri("/verify/")}?token={token}',
-            'mailtoshowvalidationok@gmail.com',
+            'eventoplanneur@gmail.com',
             [email],
             fail_silently=False,
         )
@@ -143,7 +145,7 @@ def reg_provider(request):
         send_mail(
             'Email Verification',
             f'Click the following link to verify your email: {request.build_absolute_uri("/verify/")}?token={token}',
-            'mailtoshowvalidationok@gmail.com',
+            'eventoplanneur@gmail.com',
             [email],
             fail_silently=False,
         )
@@ -215,7 +217,7 @@ def delete_webinar(request, del_id):
     organizer_email = webinar.org_user.email  
     subject = 'Webinar Deleted'
     message = f'The webinar "{webinar.title}" on {webinar.date} at {webinar.start_time} has been deleted.'
-    from_email = 'mailtoshowvalidationok@gmail.com'  
+    from_email = 'eventoplanneur@gmail.com'  
     recipient_list = [organizer_email]
     # participants also 
     send_mail(subject, message, from_email, recipient_list)
@@ -253,7 +255,7 @@ def register_webinar(request):
                 recipient_email = request.user.email
                 subject = 'Webinar Registration Confirmation'
                 message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} from {webinar.start_time} to {webinar.end_time}.'
-                from_email = 'mailtoshowvalidationok@gmail.com'  # Replace with your email address
+                from_email = 'eventoplanneur@gmail.com'  # Replace with your email address
                 recipient_list = [recipient_email]  # Use the organizer's email or another recipient
 
                 send_mail(subject, message, from_email, recipient_list)
@@ -359,7 +361,7 @@ def update_webinar(request, update_id):
                 # Send an email notification
                 subject = 'Webinar Date and Time Update'
                 message = f'The date and time for the webinar "{webinar.title}" have been updated.\n\nNew Date: {new_date}\nNew Time: {new_time}'
-                from_email = 'mailtoshowvalidationok@gmail.com'  # Replace with your email address
+                from_email = 'eventoplanneur@gmail.com'  # Replace with your email address
                 recipient_email = ['elizebaththomasv@gmail.com']  # Replace with the recipient's email address
 
                 # Send the email
@@ -421,7 +423,7 @@ def delete_conference(request, del_id):
     organizer_email = conference.org_user.email  
     subject = 'Conference Deleted'
     message = f'The conference "{ conference.title}" planned from { conference.start_date} to { conference.end_date} has been deleted.'
-    from_email = 'mailtoshowvalidationok@gmail.com'  
+    from_email = 'eventoplanneur@gmail.com'  
     recipient_list = [organizer_email]
 
     send_mail(subject, message, from_email, recipient_list)
@@ -490,7 +492,7 @@ def register_conference(request):
             recipient_email = request.user.email
             subject = 'Conference Registration Confirmation'
             message = f'Thank you for registering the conference: {conference.title} from {conference.start_date} to {conference.end_date}.'
-            from_email = 'mailtoshowvalidationok@gmail.com'  # Replace with your email address
+            from_email = 'eventoplanneur@gmail.com'  # Replace with your email address
             recipient_list = [recipient_email]  # Use the organizer's email or another recipient
 
             send_mail(subject, message, from_email, recipient_list)
@@ -499,7 +501,7 @@ def register_conference(request):
             conference_link = 'http://127.0.0.1:8000/'  # Replace with the actual webinar details page URL
             email_subject = f'Upcoming Conference: {conference.title}'
             email_message = f'Hello,\n\nThere is an upcoming conference that you may be interested in: {conference.title} from {conference.start_date} to {conference.end_date}.\n\nYou can find more details and register for the  conference here: {conference_link}.\nRegistration closes by: {conference.deadline}.\n\nPoster Link: {conference.poster}'
-            from_email = 'mailtoshowvalidationok@gmail.com' 
+            from_email = 'eventoplanneur@gmail.com' 
             send_mail(email_subject, email_message, from_email, interested_users)
 
             messages.success(request, "Conference saved successfully")
@@ -561,11 +563,12 @@ def register_for_webinar(request, webinar_id):
             recipient_email = request.user.email
             subject = 'Webinar Registration Confirmation'
             message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} '
-            from_email = 'mailtoshowvalidationok@gmail.com'  
+            from_email = 'eventoplanneur@gmail.com'  
             recipient_list = [recipient_email]  
 
             send_mail(subject, message, from_email, recipient_list)
-            return redirect('eventapp:events') 
+            pay_id=webinar_id
+            return redirect('payment', pay_id=pay_id) 
         else:
             messages.success(request, "You are already registered for this webinar.")
             return redirect('eventapp:events')
@@ -578,3 +581,89 @@ def registered_webinar(request):
     webinar_registrations = WebinarRegistration.objects.filter(user=user)
     context = {'webinar': webinar_registrations}
     return render(request, 'registered_webinar.html', context)
+
+from django.shortcuts import render
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseBadRequest
+ 
+ 
+# authorize razorpay client with API Keys.
+razorpay_client = razorpay.Client(
+    auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+ 
+def payment(request,pay_id):
+    webinar = Webinar.objects.get(pk=pay_id)
+    currency = 'INR'
+    amount = int(webinar.fee)*100 # Rs. 200
+ 
+    # Create a Razorpay Order
+    razorpay_order = razorpay_client.order.create(dict(amount=amount,
+                                                       currency=currency,
+                                                       payment_capture='0'))
+ 
+    # order id of newly created order.
+    razorpay_order_id = razorpay_order['id']
+    callback_url = 'eventapp:paymenthandler'
+ 
+    # we need to pass these details to frontend.
+    context = {}
+    context['razorpay_order_id'] = razorpay_order_id
+    context['razorpay_merchant_key'] = settings.RAZOR_KEY_ID
+    context['razorpay_amount'] = amount
+    context['currency'] = currency
+    context['callback_url'] = callback_url
+ 
+    return render(request, 'payment.html', context=context)
+
+@csrf_exempt
+def paymenthandler(request):
+ 
+    # only accept POST request.
+    if request.method == "POST":
+        try:
+           
+            # get the required parameters from post request.
+            payment_id = request.POST.get('razorpay_payment_id', '')
+            razorpay_order_id = request.POST.get('razorpay_order_id', '')
+            signature = request.POST.get('razorpay_signature', '')
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature
+            }
+ 
+            # verify the payment signature.
+            result = razorpay_client.utility.verify_payment_signature(
+                params_dict)
+            if result is not None:
+                amount = 20000  # Rs. 200
+                try:
+ 
+                    # capture the payemt
+                    razorpay_client.payment.capture(payment_id, amount)
+ 
+                    # render success page on successful caputre of payment
+                    return render(request, 'paymentsuccess.html')
+                except:
+ 
+                    # if there is an error while capturing payment.
+                    return render(request, 'paymentfail.html')
+            else:
+ 
+                # if signature verification fails.
+                return render(request, 'paymentfail.html')
+        except:
+ 
+            # if we don't find the required parameters in POST data
+            return HttpResponseBadRequest()
+    else:
+       # if other than POST request is made.
+        return HttpResponseBadRequest()
+    
+def paymentsuccess(request):
+    return render(request, 'paymentsuccess.html')
+
+def paymentfail(request):
+    return render(request, 'paymentfail.html')
