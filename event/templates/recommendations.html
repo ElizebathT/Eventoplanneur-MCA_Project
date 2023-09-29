@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .event-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .event-title {
+            font-weight: bold;
+        }
+
+        .no-events {
+            text-align: center;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Event Recommendations</h1>
+    </header>
+    <div class="container">
+        <h2>Recommended Events for {{ user_to_recommend }}</h2>
+        <div id="recommended-events">
+            {% if relevant_events %}
+                {% for event in relevant_events %}
+                    <div class="event-card">
+                        <div class="event-title">Title: {{ event.title }}</div>
+                        <div class="event-description">Description: {{ event.description }}</div>
+                        <!-- Add more event details as needed -->
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-events" id="no-events-message">
+                    No relevant events found.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+</body>
+</html>

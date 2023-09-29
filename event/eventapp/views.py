@@ -1,12 +1,12 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
 #from .models import User
-from .models import CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration
+from .models import CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee
 import re
 from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User,auth
-from .forms import WebinarForm, Organizer,ConferenceForm
+from .forms import WebinarForm, Organizer,ConferenceForm,AttendeeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.forms import modelformset_factory
@@ -667,3 +667,65 @@ def paymentsuccess(request):
 
 def paymentfail(request):
     return render(request, 'paymentfail.html')
+
+@login_required
+def attendee_profile(request):
+    org_user = request.user
+
+    try:
+        organizer_instance = Attendee.objects.get(org_user=org_user)
+    except Attendee.DoesNotExist:
+        organizer_instance = None
+
+    if request.method == "POST":
+        if organizer_instance:
+            form = AttendeeForm(request.POST, instance=organizer_instance)
+        else:
+            form = AttendeeForm(request.POST)
+
+        if form.is_valid():
+            attendee = form.save(commit=False)
+            interests = request.POST.get('interests', '')  # Get the interests as a comma-separated string
+            attendee.interests = interests
+            attendee.org_user = org_user
+            attendee.save()
+            return redirect('eventapp:attendeehome')
+
+    else:
+        initial_data = {}  # Create a dictionary to store initial data for the form
+        if organizer_instance and organizer_instance.interests:
+            # Split the comma-separated interests string into a list
+            initial_data['interests'] = organizer_instance.interests.split(', ')
+        form = AttendeeForm(instance=organizer_instance, initial=initial_data)
+
+    return render(request, 'attendee_profile.html', {'form': form})
+
+
+
+def recommendations(request, user_to_recommend):
+    user_domain_mapping = {}
+    attendees = Attendee.objects.all()
+    for attendee in attendees:
+        user_domain_mapping[attendee.org_user.email] = attendee.interests.split(", ") if attendee.interests else []
+
+    # Fetch event-domain mapping from the Webinar model
+    event_domain_mapping = {}
+    webinars = Webinar.objects.all()
+    for webinar in webinars:
+        event_domain_mapping[webinar.id] = [domain.strip() for domain in webinar.description.split(", ")]
+
+    # Get the user's domain preferences
+    user_domains = user_domain_mapping.get(user_to_recommend, [])
+
+    # Determine relevant events based on user's domain preferences
+    relevant_events = []
+    for webinar in webinars:
+        if any(domain in user_domains for domain in event_domain_mapping.get(webinar.id, [])):
+            relevant_events.append(webinar)
+
+    # Render a template with the recommended events
+    context = {
+        'user_to_recommend': user_to_recommend,
+        'relevant_events': relevant_events,
+    }
+    return render(request, 'recommendations.html', context)

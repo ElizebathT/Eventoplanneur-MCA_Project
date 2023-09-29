@@ -142,3 +142,11 @@ class Conference(models.Model):
 class WebinarRegistration(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE)
+
+class Attendee(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=20)
+    location = models.CharField(max_length=255)
+    interests = models.TextField(blank=True, null=True)
+    org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)

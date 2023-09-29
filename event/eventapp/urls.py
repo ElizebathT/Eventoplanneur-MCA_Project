@@ -24,6 +24,7 @@ urlpatterns = [
     path('reg_provider/',views.reg_provider,name='reg_provider'),
     path('reg_attendee/',views.reg_attendee,name='reg_attendee'),
     path('org_profile/',views.org_profile,name='org_profile'),
+    path('attendee_profile/',views.attendee_profile,name='attendee_profile'),
     path('check_aicte_id/', views.check_aicte_id, name='check_aicte_id'),
     path('conference/',views.conference,name='conference'),
     path('register_conference/',views.register_conference,name='register_conference'),
@@ -35,5 +36,7 @@ urlpatterns = [
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
     path('paymentsuccess/', views.paymentsuccess, name='paymentsuccess'),
     path('paymentfail/', views.paymentfail, name='paymentfail'),
+    path('recommendations/<str:user_to_recommend>/', recommendations, name='recommendations'),
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

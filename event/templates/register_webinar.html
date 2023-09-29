@@ -109,6 +109,13 @@
   <div class="container">
     <div class="events">
         <h4>Host a Webinar</h4>
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
         <form method="post" id="webinar" action="{% url 'eventapp:register_webinar' %}">
           {% csrf_token %}
           <table>
@@ -213,6 +220,8 @@
                     <label for="description" class="form-label">Description<span>*</span>:</label>
                     <textarea id="description" name="description" class="form-control" rows="4" cols="50" required></textarea>
                 <span id="descriptionError" class="error-text"></span>
+                <span class="error-text">Please provide a detailed description of your webinar, including the agenda, learning objectives, and target audience.
+                  Use this space to introduce your webinar, describe its key topics, and explain why attendees should join.</span>
                 </div></td>
             </tr><tr><td>
               <span>* Required fields</span><br>
@@ -270,13 +279,7 @@
     </script>
     
 <script src="{% static 'js/webinar.js' %}"></script>
-      {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+      
     </div>
     
 </div>
