@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <!-- Include Bootstrap CSS (You should have Bootstrap files in your project) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="showDashboard()">
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showUsers()">
+                                Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showEvents()">
+                                Events
+                            </a>
+                        </li>
+                        <!-- Add more menu items as needed -->
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                    
+                </div>
+                <div class="container" id="dash">
+                    <!-- Add content related to admin actions here -->
+                    <h2>Admin Dashboard</h2>
+                    <p>Welcome to the admin panel. You can manage users and events here.</p>
+                    <canvas id="eventStatisticsChart" width="400" height="200"></canvas>
+
+                    <!-- User Statistics -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>User Statistics</h3>
+                            <ul>
+                                <li>Total Users: 500</li>
+                                <li>Active Users: 350</li>
+                                <li>Administrators: 10</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Statistics -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Event Statistics</h3>
+                            <ul>
+                                <li>Total Events: 50</li>
+                                <li>Upcoming Events: 10</li>
+                                <li>Recent Events: 5</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- User Activity -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>User Activity</h3>
+                            <!-- Add recent user activity feed here -->
+                            <ul>
+                                <li>John Doe registered on 2023-09-15.</li>
+                                <li>Jane Smith logged in on 2023-09-14.</li>
+                                <!-- Add more activity items as needed -->
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Site Usage Statistics -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Site Usage Statistics</h3>
+                            <ul>
+                                <li>Total Page Views: 10,000</li>
+                                <li>Page Views Today: 500</li>
+                                <li>Most Visited Page: Home Page</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Event Participation -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Event Participation</h3>
+                            <!-- Add lists of users and events here -->
+                            <ul>
+                                <li>Recent Event Registrations:</li>
+                                <ul>
+                                    <li>John Doe registered for Event A.</li>
+                                    <li>Jane Smith registered for Event B.</li>
+                                    <!-- Add more event registrations as needed -->
+                                </ul>
+                                <li>Events with High Registrations:</li>
+                                <ul>
+                                    <li>Event A (100 registrations)</li>
+                                    <li>Event B (80 registrations)</li>
+                                    <!-- Add more events as needed -->
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Add more content as needed -->
+                </div>
+                
+                <!-- Users Content -->
+                <div class="container" id="user" style="display: none;">
+                    <h2>Users</h2>
+
+            <!-- User Management -->
+            <div class="card">
+                <div class="card-body">
+                    <h3>User Management</h3>
+
+                    <!-- User List -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Replace this with actual user data from your backend -->
+                            <tr>
+                                <td>1</td>
+                                <td>John Doe</td>
+                                <td>johndoe@example.com</td>
+                                <td>Administrator</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Jane Smith</td>
+                                <td>janesmith@example.com</td>
+                                <td>User</td>
+                                <td>
+                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <!-- Add more user rows as needed -->
+                        </tbody>
+                    </table>
+
+                    <!-- Add New User Button -->
+                    <button class="btn btn-success">Add New User</button>
+                </div>
+            </div></div>
+            <!-- Events Content -->
+<div class="container" id="events" style="display: none;">
+    <h2>Events</h2>
+    <div class="card">
+        <div class="card-body">
+            <h3>Event Management</h3>
+            <p>Manage and track events here.</p>
+            <ul>
+                <li><strong>Total Events:</strong> 50</li>
+                <li><strong>Upcoming Events:</strong> 10</li>
+                <li><strong>Recent Events:</strong> 5</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Event List -->
+    <div class="card">
+        <div class="card-body">
+            <h3>Event List</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Webinar on ML</td>
+                        <td>2023-10-15</td>
+                        <td>Kottayam</td>
+                    </tr>
+                    <tr>
+                        <td>Conference on Bitcoin</td>
+                        <td>2023-11-05</td>
+                        <td>Trivandrum</td>
+                    </tr>
+                    <!-- Add more events as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Event Details -->
+    <div class="card">
+        <div class="card-body">
+            <h3>Event Details</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Event Name:</strong> Webinar on ML</p>
+                    <p><strong>Date:</strong> 2023-10-15</p>
+                    <p><strong>Location:</strong> Kottayam</p>
+                    <p><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo justo nec leo feugiat, non elementum arcu vulputate.</p>
+                </div>
+                <div class="col-md-6">
+                    <!-- Add event-specific details here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add more event management content as needed -->
+</div>
+
+                
+                
+            </main>
+
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS (You should have Bootstrap files in your project) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Event Statistics Data
+        var eventStatisticsData = {
+            labels: ['Total Events', 'Upcoming Events', 'Recent Events'],
+            datasets: [{
+                label: 'Event Count',
+                data: [50, 10, 5], // Update with your actual data
+                backgroundColor: ['#36A2EB', '#FF5733', '#FFC300'], // Colors for each bar
+            }]
+        };
+    
+        // Create and render the bar graph with animation and interactivity
+        var ctxBar = document.getElementById('eventStatisticsChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: eventStatisticsData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                animation: {
+                    duration: 2000, // Animation duration in milliseconds
+                    easing: 'easeInOutQuart', // Easing function for animation
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hide the legend
+                    },
+                    tooltip: {
+                        enabled: true, // Enable tooltips
+                    },
+                },
+            }
+        });
+
+        // JavaScript functions to toggle between Dashboard and Users content
+        function showDashboard() {
+            document.getElementById('dash').style.display = 'block';
+            document.getElementById('user').style.display = 'none';
+            document.getElementById('events').style.display = 'none';
+        }
+
+        function showUsers() {
+            document.getElementById('dash').style.display = 'none';
+            document.getElementById('user').style.display = 'block';
+            document.getElementById('events').style.display = 'none';
+        }
+
+        function showEvents() {
+            document.getElementById('dash').style.display = 'none';
+            document.getElementById('user').style.display = 'none';
+            document.getElementById('events').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

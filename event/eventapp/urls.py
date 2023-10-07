@@ -36,7 +36,8 @@ urlpatterns = [
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
     path('paymentsuccess/', views.paymentsuccess, name='paymentsuccess'),
     path('paymentfail/', views.paymentfail, name='paymentfail'),
-    path('recommendations/<str:user_to_recommend>/', recommendations, name='recommendations'),
+    path('admindash/', views.admindash, name='admindash'),
+    path('recommendations/<int:attendee_id>/', recommendations, name='recommendations'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

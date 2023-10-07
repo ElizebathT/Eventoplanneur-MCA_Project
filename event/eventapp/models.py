@@ -38,14 +38,10 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
     
-class EmailAddress(models.Model):
-    email = models.EmailField(unique=True)  # Make sure email addresses are unique
-    def __str__(self):
-        return self.email
-    
+   
 class EventOrganizer(models.Model):
     name = models.CharField(max_length=255)
-    emails = models.ManyToManyField(EmailAddress)
+    emails = models.EmailField(unique=True,blank=True, null=True)
     phone_number = models.CharField(max_length=15)
     address = models.TextField()
     website = models.URLField(blank=True, null=True)
@@ -73,6 +69,7 @@ class Webinar(models.Model):
     ('Online', 'Online'),
     ('Offline', 'Offline'),
 ]
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     event_type = models.CharField(max_length=10, choices=EVENT_TYPE_CHOICES, default='offline')
     description = models.TextField()
@@ -89,6 +86,7 @@ class Webinar(models.Model):
     livestream = models.URLField(blank=True, null=True)
     phone_number = models.CharField(max_length=15)
     max_participants = models.PositiveIntegerField(null=True,default=50) 
+    status = models.IntegerField(default=1,null=True,blank=True)
     def __str__(self):
         return self.title
 
@@ -150,3 +148,5 @@ class Attendee(models.Model):
     location = models.CharField(max_length=255)
     interests = models.TextField(blank=True, null=True)
     org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
+    def __str__(self):
+        return self.name
