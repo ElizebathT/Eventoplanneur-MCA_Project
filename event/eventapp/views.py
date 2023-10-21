@@ -553,8 +553,6 @@ def listwebinars(request):
     context = {'allwebinars': allwebinars}
     return render(request, 'listwebinars.html', context)
 
-
-
 def events(request):
     webinars=Webinar.objects.all().order_by('-date')[:8]
     return render(request, 'events.html', {'webinars': webinars})
@@ -707,43 +705,16 @@ def attendee_profile(request):
 
     return render(request, 'attendee_profile.html', {'form': form})
 
-# def recommendations(request):
-#     user_to_recommend=request.user.email
-#     user_domain_mapping = {}
-#     attendees = Attendee.objects.all()
-#     for attendee in attendees:
-#         user_domain_mapping[attendee.org_user.email] = attendee.interests.split(", ") if attendee.interests else []
-
-#     # Fetch event-domain mapping from the Webinar model
-#     event_domain_mapping = {}
-#     webinars = Webinar.objects.all()
-#     for webinar in webinars:
-#         event_domain_mapping[webinar.id] = [domain.strip() for domain in webinar.description.split(", ")]
-
-#     # Get the user's domain preferences
-#     user_domains = user_domain_mapping.get(user_to_recommend, [])
-
-#     # Determine relevant events based on user's domain preferences
-#     relevant_events = []
-#     for webinar in webinars:
-#         if any(domain in user_domains for domain in event_domain_mapping.get(webinar.id, [])):
-#             relevant_events.append(webinar)
-
-#     # Render a template with the recommended events
-#     context = {
-#         'relevant_events': relevant_events,
-#     }
-#     return render(request, 'recommendations.html', context)
-
 from django.shortcuts import render
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from .models import Webinar, Attendee
 
-def recommendations(request, attendee_id, N=6):
+def recommendations(request, N=6):
     try:
+        attendee_id=request.user.id
         # Get the attendee's interests from the Attendee model
-        attendee = Attendee.objects.get(id=attendee_id)
+        attendee = Attendee.objects.get(org_user=attendee_id)
         attendee_interests = attendee.interests
         
         # Get all event descriptions and Webinar objects from the Webinar model
@@ -777,69 +748,3 @@ def recommendations(request, attendee_id, N=6):
         # Handle the case where the attendee doesn't exist
         return render(request, 'recommendations.html', {'recommended_events': []})
     
-
-# def user_utility(user_interests, event_interests):
-#     return len(set(user_interests) & set(event_interests))
-
-# def event_utility(event_interests, user_interests):
-#     return len(set(event_interests) & set(user_interests))
-
-# def recommendations(request, user_to_recommend):
-#     # Fetch user-domain mapping from your data source
-#     user_domain_mapping = {}
-#     attendees = Attendee.objects.all()
-#     for attendee in attendees:
-#         if attendee.org_user and attendee.interests:
-#             user_domain_mapping[attendee.org_user.email] = attendee.interests.split(", ")
-
-
-#     # Fetch event-domain mapping from your data source
-#     event_domain_mapping = {}
-#     webinars = Webinar.objects.all()
-#     for webinar in webinars:
-#         event_domain_mapping[webinar.id] = [domain.strip() for domain in webinar.description.split(", ")]
-
-
-#     users = list(user_domain_mapping.keys())
-#     events = list(event_domain_mapping.keys())
-
-#     # Call the stable_matching function to get the matching results
-#     matching_results = stable_matching(users, events, user_domain_mapping, event_domain_mapping)
-
-#     # Sort the events by their matching scores
-#     sorted_events = sorted(matching_results.items(), key=lambda x: x[1], reverse=True)
-
-#     # Extract the recommended events
-#     recommended_events = [event for event, score in sorted_events]
-
-#     # Render a template with the recommended events
-#     context = {
-#         'user_to_recommend': user_to_recommend,
-#         'relevant_events': recommended_events,
-#     }
-#     return render(request, 'recommendations.html', context)
-
-# def stable_matching(users, events, user_domain_mapping, event_domain_mapping):
-#     user_matches = {}
-#     event_matches = {}
-
-#     while users:
-#         user = users.pop(0)
-#         user_interests = user_domain_mapping.get(user, [])
-#         best_event = None
-#         best_score = -1
-
-#         for event in events:
-#             event_interests = event_domain_mapping.get(event, [])
-#             score = user_utility(user_interests, event_interests)
-
-#             if score > best_score:
-#                 if best_event is not None:
-#                     users.append(user_matches[best_event])
-#                 best_score = score
-#                 best_event = event
-
-#         user_matches[best_event] = user
-#         event_matches[best_event] = best_score
-
-#     return event_matches

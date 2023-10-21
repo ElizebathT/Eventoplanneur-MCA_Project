@@ -37,7 +37,7 @@ urlpatterns = [
     path('paymentsuccess/', views.paymentsuccess, name='paymentsuccess'),
     path('paymentfail/', views.paymentfail, name='paymentfail'),
     path('admindash/', views.admindash, name='admindash'),
-    path('recommendations/<int:attendee_id>/', recommendations, name='recommendations'),
+    path('recommendations/', recommendations, name='recommendations'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
