@@ -2,67 +2,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>GFG</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
-
-	<style>
-	
-	* {
-		box-sizing: border-box;
-		padding: 0px;
-		margin: 0px;
-		font-family: cursive;
-	}
-	html,
-	body {
-		height: 100%;
-	}
-	body {
-		background-color: #f1f5f8;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.card {
-		background-color: white;
-		padding: 25px;
-		border: 1px solid #bbbbbb;
-		border-radius: 5px;
-		box-shadow: 1px 1px 10px 0px rgb(0 0 0 / 25%);
-	}
-	.title {
-		text-align: center;
-		letter-spacing: 1px;
-	}
-	.muted {
-		color: #8e7f7f;
-		display: block;
-		margin-bottom: 10px;
-		text-align: center;
-	}
-	.btn_container {
-		padding: 20px;
-		text-align: center;
-	}
-	.btn {
-		border-radius: 4px;
-		cursor: pointer;
-		padding: 4px 8px;
-		background-color: #ffaaa7;
-		color: white;
-		font-size: 1.2em;
-		font-weight: 600;
-		letter-spacing: 1px;
-	}
-	</style>
+  <style>
+  
+    :root {
+      --gradient: linear-gradient(to left top, #F1D302 10%, #235789 90%) !important;
+    }
+    body{
+      background: #111 !important;;
+      
+    }
+    
+    .card {
+      background: #222;
+    border: 1px solid #F1D302;
+      color: rgba(250, 250, 250, 0.8);
+      margin-left: 20%;
+	  width:20rem;
+		margin-top:10%;
+    }
+    
+    .btn {
+      border: 5px solid;
+      border-image-slice: 1;
+      background: var(--gradient) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      border-image-source:  var(--gradient) !important; 
+      text-decoration: none;
+      transition: all .4s ease;
+    }
+    
+    .btn:hover, .btn:focus {
+          background: var(--gradient) !important;
+      -webkit-background-clip: none !important;
+      -webkit-text-fill-color: #fff !important;
+      border: 5px solid #fff !important; 
+      box-shadow: #222 1px 0 10px;
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
         <div class="containers">
           <a class="navbar-brand" href="{% url 'eventapp:attendeehome' %}">
             <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
@@ -85,18 +72,18 @@
             </ul>
           </div>
         </div>
-      </nav><br>
-	<div class="card">
-	<h1 class="title">WEBINAR REGISTRATION </h1>
-	<small class="muted"
-		>Proceed to pay the registration fee</small
-	>
-	<div class="btn_container">
-		<!-- Payment Button -->
-		<button class="btn" id="pay-btn">Pay</button>
-        <a href="{% url 'eventapp:events' %}" class="btn btn-primary">Go Back to Events</a>
-	</div>
-	</div>
+      </nav>
+		<div class="card">
+		<h1 class="title">WEBINAR REGISTRATION </h1>
+		<small class="muted"
+			>Proceed to pay the registration fee</small
+		>
+		<div class="btn_container">
+			<!-- Payment Button -->
+			<button class="btn" id="pay-btn">Pay</button>
+			<a href="{% url 'eventapp:events' %}" class="btn btn-primary">Go Back to Events</a>
+		</div>
+		</div>
 </body>
 
 <!-- Razorpay's Javascript code. -->
