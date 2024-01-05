@@ -150,3 +150,12 @@ class Attendee(models.Model):
     org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
         return self.name
+    
+class Feedback(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    content = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name

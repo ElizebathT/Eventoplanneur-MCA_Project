@@ -1,5 +1,5 @@
 from django import forms
-from .models import Webinar, EventOrganizer, Conference, Attendee
+from .models import Webinar, EventOrganizer, Conference, Attendee, Feedback
 
 class WebinarForm(forms.ModelForm):
     class Meta:
@@ -26,3 +26,16 @@ class AttendeeForm(forms.ModelForm):
     class Meta:
         model = Attendee
         fields = '__all__'
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['name', 'email', 'content']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('name')
+        email = cleaned_data.get('email')
+        content = cleaned_data.get('content')
+        # add your custom validation logic here
+        return cleaned_data

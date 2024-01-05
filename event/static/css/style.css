@@ -54,3 +54,21 @@ body {
       text-align: right;
       margin-top: 10px;
   }
+  #login{
+    width:13rem;
+    height: 40px;
+    border-radius: 30px;
+    text-align: center;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 20px;
+    gap: 9px;
+    color: white;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    position: relative;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.212);
+    margin-left:180px;
+  }

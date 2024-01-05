@@ -52,12 +52,12 @@
     <div class="sidebar">
       <div class="notifications">
         <h4>Notifications</h4>
-        <ul id="notificationList">
-          <li><strong>Upcoming Conference:</strong> Technology Innovation Summit<br> Explore the latest trends in tech innovation.</li>
-          <li><strong>Save the Date:</strong> AI and Robotics Conference<br> Dive into the world of AI and robotics.</li>
-          <li><strong>Don't Miss It:</strong> Sustainable Energy Symposium<br> Learn about sustainable energy solutions.</li>
+        <ul>
+        {% for i in con %}
+        <li><strong>{{ i.title }}:</strong> Date: {{ i.date|date:"F j, Y" }}<br></li>
+        {% endfor %}
         </ul>
-      </div>
+                </div>
       <div class="chatbot">
         <h4>Chatbot</h4>
         <div class="chat-messages" id="chatMessages">

@@ -409,10 +409,6 @@ def check_aicte_id(request):
 
 @login_required
 def conference(request):
-    # try:
-    #     user_profile = EventOrganizer.objects.get(org_user=request.user)
-    # except EventOrganizer.DoesNotExist:
-    #     return redirect('eventapp:org_profile') 
     orgs=request.user
     con=Conference.objects.filter(org_user=orgs)
     context = {'con': con}
@@ -718,7 +714,8 @@ def recommendations(request, N=6):
         attendee_interests = attendee.interests
         
         # Get all event descriptions and Webinar objects from the Webinar model
-        all_events = Webinar.objects.all()
+        current_date = timezone.now()
+        all_events = Webinar.objects.filter(date__gt=current_date)
         
         # Create a dictionary to map event descriptions to Webinar objects
         event_description_to_webinar = {event.description: event for event in all_events}
