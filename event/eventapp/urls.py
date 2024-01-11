@@ -38,6 +38,8 @@ urlpatterns = [
     path('paymentfail/', views.paymentfail, name='paymentfail'),
     path('admindash/', views.admindash, name='admindash'),
     path('recommendations/', recommendations, name='recommendations'),
-
+    path('providerhome/', views.providerhome, name='providerhome'),
+    path('services/', views.services, name='services'),
+    path('addservices/', views.addservices, name='addservices'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

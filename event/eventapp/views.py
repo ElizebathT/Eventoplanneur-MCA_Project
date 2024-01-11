@@ -165,8 +165,17 @@ def admindash(request):
 def attendeehome(request):
     return render(request, 'attendeehome.html')
 
+def providerhome(request):
+    return render(request, 'providerhome.html')
+
 def gallery(request):
     return render(request, 'gallery.html')
+
+def services(request):
+    return render(request, 'services.html')
+
+def addservices(request):
+    return render(request, 'addservices.html')
 
 def logout(request):
     auth_logout(request)
@@ -187,6 +196,8 @@ def login(request):
                     return redirect('eventapp:orghome')
                 if user.is_attendee:
                     return redirect('eventapp:attendeehome')
+                if user.is_provider:
+                    return redirect('eventapp:providerhome')
                 if user.email=="admin@gmail.com":
                     return redirect('eventapp:admindash')
                 else:

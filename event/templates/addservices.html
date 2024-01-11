@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Host Webinar</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet"type="text/css" href="{% static 'css/services.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+    
+</head>
+<style>
+  /* Style for the form container */
+  #service {
+      display: flex;
+      flex-direction: column;
+      max-width:auto;
+      color:white;
+  }
+  h4{
+    color:white;
+  }
+  td{
+    width:50%;
+  }
+  .events{
+    background-color: rgba(52, 58, 64, 0.7);
+    radius:5px;
+  }
+  /* Style for form labels */
+  .form-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+  }
+  #sendButton {
+    background-color: #fda085;
+}
+  /* Style for form inputs */
+  .mb-3 {
+      margin-bottom: 15px;
+  }
+  :root {
+    --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
+  }
+  /* Style for error text */
+  .error-text {
+      color: orange;
+  }
+  .btn {
+    border: 5px solid;
+    border-image-slice: 1;
+    background: var(--gradient) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    border-image-source:  var(--gradient) !important; 
+    text-decoration: none;
+    transition: all .4s ease;
+  }
+  
+  .btn:hover, .btn:focus {
+        background: var(--gradient) !important;
+    -webkit-background-clip: none !important;
+    -webkit-text-fill-color: #fff !important;
+    border: 5px solid #fff !important; 
+    box-shadow: #222 1px 0 10px;
+    text-decoration: underline;
+  }
+  /* Style for buttons */
+ 
+  span{
+    color:orange;
+  }
+  #sendButton a {
+      color: white;
+      text-decoration: none;
+  }
+</style>
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'eventapp:providerhome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+    </div>
+  </nav>
+  <div class="container">
+    <div class="events">
+        <h4>Host a Webinar</h4>
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+        <form method="post" id="service" action="{% url 'eventapp:addservices' %}">
+          {% csrf_token %}
+          <table>
+          <tr>
+            <td>
+              <div class="mb-3">
+              <label for="name" class="form-label">Name<span>*</span> :</label>
+              <input type="text" id="name"  class="form-control" required>
+              <span id="nameError" class="error-text"></span>
+          </div>
+        </td>
+        <td>
+          <div class="mb-3">
+              <label for="category" class="form-label">Fee<span>*</span>:</label>
+              <input type="number" id="fee" name="fee" class="form-control" required>
+              <span id="feeError" class="error-text"></span>
+          </div></td></tr><tr>
+        <td>
+          <div class="mb-3">
+            <label for="start_time" class="form-label">Start Time<span>*</span>:</label>
+            <input type="time" id="start_time" name="start_time" class="form-control">
+            
+          </div></td>
+          <td>
+            <div class="mb-3">
+              <label for="end_time" class="form-label">End Time<span>*</span>:</label>
+              <input type="time" id="end_time" name="end_time" class="form-control">
+              <span id="timeError" class="error-text"></span>
+            </div></td>
+        
+        </tr><tr><td>
+          <div class="mb-3">
+              <label for="date" class="form-label">Date<span>*</span>:</label>
+              <input type="date" id="date" name="date" class="form-control" required>
+              <span id="event_dateError" class="error-text"></span>
+          </div></td><td>
+            <div class="mb-3">
+                <label for="deadline" class="form-label">Deadline<span>*</span>:</label>
+                <input type="date" id="deadline" name="deadline" class="form-control" required>
+              <span id="deadlineError" class="error-text"></span>
+            </div></td></tr><tr><td>
+            <div class="mb-3">
+                <label for="event_type"  class="form-label">Event Type<span>*</span>:</label>
+                <select id="event_type" name="event_type" class="form-control">
+                  <option value="Online">Online</option>
+                  <option value="Offline">Offline</option>
+                  
+                </select>
+                <span id="event_typeError" class="error-text"></span>
+            </div></td><td>
+              <div class="mb-3" id="url_div" >
+                <label for="livestream" class="form-label">Livestream Link:</label>
+                <input type="text" id="livestream" name="livestream" class="form-control" default="None" >
+                <span id="urlError" class="error-text"></span>
+            </div>
+          <div class="mb-3" id="loc" style="display:none">
+              <label for="location" class="form-label" >Location:</label>
+              <input type="text" id="location" name="location" class="form-control" default="None">
+              <span id="locationError" class="error-text"></span>
+          </div>
+            </td>
+          </tr><tr><td>
+          <div class="mb-3">
+              <label for="organizer_name" class="form-label">Organizer Name<span>*</span>:</label>
+              <input type="text" id="organizer_name" name="organizer_name" class="form-control" required>
+              <span id="organizer_nameError" class="error-text"></span>
+          </div></td><td>
+          <div class="mb-3">
+              <label for="phone_number" class="form-label">Contact number<span>*</span>:</label>
+              <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+              <span id="phone_numberError" class="error-text"></span>
+          </div></td></tr><tr><td>
+            <div class="mb-3">
+                <label for="poster" class="form-label">Poster( Image URL )<span>*</span>:</label>
+                <input type="text" id="poster" name="poster" class="form-control" required>
+              <span id="posterError" class="error-text"></span>
+            </div></td>
+            <td>
+              <div class="mb-3">
+                  <label for="max_participants" class="form-label">Maximum Participants<span>*</span>:</label>
+                  <input type="number" id="max_participants" name="max_participants" class="form-control" required>
+                  <span id="maxError" class="error-text"></span>
+              </div></td></tr>
+            <tr><td><div class="form-group">
+                  <label for="speakers">Speakers:</label>
+                  <div id="speakers-container">
+                    <div class="speaker" style="display:flex;">
+                      <select name="speakers_designation[]" class="form-control" style="width:100px;">
+                        <option value="Mr">Mr</option>
+                        <option value="Ms">Ms</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Dr">Dr</option>
+                      </select>
+                      <input type="text" name="speakers_name[]" id="speaker_name" class="form-control" style="width:250px;"required>
+                    </div>
+                  </div>
+                  <span id="speakerError" class="error-text"></span>
+                <button type="button" id="add-speaker" class="btn btn-secondary">+</button>
+            </div></td>
+              <td>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description<span>*</span>:</label>
+                    <textarea id="description" name="description" class="form-control" rows="4" cols="50" required></textarea>
+                <span id="descriptionError" class="error-text"></span>
+                <span class="error-text">Please provide a detailed description of your webinar, including the agenda, learning objectives, and target audience.
+                  Use this space to introduce your webinar, describe its key topics, and explain why attendees should join.</span>
+                </div></td>
+            </tr><tr><td>
+              <span>* Required fields</span><br>
+          <button  type="submit"><a class="btn mr-2">Register</a></button></td><td>
+            <button><a href="{% url 'eventapp:webinar' %}" class="btn mr-2"> Back </a></button>
+          {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
+      </form>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      
+      <script>       
+        
+          $(document).ready(function() {
+              var event_type = document.getElementById("event_type");
+              var loc = document.getElementById("loc");
+              var url_div = document.getElementById("url_div");
+              var livestream=document.getElementById("livestream");
+              if (event_type.value === 'Online') { 
+                loc.style.display = 'none';
+                url_div.style.display = 'block';
+            } else {
+                loc.style.display = 'block';
+                url_div.style.display = 'none';
+                livestream.innerText='https://www.xyz.com';
+            }
+              handleLocationChange(event_type,loc,url_div);
+          });
+          function handleLocationChange(event_type,loc,url_div) {
+            if (event_type.value === 'Online') { 
+                loc.style.display = 'none';
+                url_div.style.display = 'block';
+                
+            } else {
+                loc.style.display = 'block';
+                url_div.style.display = 'none';
+            }
+        }
+        // JavaScript to dynamically add more speaker fields
+        document.getElementById('add-speaker').addEventListener('click', function() {
+            const speakersContainer = document.getElementById('speakers-container');
+            const newSpeaker = document.createElement('div');
+            newSpeaker.classList.add('speaker');
+            newSpeaker.innerHTML = `
+            <div class="speaker" style="display:flex;">
+              <select name="speakers_designation[]" class="form-control" style="width:100px;">
+                <option value="Mr">Mr</option>
+                <option value="Ms">Ms</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Dr">Dr</option>
+              </select>
+              <input type="text" name="speakers_name[]" id="speaker_name" class="form-control" style="width:250px;"required>
+            </div>
+            `;
+            speakersContainer.appendChild(newSpeaker);
+        });
+    </script>
+    
+<script src="{% static 'js/webinar.js' %}"></script>
+      
+    </div>
+    
+</div>
+</body>
+</html>
