@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Host Webinar</title>
+  <title>Add service</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet"type="text/css" href="{% static 'css/services.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
@@ -12,6 +12,35 @@
 </head>
 <style>
   /* Style for the form container */
+  .services-input-container {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    width: 100%;
+}
+
+#data-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #343a40;
+    border-radius: 5px 0 0 5px;
+    margin-right: 5px; /* Add space between input and button */
+}
+
+#add-button {
+  width: 30px;
+    padding: 5px;
+    background-color: #343a40;
+    color: white;
+    border: 1px solid #343a40;
+    border-radius: 50%; /* Make it a circle */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#add-button:hover {
+    background-color: #1d2124; /* Change color on hover */
+}
+
   #service {
       display: flex;
       flex-direction: column;
@@ -33,9 +62,6 @@
       font-weight: bold;
       margin-bottom: 5px;
   }
-  #sendButton {
-    background-color: #fda085;
-}
   /* Style for form inputs */
   .mb-3 {
       margin-bottom: 15px;
@@ -75,6 +101,22 @@
       color: white;
       text-decoration: none;
   }
+  #locations {
+    width: 100%; /* Set width to 100% */
+    padding: 10px;
+    border: 1px solid #343a40;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #343a40;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+#locations option {
+    padding: 5px;
+    font-size: 14px;
+}
+
 </style>
 <body>
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
@@ -90,7 +132,7 @@
   </nav>
   <div class="container">
     <div class="events">
-        <h4>Host a Webinar</h4>
+        <h4>Details of Service</h4>
         {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -104,163 +146,192 @@
           <tr>
             <td>
               <div class="mb-3">
-              <label for="name" class="form-label">Name<span>*</span> :</label>
-              <input type="text" id="name"  class="form-control" required>
+              <label for="sname" class="form-label">Name<span>*</span> :</label>
+              <input type="text" id="sname" name="sname" class="form-control" required>
               <span id="nameError" class="error-text"></span>
           </div>
         </td>
         <td>
           <div class="mb-3">
-              <label for="category" class="form-label">Fee<span>*</span>:</label>
-              <input type="number" id="fee" name="fee" class="form-control" required>
-              <span id="feeError" class="error-text"></span>
-          </div></td></tr><tr>
-        <td>
-          <div class="mb-3">
-            <label for="start_time" class="form-label">Start Time<span>*</span>:</label>
-            <input type="time" id="start_time" name="start_time" class="form-control">
-            
-          </div></td>
+          <label for="category" class="form-label">Category<span>*</span> :</label>
+          <select id="category" class="form-control" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="catering">Catering</option>
+            <option value="venue">Venue</option>
+            <option value="transportation">Transportation</option>
+            <option value="sound and lighting">Sound and lighting</option>
+            <option value="entertainment ">Entertainment </option>
+            <option value="decoration ">Decoration </option>
+            <option value="accomodation ">Accomodation </option>
+            <option value="event staffing ">Event staffing </option>
+            <option value="promotion ">Promotion </option>
+            <option value="photography and videography ">Photography and Videography </option>
+        </select>
+          <span id="categoryError" class="error-text"></span>
+      </div>
+    </td>
+        </tr><tr>
           <td>
             <div class="mb-3">
-              <label for="end_time" class="form-label">End Time<span>*</span>:</label>
-              <input type="time" id="end_time" name="end_time" class="form-control">
-              <span id="timeError" class="error-text"></span>
-            </div></td>
-        
-        </tr><tr><td>
-          <div class="mb-3">
-              <label for="date" class="form-label">Date<span>*</span>:</label>
-              <input type="date" id="date" name="date" class="form-control" required>
-              <span id="event_dateError" class="error-text"></span>
-          </div></td><td>
-            <div class="mb-3">
-                <label for="deadline" class="form-label">Deadline<span>*</span>:</label>
-                <input type="date" id="deadline" name="deadline" class="form-control" required>
-              <span id="deadlineError" class="error-text"></span>
-            </div></td></tr><tr><td>
-            <div class="mb-3">
-                <label for="event_type"  class="form-label">Event Type<span>*</span>:</label>
-                <select id="event_type" name="event_type" class="form-control">
-                  <option value="Online">Online</option>
-                  <option value="Offline">Offline</option>
-                  
-                </select>
-                <span id="event_typeError" class="error-text"></span>
-            </div></td><td>
-              <div class="mb-3" id="url_div" >
-                <label for="livestream" class="form-label">Livestream Link:</label>
-                <input type="text" id="livestream" name="livestream" class="form-control" default="None" >
-                <span id="urlError" class="error-text"></span>
-            </div>
-          <div class="mb-3" id="loc" style="display:none">
-              <label for="location" class="form-label" >Location:</label>
-              <input type="text" id="location" name="location" class="form-control" default="None">
-              <span id="locationError" class="error-text"></span>
+              <label for="start_range" class="form-label" >Starting price range<span>*</span> :</label>
+              <input type="number" id="start_range" name="start_range" placeholder="Rupees" class="form-control" required>
+              <span id="start_rangeError" class="error-text"></span>
           </div>
-            </td>
-          </tr><tr><td>
-          <div class="mb-3">
-              <label for="organizer_name" class="form-label">Organizer Name<span>*</span>:</label>
-              <input type="text" id="organizer_name" name="organizer_name" class="form-control" required>
-              <span id="organizer_nameError" class="error-text"></span>
-          </div></td><td>
-          <div class="mb-3">
-              <label for="phone_number" class="form-label">Contact number<span>*</span>:</label>
-              <input type="text" id="phone_number" name="phone_number" class="form-control" required>
-              <span id="phone_numberError" class="error-text"></span>
-          </div></td></tr><tr><td>
+      </td>
+      <td>
+        <div class="mb-3">
+            <label for="end_range" class="form-label">Maximum price range<span>*</span> :</label>
+            <input type="number" id="end_range" name="end_range" placeholder="Rupees" class="form-control" required>
+            <span id="end_rangeError" class="error-text"></span>
+        </div></td></tr><tr>
+          <td>
             <div class="mb-3">
-                <label for="poster" class="form-label">Poster( Image URL )<span>*</span>:</label>
-                <input type="text" id="poster" name="poster" class="form-control" required>
-              <span id="posterError" class="error-text"></span>
-            </div></td>
-            <td>
-              <div class="mb-3">
-                  <label for="max_participants" class="form-label">Maximum Participants<span>*</span>:</label>
-                  <input type="number" id="max_participants" name="max_participants" class="form-control" required>
-                  <span id="maxError" class="error-text"></span>
-              </div></td></tr>
-            <tr><td><div class="form-group">
-                  <label for="speakers">Speakers:</label>
-                  <div id="speakers-container">
-                    <div class="speaker" style="display:flex;">
-                      <select name="speakers_designation[]" class="form-control" style="width:100px;">
-                        <option value="Mr">Mr</option>
-                        <option value="Ms">Ms</option>
-                        <option value="Mrs">Mrs</option>
-                        <option value="Dr">Dr</option>
-                      </select>
-                      <input type="text" name="speakers_name[]" id="speaker_name" class="form-control" style="width:250px;"required>
-                    </div>
-                  </div>
-                  <span id="speakerError" class="error-text"></span>
-                <button type="button" id="add-speaker" class="btn btn-secondary">+</button>
-            </div></td>
+              <label for="image" class="form-label" >Image:</label>
+              <input type="file" class="form-control" id="image" name="image" accept="image/jpeg, image/png" required>
+              <span id="imageError" class="error-text"></span>
+            </div>
+            <div class="image-preview">
+              <img id="preview" alt="Image Preview" width="250px">
+          </div>
+          <script>
+          document.getElementById('image').addEventListener('change', function () {
+            previewImage(this);
+        });
+        
+        function previewImage(input) {
+            const preview = document.getElementById('preview');
+            const imageError = document.getElementById('imageError');
+        
+            // Reset previous error message
+            imageError.textContent = '';
+        
+            // Check if a file is selected
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+        
+                reader.onload = function (e) {
+                    // Set the source of the preview image
+                    preview.src = e.target.result;
+                };
+        
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                // Display an error message if no file is selected
+                preview.src = '';
+                imageError.textContent = 'Please select an image.';
+            }
+        }
+      </script>
+        </td>
+        <td>
+          <div class="mb-3">
+              <label for="locations" class="form-label">Locations<span>*</span> :</label><br>
+              <select id="locations" name="locations" multiple onchange="updateSelectedLocations()">
+                <option value="trivandrum">Trivandrum</option>
+                <option value="kochi">Kochi</option>
+                <option value="kozhikode">Kozhikode</option>
+                <option value="thrissur">Thrissur</option>
+                <option value="malappuram">Malappuram</option>
+                <option value="kollam">Kollam</option>
+                <option value="alappuzha">Alappuzha</option>
+              <option value="kottayam">Kottayam</option>
+              <option value="palakkad">Palakkad</option>
+              <option value="kollam">Kollam</option>
+              <option value="wayanad">Wayanad</option>
+              <option value="idukki">Idukki</option>
+                
+              </select>
+              <br>
+              <span id="selectedLocations" class="selected-locations"></span>
+              <span id="nameError" class="error-text"></span>
+          </div>
+      </td>
+  
+      <script>
+          function updateSelectedLocations() {
+              var selectElement = document.getElementById('locations');
+              var selectedLocations = [];
+  
+              for (var i = 0; i < selectElement.options.length; i++) {
+                  if (selectElement.options[i].selected) {
+                      selectedLocations.push(selectElement.options[i].text);
+                  }
+              }
+  
+              var selectedLocationsDiv = document.getElementById('selectedLocations');
+              var errorSpan = document.getElementById('nameError');
+              
+              errorSpan.textContent = '';
+  
+              if (selectedLocations.length === 0) {
+                  errorSpan.textContent = 'Please select at least one location.';
+                  selectedLocationsDiv.textContent = '';
+                  return;
+              }
+  
+              selectedLocationsDiv.textContent = 'Selected Locations: ' + selectedLocations.join(', ');
+          }
+      </script>
+  </tr>
+  <tr>
+    <td>
+      <div class="mb-3 services-container">
+        <label for="services" class="form-label">Services Provided<span>*</span> :</label>
+        <div class="services-input-container">
+            <input type="text" id="data-input" placeholder="Enter services">
+            <button type="button" id="add-button" onclick="addService()">+</button>
+        </div>
+        <div id="selectedServices" class="selected-services"></div>
+    </div>
+    
+    </td>
+
+    <script>
+        function addService() {
+            var inputElement = document.getElementById('data-input');
+            var selectedServicesDiv = document.getElementById('selectedServices');
+            var errorSpan = document.getElementById('nameError');
+
+            var newService = inputElement.value.trim();
+
+            if (newService === '') {
+                errorSpan.textContent = 'Please enter a service.';
+                return;
+            }
+
+            errorSpan.textContent = '';
+            inputElement.value = '';
+
+            var existingServices = selectedServicesDiv.textContent.trim();
+
+            if (existingServices === '') {
+                selectedServicesDiv.textContent = 'Services: ' + newService;
+            } else {
+                selectedServicesDiv.textContent = existingServices + ', ' + newService;
+            }
+        }
+    </script>
+  </td>
               <td>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description<span>*</span>:</label>
                     <textarea id="description" name="description" class="form-control" rows="4" cols="50" required></textarea>
                 <span id="descriptionError" class="error-text"></span>
-                <span class="error-text">Please provide a detailed description of your webinar, including the agenda, learning objectives, and target audience.
-                  Use this space to introduce your webinar, describe its key topics, and explain why attendees should join.</span>
+                <span class="error-text">Provide as much detail as possible to help us better understand your services and requirements.</span>
                 </div></td>
             </tr><tr><td>
               <span>* Required fields</span><br>
-          <button  type="submit"><a class="btn mr-2">Register</a></button></td><td>
-            <button><a href="{% url 'eventapp:webinar' %}" class="btn mr-2"> Back </a></button>
+          
+            </td><td>
+              <button  type="submit"><a class="btn2">Register</a></button>
+              <button><a href="{% url 'eventapp:providerhome' %}" class="btn2"> Back </a></button>
           {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
       </form>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       
-      <script>       
-        
-          $(document).ready(function() {
-              var event_type = document.getElementById("event_type");
-              var loc = document.getElementById("loc");
-              var url_div = document.getElementById("url_div");
-              var livestream=document.getElementById("livestream");
-              if (event_type.value === 'Online') { 
-                loc.style.display = 'none';
-                url_div.style.display = 'block';
-            } else {
-                loc.style.display = 'block';
-                url_div.style.display = 'none';
-                livestream.innerText='https://www.xyz.com';
-            }
-              handleLocationChange(event_type,loc,url_div);
-          });
-          function handleLocationChange(event_type,loc,url_div) {
-            if (event_type.value === 'Online') { 
-                loc.style.display = 'none';
-                url_div.style.display = 'block';
-                
-            } else {
-                loc.style.display = 'block';
-                url_div.style.display = 'none';
-            }
-        }
-        // JavaScript to dynamically add more speaker fields
-        document.getElementById('add-speaker').addEventListener('click', function() {
-            const speakersContainer = document.getElementById('speakers-container');
-            const newSpeaker = document.createElement('div');
-            newSpeaker.classList.add('speaker');
-            newSpeaker.innerHTML = `
-            <div class="speaker" style="display:flex;">
-              <select name="speakers_designation[]" class="form-control" style="width:100px;">
-                <option value="Mr">Mr</option>
-                <option value="Ms">Ms</option>
-                <option value="Mrs">Mrs</option>
-                <option value="Dr">Dr</option>
-              </select>
-              <input type="text" name="speakers_name[]" id="speaker_name" class="form-control" style="width:250px;"required>
-            </div>
-            `;
-            speakersContainer.appendChild(newSpeaker);
-        });
-    </script>
+      
     
-<script src="{% static 'js/webinar.js' %}"></script>
+<script src="{% static 'js/services.js' %}"></script>
       
     </div>
     
