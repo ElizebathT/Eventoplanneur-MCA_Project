@@ -6,118 +6,269 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add service</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet"type="text/css" href="{% static 'css/services.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
     
 </head>
 <style>
-  /* Style for the form container */
-  .services-input-container {
-    display: flex;
-    align-items: center; /* Center items vertically */
-    width: 100%;
-}
-
-#data-input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #343a40;
-    border-radius: 5px 0 0 5px;
-    margin-right: 5px; /* Add space between input and button */
-}
-
-#add-button {
-  width: 30px;
-    padding: 5px;
-    background-color: #343a40;
-    color: white;
-    border: 1px solid #343a40;
-    border-radius: 50%; /* Make it a circle */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#add-button:hover {
-    background-color: #1d2124; /* Change color on hover */
-}
-
-  #service {
-      display: flex;
-      flex-direction: column;
-      max-width:auto;
-      color:white;
+  /* Reset some default styles */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Set a light background color */
+    color: #495057; /* Set text color */
   }
-  h4{
+  a{
     color:white;
+    text-decoration:none;
   }
-  td{
-    width:50%;
+  /* Style for the container */
+  .container {
+    margin-top: 30px;
   }
-  .events{
-    background-color: rgba(52, 58, 64, 0.7);
-    radius:5px;
+
+  /* Style for the form */
+  #service {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
+
   /* Style for form labels */
   .form-label {
-      font-weight: bold;
-      margin-bottom: 5px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #495057;
   }
+
   /* Style for form inputs */
-  .mb-3 {
-      margin-bottom: 15px;
+  .form-control {
+    width: 100%;
+    height:auto;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
-  :root {
-    --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
+
+  .form-control:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
   }
+
+  /* Style for buttons */
+  button {
+    padding: 12px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #6c757d;
+    color: white;
+    box-shadow: 0 0 10px rgba(108, 117, 125, 0.5);
+  }
+
   /* Style for error text */
   .error-text {
-      color: orange;
+    color: #ff6347; /* Tomato color */
   }
-  .btn {
-    border: 5px solid;
-    border-image-slice: 1;
-    background: var(--gradient) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    border-image-source:  var(--gradient) !important; 
-    text-decoration: none;
-    transition: all .4s ease;
+
+  /* Style for the preview image */
+  #preview {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
   }
-  
-  .btn:hover, .btn:focus {
-        background: var(--gradient) !important;
-    -webkit-background-clip: none !important;
-    -webkit-text-fill-color: #fff !important;
-    border: 5px solid #fff !important; 
-    box-shadow: #222 1px 0 10px;
-    text-decoration: underline;
-  }
-  /* Style for buttons */
- 
-  span{
-    color:orange;
-  }
-  #sendButton a {
-      color: white;
-      text-decoration: none;
+
+  /* Style for the selected locations textarea */
+  #location ,#services_provided{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #6c757d;
+    border-radius: 8px;
+    margin-top: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
   }
   #locations {
-    width: 100%; /* Set width to 100% */
-    padding: 10px;
-    border: 1px solid #343a40;
-    border-radius: 5px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #6c757d;
+    border-radius: 8px;
     background-color: #fff;
-    color: #343a40;
+    color: #495057;
     font-size: 14px;
-    margin-top: 10px;
-}
+    margin-top: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
 
-#locations option {
-    padding: 5px;
+  #locations option {
+    padding: 8px;
     font-size: 14px;
-}
+  }
 
+  #locations:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Additional styles for the navbar */
+  .navbar {
+    background-color: #495057;
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Style for the events container */
+  .events {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #495057;
+  }
+
+  /* Style for the footer */
+  span {
+    color: #ff6347; /* Tomato color */
+  }
+  /* Style for the services input container */
+  .services-input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  #data-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #6c757d;
+    border-radius: 8px 0 0 8px;
+    margin-right: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #add-button {
+    width: 40px;
+    padding: 12px;
+    background-color: #6c757d;
+    color: #fff;
+    border: 1px solid #6c757d;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #add-button:hover {
+    background-color: #495057;
+  }
+
+  /* Additional styles for the navbar */
+  .navbar {
+    background-color: #495057;
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Style for the events container */
+  .events {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #495057;
+  }
+
+  /* Style for the footer */
+  span {
+    color: #ff6347; /* Tomato color */
+  }
+  #service {
+    background-color: #f2f9fc; /* Light blue background */
+  }
+
+  button {
+    background-color: #007bff; /* Blue button background */
+    color: white;
+  }
+
+  #add-button {
+    background-color: #0056b3; /* Darker blue for add button */
+    border: 1px solid #0056b3;
+  }
+
+  #add-button:hover {
+    background-color: #004080; /* Darker blue on hover */
+  }
+
+  /* Update background color for the locations dropdown */
+  #locations {
+    background-color: #fff; /* White background for dropdown */
+    color: #495057;
+  }
+
+  #locations:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Additional styles for the navbar */
+  .navbar {
+    background-color: #004080; /* Darker blue navbar */
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Style for the events container */
+  .events {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #495057;
+  }
+
+  /* Style for the footer */
+  span {
+    color: #ff6347; /* Tomato color */
+  }
 </style>
+
+
 <body>
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
@@ -140,21 +291,21 @@
         {% endfor %}
     </ul>
 {% endif %}
-        <form method="post" id="service" action="{% url 'eventapp:addservices' %}">
+        <form method="post" id="service" action="{% url 'eventapp:addservices' %}" enctype="multipart/form-data">
           {% csrf_token %}
           <table>
           <tr>
             <td>
               <div class="mb-3">
-              <label for="sname" class="form-label">Name<span>*</span> :</label>
-              <input type="text" id="sname" name="sname" class="form-control" required>
+              <label for="name" class="form-label">Name<span>*</span> :</label>
+              <input type="text" id="name" name="name" class="form-control" required>
               <span id="nameError" class="error-text"></span>
           </div>
         </td>
         <td>
           <div class="mb-3">
           <label for="category" class="form-label">Category<span>*</span> :</label>
-          <select id="category" class="form-control" required>
+          <select id="category" name="category" class="form-control" required>
             <option value="" disabled selected>Select a category</option>
             <option value="catering">Catering</option>
             <option value="venue">Venue</option>
@@ -183,11 +334,34 @@
             <label for="end_range" class="form-label">Maximum price range<span>*</span> :</label>
             <input type="number" id="end_range" name="end_range" placeholder="Rupees" class="form-control" required>
             <span id="end_rangeError" class="error-text"></span>
-        </div></td></tr><tr>
+        </div></td></tr>
+        <script>
+          var startRange = document.getElementById("start_range");
+          var endRange = document.getElementById("end_range");
+          var startRangeError = document.getElementById("start_rangeError");
+          var endRangeError = document.getElementById("end_rangeError");
+      
+          startRange.addEventListener("input", function() {
+              startRangeError.innerText = validateRange(startRange.value, endRange.value);
+          });
+      
+          endRange.addEventListener("input", function() {
+              endRangeError.innerText = validateRange(startRange.value, endRange.value);
+          });
+      
+          function validateRange(startRangeValue, endRangeValue) {
+              if (parseInt(startRangeValue) > parseInt(endRangeValue)) {
+                  return "Start range must be less than or equal to end range";
+              } else if (parseInt(endRangeValue) < parseInt(startRangeValue)) {
+                  return "End range must be greater than or equal to start range";
+              }
+              return "";
+          }
+      </script><tr>
           <td>
             <div class="mb-3">
               <label for="image" class="form-label" >Image:</label>
-              <input type="file" class="form-control" id="image" name="image" accept="image/jpeg, image/png" required>
+              <input type="file" class="form-control" id="image" name="image" required>
               <span id="imageError" class="error-text"></span>
             </div>
             <div class="image-preview">
@@ -225,8 +399,8 @@
         </td>
         <td>
           <div class="mb-3">
-              <label for="locations" class="form-label">Locations<span>*</span> :</label><br>
-              <select id="locations" name="locations" multiple onchange="updateSelectedLocations()">
+              <label for="location" class="form-label">Locations<span>*</span> :</label><br>
+              <select id="location" name="location" multiple onchange="updateSelectedLocations()">
                 <option value="trivandrum">Trivandrum</option>
                 <option value="kochi">Kochi</option>
                 <option value="kozhikode">Kozhikode</option>
@@ -242,46 +416,47 @@
                 
               </select>
               <br>
-              <span id="selectedLocations" class="selected-locations"></span>
-              <span id="nameError" class="error-text"></span>
+              <textarea id="locations" name="locations" class="selected-locations">Selected Locations:</textarea>
+              <span id="locationsError" class="error-text"></span>
           </div>
       </td>
   
       <script>
-          function updateSelectedLocations() {
-              var selectElement = document.getElementById('locations');
-              var selectedLocations = [];
-  
-              for (var i = 0; i < selectElement.options.length; i++) {
-                  if (selectElement.options[i].selected) {
-                      selectedLocations.push(selectElement.options[i].text);
-                  }
-              }
-  
-              var selectedLocationsDiv = document.getElementById('selectedLocations');
-              var errorSpan = document.getElementById('nameError');
-              
-              errorSpan.textContent = '';
-  
-              if (selectedLocations.length === 0) {
-                  errorSpan.textContent = 'Please select at least one location.';
-                  selectedLocationsDiv.textContent = '';
-                  return;
-              }
-  
-              selectedLocationsDiv.textContent = 'Selected Locations: ' + selectedLocations.join(', ');
+        function updateSelectedLocations() {
+          var selectElement = document.getElementById('location');
+          var selectedLocations = [];
+        
+          for (var i = 0; i < selectElement.options.length; i++) {
+            if (selectElement.options[i].selected) {
+              selectedLocations.push(selectElement.options[i].value);
+            }
           }
+        
+          var selectedLocationsTextarea = document.getElementById('locations');
+          var errorSpan = document.getElementById('locationsError');
+          
+          errorSpan.textContent = '';
+        
+          if (selectedLocations.length === 0) {
+            errorSpan.textContent = 'Please select at least one location.';
+            selectedLocationsTextarea.value = '';  // Clear the textarea if no location is selected
+            return;
+          }
+        
+          // Update the textarea with the comma-separated string
+          selectedLocationsTextarea.value = selectedLocations.join(', ');
+        }
       </script>
   </tr>
   <tr>
     <td>
       <div class="mb-3 services-container">
-        <label for="services" class="form-label">Services Provided<span>*</span> :</label>
+        <label for="data-input" class="form-label">Services Provided<span>*</span> :</label>
         <div class="services-input-container">
             <input type="text" id="data-input" placeholder="Enter services">
             <button type="button" id="add-button" onclick="addService()">+</button>
         </div>
-        <div id="selectedServices" class="selected-services"></div>
+        <textarea id="services_provided" name="services_provided" class="selected-services" placeholder="Services:"></textarea>
     </div>
     
     </td>
@@ -289,7 +464,7 @@
     <script>
         function addService() {
             var inputElement = document.getElementById('data-input');
-            var selectedServicesDiv = document.getElementById('selectedServices');
+            var selectedServicesDiv = document.getElementById('services_provided');
             var errorSpan = document.getElementById('nameError');
 
             var newService = inputElement.value.trim();
@@ -305,7 +480,7 @@
             var existingServices = selectedServicesDiv.textContent.trim();
 
             if (existingServices === '') {
-                selectedServicesDiv.textContent = 'Services: ' + newService;
+                selectedServicesDiv.textContent = newService;
             } else {
                 selectedServicesDiv.textContent = existingServices + ', ' + newService;
             }

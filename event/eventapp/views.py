@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
 #from .models import User
-from .models import CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee
+from .models import Service,CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee
 import re
 from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login
@@ -174,8 +174,6 @@ def gallery(request):
 def services(request):
     return render(request, 'services.html')
 
-def addservices(request):
-    return render(request, 'addservices.html')
 
 def logout(request):
     auth_logout(request)
@@ -756,3 +754,34 @@ def recommendations(request, N=6):
         # Handle the case where the attendee doesn't exist
         return render(request, 'recommendations.html', {'recommended_events': []})
     
+from django.shortcuts import render, redirect
+from .forms import ServiceForm
+
+def addservices(request):
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            # Save the service first before working with many-to-many relationships
+            service = form.save(commit=False)
+            # Set the organizer to the currently logged-in user
+            service.org_user = request.user
+            service.save()  # Commit the service to the database
+            
+            # Send confirmation email
+            recipient_email = request.user.email
+            subject = 'Service Registration Confirmation'
+            message = f'Thank you for registering the service: {service.name} that provides {service.category} services.'
+            from_email = 'eventoplanneur@gmail.com'
+            recipient_list = [recipient_email]
+
+            send_mail(subject, message, from_email, recipient_list)
+            
+            messages.success(request, "Service saved successfully")
+            return redirect('eventapp:addservices')
+        else:
+            messages.error(request, "Error saving the service. Please check the form.")
+    else:
+        form = ServiceForm()
+
+    return render(request, 'addservices.html', {'form': form})

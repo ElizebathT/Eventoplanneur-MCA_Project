@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Provider Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+    <style>
+        .feature-box a{
+            text-decoration:none;
+        }
+        .navbar-dark .navbar-nav .nav-item a:hover {
+            color: #add8e6 !important; /* Set the hover color */
+        }
+        
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #ffffff; /* White */
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: #000000; /* Black */
+        }
+        .jumbotron {
+            background-color: #add8e6; /* Pastel Blue */
+            color: white; /* Black */
+            padding: 80px 20px; /* More height and space */
+        }
+        .feature-section {
+            background-color: #ffffff;
+            padding: 40px 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .feature-box {
+            border: 2px solid #add8e6; /* Border color same as pastel blue */
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 200px;
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+        }
+        
+        .feature-box h4 {
+            font-family: 'Arial', sans-serif; /* Change the font family */
+            color: #007bff; /* Set the font color */
+        }
+        
+        .feature-box p {
+            font-size: 16px; /* Adjust the font size */
+            color: #555; /* Set the text color */
+        }
+        
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo" width="50"> 
+          </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#features">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome, Service Provider!</h1>
+        <p class="lead">Manage your services efficiently with our user-friendly dashboard.</p>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container">
+        <div id="features" class="feature-section">
+            <h2 class="text-center mb-4">How This Site is Useful for You</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h4>Update Availability</h4>
+                        <p>Easily update your availability to let users know when you are ready to provide services.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h4>View Bookings</h4>
+                        <p>Access your booking schedule to stay organized and manage your time effectively.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <a href="{% url 'eventapp:addservices' %}">
+                        <h4>Add New Services</h4>
+                        <p>Add or modify the services you offer to attract a wider range of clients.</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Service Provider Dashboard. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

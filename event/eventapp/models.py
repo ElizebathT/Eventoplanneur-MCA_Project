@@ -159,3 +159,16 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.name
+
+class Service(models.Model):
+    name = models.CharField(max_length=255)
+    category = models.CharField(max_length=100)
+    start_range = models.IntegerField()
+    end_range = models.IntegerField()
+    image = models.ImageField(upload_to='service_images/')
+    locations = models.TextField(null=True)
+    services_provided = models.TextField()
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
