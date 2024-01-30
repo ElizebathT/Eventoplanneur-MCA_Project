@@ -1,0 +1,506 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+    
+</head>
+<style>
+  /* Reset some default styles */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Set a light background color */
+    color: #495057; /* Set text color */
+  }
+  a{
+    color:white;
+    text-decoration:none;
+  }
+  /* Style for the container */
+  .container {
+    margin-top: 30px;
+  }
+
+  /* Style for the form */
+  #service {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Style for form labels */
+  .form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #495057;
+  }
+
+  /* Style for form inputs */
+  .form-control {
+    width: 100%;
+    height:auto;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Style for buttons */
+  button {
+    padding: 12px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #6c757d;
+    color: white;
+    box-shadow: 0 0 10px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Style for error text */
+  .error-text {
+    color: #ff6347; /* Tomato color */
+  }
+
+  /* Style for the preview image */
+  #preview {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+
+  /* Style for the selected locations textarea */
+  #location ,#services_provided{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #6c757d;
+    border-radius: 8px;
+    margin-top: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  #locations {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #6c757d;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #495057;
+    font-size: 14px;
+    margin-top: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #locations option {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  #locations:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Additional styles for the navbar */
+  .navbar {
+    background-color: #495057;
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Style for the events container */
+  .events {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #495057;
+  }
+
+  /* Style for the footer */
+  span {
+    color: #ff6347; /* Tomato color */
+  }
+  /* Style for the services input container */
+  .services-input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  #data-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #6c757d;
+    border-radius: 8px 0 0 8px;
+    margin-right: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #add-button {
+    width: 40px;
+    padding: 12px;
+    background-color: #6c757d;
+    color: #fff;
+    border: 1px solid #6c757d;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #add-button:hover {
+    background-color: #495057;
+  }
+
+  /* Additional styles for the navbar */
+  .navbar {
+    background-color: #495057;
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Style for the events container */
+  .events {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #495057;
+  }
+
+  /* Style for the footer */
+  span {
+    color: #ff6347; /* Tomato color */
+  }
+  #service {
+    background-color: #f2f9fc; /* Light blue background */
+  }
+
+  button {
+    background-color: #007bff; /* Blue button background */
+    color: white;
+  }
+
+  #add-button {
+    background-color: #0056b3; /* Darker blue for add button */
+    border: 1px solid #0056b3;
+  }
+
+  #add-button:hover {
+    background-color: #004080; /* Darker blue on hover */
+  }
+
+  /* Update background color for the locations dropdown */
+  #locations {
+    background-color: #fff; /* White background for dropdown */
+    color: #495057;
+  }
+
+  #locations:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Additional styles for the navbar */
+  .navbar {
+    background-color: #004080; /* Darker blue navbar */
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Style for the events container */
+  .events {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #495057;
+  }
+
+  /* Style for the footer */
+  span {
+    color: #ff6347; /* Tomato color */
+  }
+</style>
+
+
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'eventapp:providerhome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+    </div>
+  </nav>
+  <div class="container">
+    <div class="events">
+        <h4>Details of Service Provider</h4>
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+        <form method="post" id="service" action="{% url 'eventapp:addservices' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <table>
+          <tr>
+            <td>
+              <div class="mb-3">
+              <label for="name" class="form-label">Name<span>*</span> :</label>
+              <input type="text" id="name" name="name" class="form-control" required>
+              <span id="nameError" class="error-text"></span>
+              </div>
+            </td>
+            <td>
+          <div class="mb-3">
+          <label for="category" class="form-label">Category<span>*</span> :</label>
+          <select id="category" name="category" class="form-control" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="catering">Catering</option>
+            <option value="venue">Venue</option>
+            <option value="transportation">Transportation</option>
+            <option value="sound and lighting">Sound and lighting</option>
+            <option value="entertainment ">Entertainment </option>
+            <option value="decoration ">Decoration </option>
+            <option value="accomodation ">Accomodation </option>
+            <option value="event staffing ">Event staffing </option>
+            <option value="promotion ">Promotion </option>
+            <option value="photography and videography ">Photography and Videography </option>
+        </select>
+          <span id="categoryError" class="error-text"></span>
+      </div>
+    </td>
+        </tr><tr>
+          <td>
+            <div class="mb-3">
+              <label for="image" class="form-label" >Image:</label>
+              <input type="file" class="form-control" id="image" name="image" required>
+              <span id="imageError" class="error-text"></span>
+            </div>
+            <div class="image-preview">
+              <img id="preview" alt="Image Preview" width="250px">
+          </div>
+          <script>
+          document.getElementById('image').addEventListener('change', function () {
+            previewImage(this);
+        });
+        
+        function previewImage(input) {
+            const preview = document.getElementById('preview');
+            const imageError = document.getElementById('imageError');
+        
+            // Reset previous error message
+            imageError.textContent = '';
+        
+            // Check if a file is selected
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+        
+                reader.onload = function (e) {
+                    // Set the source of the preview image
+                    preview.src = e.target.result;
+                };
+        
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                // Display an error message if no file is selected
+                preview.src = '';
+                imageError.textContent = 'Please select an image.';
+            }
+        }
+      </script>
+        </td>
+        <td>
+          <div class="mb-3">
+              <label for="location" class="form-label">Locations<span>*</span> :</label><br>
+              <select id="location" name="location" multiple onchange="updateSelectedLocations()">
+                <option value="trivandrum">Trivandrum</option>
+                <option value="kochi">Kochi</option>
+                <option value="kozhikode">Kozhikode</option>
+                <option value="thrissur">Thrissur</option>
+                <option value="malappuram">Malappuram</option>
+                <option value="kollam">Kollam</option>
+                <option value="alappuzha">Alappuzha</option>
+              <option value="kottayam">Kottayam</option>
+              <option value="palakkad">Palakkad</option>
+              <option value="kollam">Kollam</option>
+              <option value="wayanad">Wayanad</option>
+              <option value="idukki">Idukki</option>
+                
+              </select>
+              <br>
+              <textarea id="locations" name="locations" class="selected-locations">Selected Locations:</textarea>
+              <span id="locationsError" class="error-text"></span>
+          </div>
+      </td>
+  
+      <script>
+        function updateSelectedLocations() {
+          var selectElement = document.getElementById('location');
+          var selectedLocations = [];
+        
+          for (var i = 0; i < selectElement.options.length; i++) {
+            if (selectElement.options[i].selected) {
+              selectedLocations.push(selectElement.options[i].value);
+            }
+          }
+        
+          var selectedLocationsTextarea = document.getElementById('locations');
+          var errorSpan = document.getElementById('locationsError');
+          
+          errorSpan.textContent = '';
+        
+          if (selectedLocations.length === 0) {
+            errorSpan.textContent = 'Please select at least one location.';
+            selectedLocationsTextarea.value = '';  // Clear the textarea if no location is selected
+            return;
+          }
+        
+          // Update the textarea with the comma-separated string
+          selectedLocationsTextarea.value = selectedLocations.join(', ');
+        }
+      </script>
+  </tr>
+  <tr>
+
+    <td>
+      <div class="mb-3 services-container">
+          <label for="data-input" class="form-label">Services Provided<span>*</span> :</label>
+          <div class="services-input-container">
+              <input type="text" id="data-input" list="services-list" placeholder="Enter services" oninput="showAutocomplete()">
+              <datalist id="services-list">
+                  <!-- Populate the datalist options dynamically using JavaScript -->
+              </datalist>
+              <button type="button" id="add-button" onclick="addService()">+</button>
+          </div>
+          <textarea id="services_provided" name="services_provided" class="selected-services" placeholder="Services:"></textarea>
+          <span id="nameError" style="color: red;"></span>
+      </div>
+  </td>
+  
+  <script>
+      var servicesList = ['Menu Planning', 'Food Preparation and Cooking', 'Event Setup and Decoration', 'Service Staff', 'Equipment Rental', 'Event Space Rental', 'Setup and Cleanup', 'Catering Coordination', 'Audio-Visual Equipment', 'Event Planning Assistance', 'Installation and Setup', 'Customized Lighting Plans', 'Backdrop Lighting', 'On-Site Technicians', 'Live Performances', 'DJ Services', 'Interactive Hosts', 'Online Performances', 'Performing Arts', 'Theme Development', 'Floral Arrangements', 'Balloon Decor', 'Table Settings and Linens', 'Backdrop and Stage Design', 'Room Reservations', 'Front Desk Services', 'Digital Marketing', 'Product Photography', 'Promotional Videos']; // Add your list of services here
+  
+      function showAutocomplete() {
+          var inputElement = document.getElementById('data-input');
+          var datalistElement = document.getElementById('services-list');
+  
+          datalistElement.innerHTML = ''; // Clear previous suggestions
+  
+          // Filter services that match the input value
+          var inputValue = inputElement.value.toLowerCase();
+          var matches = servicesList.filter(function (service) {
+              return service.toLowerCase().startsWith(inputValue);
+          });
+  
+          // Populate the datalist with matching services
+          matches.forEach(function (match) {
+              var option = document.createElement('option');
+              option.value = match;
+              datalistElement.appendChild(option);
+          });
+      }
+  
+      function addService() {
+          var inputElement = document.getElementById('data-input');
+          var selectedServicesDiv = document.getElementById('services_provided');
+          var errorSpan = document.getElementById('nameError');
+  
+          var newService = inputElement.value.trim();
+  
+          if (newService === '') {
+              errorSpan.textContent = 'Please enter a service.';
+              return;
+          }
+  
+          errorSpan.textContent = '';
+          inputElement.value = '';
+  
+          var existingServices = selectedServicesDiv.textContent.trim();
+  
+          if (existingServices === '') {
+              selectedServicesDiv.textContent = newService;
+          } else {
+              selectedServicesDiv.textContent = existingServices + ', ' + newService;
+          }
+      }
+  </script>
+  
+</td>
+              <td>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description<span>*</span>:</label>
+                    <textarea id="description" name="description" class="form-control" rows="4" cols="50" required></textarea>
+                <span id="descriptionError" class="error-text"></span>
+                <span class="error-text">Provide as much detail as possible to help us better understand your services and requirements.</span>
+                </div></td>
+            </tr><tr><td>
+              <span>* Required fields</span><br>
+          
+            </td><td>
+              <button  type="submit"><a class="btn2">Register</a></button>
+              <button><a href="{% url 'eventapp:providerhome' %}" class="btn2"> Back </a></button>
+          {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
+            </td></tr></form>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      
+      
+    
+<script src="{% static 'js/services.js' %}"></script>
+      
+    </div>
+    
+</div>
+</body>
+</html>

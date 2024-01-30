@@ -172,7 +172,20 @@ def gallery(request):
     return render(request, 'gallery.html')
 
 def services(request):
-    return render(request, 'services.html')
+    if request.method == 'GET':
+        service_input = request.GET.get('serviceInput', '').strip()
+        city_input = request.GET.get('cityInput', '').strip()
+        search = Service.objects.filter(category__iexact=service_input, locations__contains=city_input)
+        view_search = {'search': search}
+        services = Service.objects.all()[:6]
+        view_service = {'services': services}
+        return render(request, 'services.html', {**view_search, **view_service})
+
+    # If the form is not submitted, show all services
+    services = Service.objects.all()[:6]
+    view_service = {'services': services}
+    return render(request, 'services.html', view_service)
+
 
 
 def logout(request):
@@ -774,14 +787,28 @@ def addservices(request):
             message = f'Thank you for registering the service: {service.name} that provides {service.category} services.'
             from_email = 'eventoplanneur@gmail.com'
             recipient_list = [recipient_email]
-
             send_mail(subject, message, from_email, recipient_list)
             
             messages.success(request, "Service saved successfully")
             return redirect('eventapp:addservices')
         else:
-            messages.error(request, "Error saving the service. Please check the form.")
+            messages.error(request, form.errors)
     else:
         form = ServiceForm()
 
     return render(request, 'addservices.html', {'form': form})
+
+def viewservices(request, service_id):
+    task = get_object_or_404(Service, id=service_id)
+
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, instance=task)
+        if form.is_valid():
+            # Process the form data if it's valid
+            form.save()
+            # Redirect or render a success page
+    else:
+        # If it's a GET request, just display the form with the existing data
+        form = ServiceForm(instance=task)
+    return render(request, 'viewservices.html', {'form': form})
+

@@ -1,0 +1,401 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View service</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</head>
+<style>
+  /* Reset some default styles */
+  .rating {
+    display: inline-block;
+  }
+  
+  .rating input {
+    display: none;
+  }
+  
+  .rating label {
+    float: right;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.3s;
+  }
+  
+  .rating label:before {
+    content: '\2605';
+    font-size: 30px;
+  }
+  
+  .rating input:checked ~ label,
+  .rating label:hover,
+  .rating label:hover ~ label {
+    color: #6f00ff;
+    transition: color 0.3s;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Set a light background color */
+    color: #495057; /* Set text color */
+  }
+  a{
+    color:white;
+    text-decoration:none;
+  }
+  /* Style for the container */
+  .container {
+    margin-top: 30px;
+  }
+
+  /* Style for the form */
+  #service {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Style for form labels */
+  .form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #495057;
+  }
+
+  /* Style for form inputs */
+  .form-control {
+    width: 100%;
+    height:auto;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Style for buttons */
+  button {
+    padding: 12px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #6c757d;
+    color: white;
+    box-shadow: 0 0 10px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Style for error text */
+  .error-text {
+    color: #ff6347; /* Tomato color */
+  }
+
+  /* Style for the preview image */
+  #preview {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+
+  /* Style for the selected locations textarea */
+  #location ,#services_provided{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #6c757d;
+    border-radius: 8px;
+    margin-top: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  #locations {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #6c757d;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #495057;
+    font-size: 14px;
+    margin-top: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #locations option {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  #locations:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Additional styles for the navbar */
+  .navbar {
+    background-color: #495057;
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Style for the events container */
+  .events {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #495057;
+  }
+
+  /* Style for the footer */
+  span {
+    color: #ff6347; /* Tomato color */
+  }
+  /* Style for the services input container */
+  .services-input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  #data-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #6c757d;
+    border-radius: 8px 0 0 8px;
+    margin-right: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #add-button {
+    width: 40px;
+    padding: 12px;
+    background-color: #6c757d;
+    color: #fff;
+    border: 1px solid #6c757d;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #add-button:hover {
+    background-color: #495057;
+  }
+
+  /* Additional styles for the navbar */
+  .navbar {
+    background-color: #495057;
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Style for the events container */
+  .events {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #495057;
+  }
+
+  /* Style for the footer */
+  span {
+    color: #ff6347; /* Tomato color */
+  }
+  #service {
+    background-color: #f2f9fc; /* Light blue background */
+  }
+
+  button {
+    background-color: #007bff; /* Blue button background */
+    color: white;
+  }
+
+  #add-button {
+    background-color: #0056b3; /* Darker blue for add button */
+    border: 1px solid #0056b3;
+  }
+
+  #add-button:hover {
+    background-color: #004080; /* Darker blue on hover */
+  }
+
+  /* Update background color for the locations dropdown */
+  #locations {
+    background-color: #fff; /* White background for dropdown */
+    color: #495057;
+  }
+
+  #locations:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
+  }
+
+  /* Additional styles for the navbar */
+  .navbar {
+    background-color: #004080; /* Darker blue navbar */
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Style for the events container */
+  .events {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #495057;
+  }
+
+  /* Style for the footer */
+  span {
+    color: #ff6347; /* Tomato color */
+  }
+</style>
+
+
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'eventapp:providerhome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+    </div>
+  </nav>
+  <div class="container">
+    <div class="events">
+        <h4>Details of Service</h4>
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+        <form method="post" id="service" enctype="multipart/form-data">
+          {% csrf_token %}
+          <table>
+          <tr>
+            <td>
+              <div class="mb-3">
+              <label for="name" class="form-label">Name<span>*</span> :</label>
+              <input type="text" id="name" name="name" class="form-control" value="{{form.name.value}}" required>
+              <span id="nameError" class="error-text"></span>
+              </div>
+            </td>
+            <td>
+          <div class="mb-3">
+          <label for="category" class="form-label">Category<span>*</span> :</label>
+          <input type="text" id="category" name="category" class="form-control" value="{{form.category.value}}" required>
+          <span id="categoryError" class="error-text"></span>
+      </div>
+    </td>
+        </tr><tr>
+            <td>
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Rate us :</label><br>
+                    <div class="rating">
+                        <input value="5" name="rating" id="star5" type="radio">
+                        <label for="star5"></label>
+                        <input value="4" name="rating" id="star4" type="radio">
+                        <label for="star4"></label>
+                        <input value="3" name="rating" id="star3" type="radio">
+                        <label for="star3"></label>
+                        <input value="2" name="rating" id="star2" type="radio">
+                        <label for="star2"></label>
+                        <input value="1" name="rating" id="star1" type="radio">
+                        <label for="star1"></label>
+                      </div>
+                      
+                </div>
+            </td>
+        <td>
+          <div class="mb-3">
+              <label for="locations" class="form-label">Locations<span>*</span> :</label><br>
+              <input type="text" id="locations" name="locations"  value="{{form.locations.value}}">
+              <span id="locationsError" class="error-text"></span>
+          </div>
+      </td>
+  </tr>
+  <tr>
+
+    <td>
+      <div class="mb-3 services-container">
+          <label for="services_provided" class="form-label">Services Provided<span>*</span> :</label>
+          <input type="text" id="services_provided" name="services_provided"  value="{{form.services_provided.value}}">
+          <span id="nameError" style="color: red;"></span>
+      </div>
+  </td>
+</td>
+              <td>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description<span>*</span>:</label>
+                    <textarea type="text" id="description" name="description">{{form.description.value}}</textarea>
+                <span id="descriptionError" class="error-text"></span><br>
+                
+                </div></td>
+            </tr><tr><td>
+              <span>* Required fields</span><br>
+          
+            </td><td>
+              <button><a href="{% url 'eventapp:services' %}" class="btn2"> Back </a></button>
+          {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
+            </td></tr></form>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      
+      
+    
+<script src="{% static 'js/services.js' %}"></script>
+      
+    </div>
+    
+</div>
+</body>
+</html>

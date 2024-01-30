@@ -28,7 +28,73 @@
 		<link rel="stylesheet" href="{% static 'css/slick-theme.css' %}" type="text/css">
 
     </head>
-	
+	<style>
+			.card {
+			  width: calc(33.33% - 40px);
+			  margin: 20px;
+			  border: 1px solid #ddd;
+			  border-radius: 10px;
+			  overflow: hidden;
+			  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			  transition: box-shadow 0.3s ease;
+			  display: inline-block;
+			  vertical-align: top;
+			  box-sizing: border-box;
+			  padding: 26px 25px 24px 15px;
+			  background-color: #ff545a; /* White background */
+			}
+		  
+			.card:hover {
+			  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+			}
+		  
+			.card-img-top {
+			  max-height: 200px;
+			  object-fit: cover;
+			  border-top-left-radius: 10px;
+			  border-top-right-radius: 10px;
+			}
+		  
+			.card-body {
+			  padding: 1.25rem;
+			  background-color: #f5f5f5; /* Light gray background */
+			}
+		  
+			.card-title {
+			  font-size: 1.5rem;
+			  margin-bottom: 1rem;
+			  color: #333;
+			}
+		  
+			.card-text {
+			  font-size: 14px;
+			  color: #555;
+			  font-family: 'Arial', sans-serif; /* Change the font family */
+            
+			}
+		  
+			.card-text strong {
+			  font-weight: bold;
+			  color: #007bff;
+			}
+		  
+			.btn {
+			  background-color: #007bff;
+			  color: #fff;
+			  border: none;
+			  padding: 0.5rem 1rem;
+			  border-radius: 5px;
+			  text-decoration: none;
+			  cursor: pointer;
+			  transition: background-color 0.3s ease, color 0.3s ease;
+			}
+		  
+			.btn:hover {
+			  background-color: #0056b3;
+			  color: #fff;
+			}
+
+	</style>	
 	<body>
 		
 		<section class="top-area">
@@ -74,20 +140,90 @@
 						Discover Your Ideal Venue, Savor Exquisite Cuisine, Illuminate Your Events, and Amplify the Moment <br>- All with a Single Click
 					</p>
 				</div>
-				<form action="" method="GET">
+				<form method="GET" action="{% url 'eventapp:services' %}">
 				<div class="welcome-hero-serch-box">
 					<div class="welcome-hero-form">
 						<div class="single-welcome-hero-form">
 							<h3>what?</h3>
-								<input type="text" placeholder="Ex: Venue, Accomodation, food, vehicle" />
-							
+							<input type="text" autocomplete="off" name="serviceInput" id="serviceInput" list="serviceOptions" placeholder="Ex: Venue, Accommodation, Food, Vehicle">
+
+<!-- Datalist for dropdown options -->
+<datalist id="serviceOptions">
+    <option value="catering">
+    <option value="venue">
+    <option value="transportation">
+    <option value="sound and lighting">
+    <option value="entertainment">
+    <option value="decoration">
+    <option value="accommodation">
+    <option value="event staffing">
+    <option value="promotion">
+    <option value="photography and videography">
+</datalist>
+
+<script>
+// Get the input field
+const inputField = document.getElementById("serviceInput");
+
+// Event listener for input changes
+inputField.addEventListener("input", function() {
+    const userInput = inputField.value.toLowerCase();
+    
+    // Filter services based on user input
+    const options = document.getElementById("serviceOptions").options;
+    for (let i = 0; i < options.length; i++) {
+        if (options[i].value.toLowerCase().includes(userInput)) {
+            options[i].removeAttribute("hidden");
+        } else {
+            options[i].setAttribute("hidden", "true");
+        }
+    }
+});
+</script>	
 							<div class="welcome-hero-form-icon">
 								<i class="flaticon-list-with-dots"></i>
 							</div>
 						</div>
 						<div class="single-welcome-hero-form">
 							<h3>location</h3>
-								<input type="text" placeholder="Ex: Kochi, Trivandrum, Kottayam, Idukki" />
+							<input type="text" autocomplete="off" id="cityInput" name="cityInput" list="cityOptions" placeholder="Ex: Kochi, Trivandrum, Kottayam, Idukki">
+
+							<!-- Datalist for dropdown options -->
+							<datalist id="cityOptions">
+								<option value="trivandrum">
+                <option value="kochi">
+                <option value="kozhikode">
+                <option value="thrissur">
+                <option value="malappuram">
+                <option value="kollam">
+                <option value="alappuzha">
+              <option value="kottayam">
+              <option value="palakkad">
+              <option value="kollam">
+              <option value="wayanad">
+              <option value="idukki">
+							</datalist>
+							
+							<script>
+							// Get the input field
+							const city = document.getElementById("cityInput");
+							
+							// Event listener for input changes
+							city.addEventListener("input", function() {
+								const userInput = city.value.toLowerCase();
+								
+								// Filter cities based on user input
+								const options = document.getElementById("cityOptions").options;
+								for (let i = 0; i < options.length; i++) {
+									if (options[i].value.toLowerCase().includes(userInput)) {
+										options[i].removeAttribute("hidden");
+									} else {
+										options[i].setAttribute("hidden", "true");
+									}
+								}
+							});
+							</script>
+							
 							
 							<div class="welcome-hero-form-icon">
 								<i class="flaticon-gps-fixed-indicator"></i>
@@ -95,7 +231,7 @@
 						</div>
 					</div>
 					<div class="welcome-hero-serch">
-						<button class="welcome-hero-btn" type="submit">
+						<button class="welcome-hero-btn" type="submit" >
 							 search  <i data-feather="search"></i> 
 						</button>
 					</div>
@@ -105,7 +241,35 @@
 
 		</section><!--/.welcome-hero-->
 		<!--welcome-hero end -->
-
+		<section class="welcome-hero" style="background-color: white">
+			<div class="container">
+				<div class="row">
+					{% if search %}
+						{% for i in search %}
+							<div class="col-md-4">
+								<article>
+									<div class="article-wrapper">
+										<figure>
+											<img src="{{ i.image.url }}" class="card-img-top" alt="Service Image">
+										</figure>
+										<div class="article-body">
+											<h2>{{ i.name }}</h2><br>
+											<a href="{% url 'viewservices' i.id %}" class="read-more">
+												Read more</a>
+										</div>
+									</div>
+								</article>
+							</div>
+						{% endfor %}
+					{% else %}
+						<div class="col-md-12">
+							<p style="color:white">No Results Found</p>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+		
 		<!--list-topics start -->
 		<section id="list-topics" class="list-topics">
 			<div class="container">
@@ -116,7 +280,7 @@
 								<div class="single-list-topics-icon">
 									<i class="flaticon-restaurant"></i>
 								</div>
-								<h2><a href="#">Catering</a></h2>
+								<h2><a>Catering</a></h2>
 								<p>150 listings</p>
 							</div>
 						</li>
@@ -125,7 +289,7 @@
 								<div class="single-list-topics-icon">
 									<i class="flaticon-travel"></i>
 								</div>
-								<h2><a href="#">Venues</a></h2>
+								<h2><a >Venues</a></h2>
 								<p>214 listings</p>
 							</div>
 						</li>
@@ -134,7 +298,7 @@
 								<div class="single-list-topics-icon">
 									<i class="flaticon-building"></i>
 								</div>
-								<h2><a href="#">Accomodations</a></h2>
+								<h2><a >Accomodations</a></h2>
 								<p>185 listings</p>
 							</div>
 						</li>
@@ -152,7 +316,7 @@
 								<div class="single-list-topics-icon">
 									<i class="flaticon-transport"></i>
 								</div>
-								<h2><a href="#">Transportation</a></h2>
+								<h2><a >Transportation</a></h2>
 								<p>120 listings</p>
 							</div>
 						</li> 
@@ -161,63 +325,7 @@
 			</div><!--/.container-->
 
 		</section><!--/.list-topics-->
-		<!--list-topics end-->
-
-		<!--works start -->
-		<!--
-		<section id="works" class="works">
-			<div class="container">
-				
-				<div class="works-content">
-					<div class="row">
-						<div class="col-md-4 col-sm-6">
-							<div class="single-how-works">
-								<div class="single-how-works-icon">
-									<i class="flaticon-lightbulb-idea"></i>
-								</div>
-								<h2><a href="#">choose <span> what to</span> do</a></h2>
-								<p>
-									Lorem ipsum dolor sit amet, consecte adipisicing elit, sed do eiusmod tempor incididunt ut laboremagna aliqua. 
-								</p>
-								<button class="welcome-hero-btn how-work-btn" onclick="window.location.href='#'">
-									read more
-								</button>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6">
-							<div class="single-how-works">
-								<div class="single-how-works-icon">
-									<i class="flaticon-networking"></i>
-								</div>
-								<h2><a href="#">find <span> what you want</span></a></h2>
-								<p>
-									Lorem ipsum dolor sit amet, consecte adipisicing elit, sed do eiusmod tempor incididunt ut laboremagna aliqua. 
-								</p>
-								<button class="welcome-hero-btn how-work-btn" onclick="window.location.href='#'">
-									read more
-								</button>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6">
-							<div class="single-how-works">
-								<div class="single-how-works-icon">
-									<i class="flaticon-location-on-road"></i>
-								</div>
-								<h2><a href="#">explore <span> amazing</span> place</a></h2>
-								<p>
-									Lorem ipsum dolor sit amet, consecte adipisicing elit, sed do eiusmod tempor incididunt ut laboremagna aliqua. 
-								</p>
-								<button class="welcome-hero-btn how-work-btn" onclick="window.location.href='#'">
-									read more
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div><!--/.container-->
 		
-		</section><!--/.works-->
-		<!--works end --> -->
 
 		<!-- statistics strat -->
 		<section id="statistics"  class="statistics">
@@ -265,409 +373,194 @@
 			<div class="container">
 				<div class="section-header">
 					<h2>explore</h2>
-					
-				</div><!--/.section-header-->
-				<div class="explore-content">
-					<div class="row">
-						<div class=" col-md-4 col-sm-6">
-							<div class="single-explore-item">
-								<div class="single-explore-img">
-									<img src="{% static '' %}" alt="explore image">
-									<div class="single-explore-img-info">
-										<button onclick="window.location.href='#'">best rated</button>
-										<div class="single-explore-image-icon-box">
-											<ul>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-arrows-alt"></i>
-													</div>
-												</li>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-bookmark-o"></i>
-													</div>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="single-explore-txt bg-theme-1">
-									<h2><a href="#">tommy helfinger bar</a></h2>
-									<p class="explore-rating-price">
-										<span class="explore-rating">5.0</span>
-										<a href="#"> 10 ratings</a> 
-										<span class="explore-price-box">
-											form
-											<span class="explore-price">5$-300$</span>
-										</span>
-										 <a href="#">resturent</a>
-									</p>
-									<div class="explore-person">
-										<div class="row">
-											<div class="col-sm-2">
-												<div class="explore-person-img">
-													<a href="#">
-														<img src="{% static '' %}" alt="explore person">
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-10">
-												<p>
-													Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incid ut labore et dolore magna aliqua.... 
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="explore-open-close-part">
-										<div class="row">
-											<div class="col-sm-5">
-												<button class="close-btn" onclick="window.location.href='#'">close now</button>
-											</div>
-											<div class="col-sm-7">
-												<div class="explore-map-icon">
-													<a href="#"><i data-feather="map-pin"></i></a>
-													<a href="#"><i data-feather="upload"></i></a>
-													<a href="#"><i data-feather="heart"></i></a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6">
-							<div class="single-explore-item">
-								<div class="single-explore-img">
-									<img src="{% static '' %}" alt="explore image">
-									<div class="single-explore-img-info">
-										<button onclick="window.location.href='#'">featured</button>
-										<div class="single-explore-image-icon-box">
-											<ul>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-arrows-alt"></i>
-													</div>
-												</li>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-bookmark-o"></i>
-													</div>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="single-explore-txt bg-theme-2">
-									<h2><a href="#">swim and dine resort</a></h2>
-									<p class="explore-rating-price">
-										<span class="explore-rating">4.5</span>
-										<a href="#"> 8 ratings</a> 
-										<span class="explore-price-box">
-											form
-											<span class="explore-price">50$-500$</span>
-										</span>
-										 <a href="#">hotel</a>
-									</p>
-									<div class="explore-person">
-										<div class="row">
-											<div class="col-sm-2">
-												<div class="explore-person-img">
-													<a href="#">
-														<img src="{% static '' %}" alt="explore person">
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-10">
-												<p>
-													Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incid ut labore et dolore magna aliqua.... 
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="explore-open-close-part">
-										<div class="row">
-											<div class="col-sm-5">
-												<button class="close-btn open-btn" onclick="window.location.href='#'">open now</button>
-											</div>
-											<div class="col-sm-7">
-												<div class="explore-map-icon">
-													<a href="#"><i data-feather="map-pin"></i></a>
-													<a href="#"><i data-feather="upload"></i></a>
-													<a href="#"><i data-feather="heart"></i></a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6">
-							<div class="single-explore-item">
-								<div class="single-explore-img">
-									<img src="{% static '' %}" alt="explore image">
-									<div class="single-explore-img-info">
-										<button onclick="window.location.href='#'">best rated</button>
-										<div class="single-explore-image-icon-box">
-											<ul>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-arrows-alt"></i>
-													</div>
-												</li>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-bookmark-o"></i>
-													</div>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="single-explore-txt bg-theme-3">
-									<h2><a href="#">europe tour</a></h2>
-									<p class="explore-rating-price">
-										<span class="explore-rating">5.0</span>
-										<a href="#"> 15 ratings</a> 
-										<span class="explore-price-box">
-											form
-											<span class="explore-price">5k$-10k$</span>
-										</span>
-										 <a href="#">destination</a>
-									</p>
-									<div class="explore-person">
-										<div class="row">
-											<div class="col-sm-2">
-												<div class="explore-person-img">
-													<a href="#">
-														<img src="{% static '' %}" alt="explore person">
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-10">
-												<p>
-													Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incid ut labore et dolore magna aliqua.... 
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="explore-open-close-part">
-										<div class="row">
-											<div class="col-sm-5">
-												<button class="close-btn" onclick="window.location.href='#'">close now</button>
-											</div>
-											<div class="col-sm-7">
-												<div class="explore-map-icon">
-													<a href="#"><i data-feather="map-pin"></i></a>
-													<a href="#"><i data-feather="upload"></i></a>
-													<a href="#"><i data-feather="heart"></i></a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class=" col-md-4 col-sm-6">
-							<div class="single-explore-item">
-								<div class="single-explore-img">
-									<img src="{% static '' %}" alt="explore image">
-									<div class="single-explore-img-info">
-										<button onclick="window.location.href='#'">most view</button>
-										<div class="single-explore-image-icon-box">
-											<ul>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-arrows-alt"></i>
-													</div>
-												</li>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-bookmark-o"></i>
-													</div>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="single-explore-txt bg-theme-4">
-									<h2><a href="#">banglow with swiming pool</a></h2>
-									<p class="explore-rating-price">
-										<span class="explore-rating">5.0</span>
-										<a href="#"> 10 ratings</a> 
-										<span class="explore-price-box">
-											form
-											<span class="explore-price">10k$-15k$</span>
-										</span>
-										 <a href="#">real estate</a>
-									</p>
-									<div class="explore-person">
-										<div class="row">
-											<div class="col-sm-2">
-												<div class="explore-person-img">
-													<a href="#">
-														<img src="{% static '' %}" alt="explore person">
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-10">
-												<p>
-													Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incid ut labore et dolore magna aliqua.... 
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="explore-open-close-part">
-										<div class="row">
-											<div class="col-sm-5">
-												<button class="close-btn" onclick="window.location.href='#'">close now</button>
-											</div>
-											<div class="col-sm-7">
-												<div class="explore-map-icon">
-													<a href="#"><i data-feather="map-pin"></i></a>
-													<a href="#"><i data-feather="upload"></i></a>
-													<a href="#"><i data-feather="heart"></i></a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6">
-							<div class="single-explore-item">
-								<div class="single-explore-img">
-									<img src="{% static '' %}" alt="explore image">
-									<div class="single-explore-img-info">
-										<button onclick="window.location.href='#'">featured</button>
-										<div class="single-explore-image-icon-box">
-											<ul>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-arrows-alt"></i>
-													</div>
-												</li>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-bookmark-o"></i>
-													</div>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="single-explore-txt bg-theme-2">
-									<h2><a href="#">vintage car expo</a></h2>
-									<p class="explore-rating-price">
-										<span class="explore-rating">4.2</span>
-										<a href="#"> 8 ratings</a> 
-										<span class="explore-price-box">
-											form
-											<span class="explore-price">500$-1200$</span>
-										</span>
-										 <a href="#">automotion</a>
-									</p>
-									<div class="explore-person">
-										<div class="row">
-											<div class="col-sm-2">
-												<div class="explore-person-img">
-													<a href="#">
-														<img src="{% static '' %}" alt="explore person">
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-10">
-												<p>
-													Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incid ut labore et dolore magna aliqua.... 
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="explore-open-close-part">
-										<div class="row">
-											<div class="col-sm-5">
-												<button class="close-btn open-btn" onclick="window.location.href='#'">open now</button>
-											</div>
-											<div class="col-sm-7">
-												<div class="explore-map-icon">
-													<a href="#"><i data-feather="map-pin"></i></a>
-													<a href="#"><i data-feather="upload"></i></a>
-													<a href="#"><i data-feather="heart"></i></a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6">
-							<div class="single-explore-item">
-								<div class="single-explore-img">
-									<img src="{% static '' %}" alt="explore image">
-									<div class="single-explore-img-info">
-										<button onclick="window.location.href='#'">best rated</button>
-										<div class="single-explore-image-icon-box">
-											<ul>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-arrows-alt"></i>
-													</div>
-												</li>
-												<li>
-													<div class="single-explore-image-icon">
-														<i class="fa fa-bookmark-o"></i>
-													</div>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="single-explore-txt bg-theme-5">
-									<h2><a href="#">thailand tour</a></h2>
-									<p class="explore-rating-price">
-										<span class="explore-rating">5.0</span>
-										<a href="#"> 15 ratings</a> 
-										<span class="explore-price-box">
-											form
-											<span class="explore-price">5k$-10k$</span>
-										</span>
-										 <a href="#">destination</a>
-									</p>
-									<div class="explore-person">
-										<div class="row">
-											<div class="col-sm-2">
-												<div class="explore-person-img">
-													<a href="#">
-														<img src="{% static '' %}" alt="explore person">
-													</a>
-												</div>
-											</div>
-											<div class="col-sm-10">
-												<p>
-													Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incid ut labore et dolore magna aliqua.... 
-												</p>
-											</div>
-										</div>
-									</div>
-									<div class="explore-open-close-part">
-										<div class="row">
-											<div class="col-sm-5">
-												<button class="close-btn" onclick="window.location.href='#'">close now</button>
-											</div>
-											<div class="col-sm-7">
-												<div class="explore-map-icon">
-													<a href="#"><i data-feather="map-pin"></i></a>
-													<a href="#"><i data-feather="upload"></i></a>
-													<a href="#"><i data-feather="heart"></i></a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
-			</div><!--/.container-->
+				{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for i in services %}
+            <div class="col-md-4">
+                <article>
+                    <div class="article-wrapper">
+                        <figure>
+                            <img src="{{ i.image.url }}" class="card-img-top" alt="Service Image">
+                        </figure>
+                        <div class="article-body">
+                            <h2>{{ i.name }}</h2><br>
+                            <p>Category: {{ i.category }}<br></p>
+                            <p>Location(s): {{ i.locations }}<br></p>
+                            <!-- You can add more details as needed -->
+                            <a href="{% url 'viewservices' i.id %}" class="read-more">
+                                Read more <span class="sr-only">about {{ i.name }}</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+<style>
+article {
+	--img-scale: 1.001;
+	--title-color: black;
+	--link-icon-translate: -20px;
+	--link-icon-opacity: 0;
+	position: relative;
+	border-radius: 16px;
+	box-shadow: none;
+	background: #fff;
+	transform-origin: center;
+	transition: all 0.4s ease-in-out;
+	overflow: hidden;
+  }
+  
+  article a::after {
+	position: absolute;
+	inset-block: 0;
+	inset-inline: 0;
+	cursor: pointer;
+	content: "";
+  }
+  
+  /* basic article elements styling */
+  article h2 {
+	margin: 0 0 18px 0;
+	font-family: "Bebas Neue", cursive;
+	font-size: 1.9rem;
+	letter-spacing: 0.06em;
+	color: var(--title-color);
+	transition: color 0.3s ease-out;
+  }
+  
+  figure {
+	margin: 0;
+	padding: 0;
+	width:100%;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+  }
+  
+  article img {
+	max-width: 100%;
+	transform-origin: center;
+	transform: scale(var(--img-scale));
+	transition: transform 0.4s ease-in-out;
+  }
+  
+  .article-body {
+	padding: 24px;
+  }
+  
+  article a {
+	display: inline-flex;
+	align-items: center;
+	text-decoration: none;
+	color: #28666e;
+  }
+  
+  article a:focus {
+	outline: 1px dotted #28666e;
+  }
+  
+  article a .icon {
+	min-width: 24px;
+	width: 24px;
+	height: 24px;
+	margin-left: 5px;
+	transform: translateX(var(--link-icon-translate));
+	opacity: var(--link-icon-opacity);
+	transition: all 0.3s;
+  }
+  
+  /* using the has() relational pseudo selector to update our custom properties */
+  article:has(:hover, :focus) {
+	--img-scale: 1.1;
+	--title-color: #28666e;
+	--link-icon-translate: 0;
+	--link-icon-opacity: 1;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  }
+  
+  
+  /************************ 
+  Generic layout (demo looks)
+  **************************/
+  
+  *,
+  *::before,
+  *::after {
+	box-sizing: border-box;
+  }
+  
+  body {
+	margin: 0;
+	padding: 48px 0;
+	font-family: "Figtree", sans-serif;
+	font-size: 1.2rem;
+	line-height: 1.6rem;
+	background-image: linear-gradient(45deg, #7c9885, #b5b682);
+	min-height: 100vh;
+  }
+  
+  .articles {
+	display: grid;
+	max-width: 1200px;
+	margin-inline: auto;
+	padding-inline: 24px;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: 24px;
+  }
+  
+  @media screen and (max-width: 960px) {
+	article {
+	  container: card/inline-size;
+	}
+	.article-body p {
+	  display: none;
+	}
+  }
+  
+  @container card (min-width: 380px) {
+	.article-wrapper {
+	  display: grid;
+	  grid-template-columns: 100px 1fr;
+	  gap: 16px;
+	}
+	.article-body {
+	  padding-left: 0;
+	}
+	figure {
+	  width: 100%;
+	  height: 100%;
+	  overflow: hidden;
+	}
+	figure img {
+	  height: 100%;
+	  aspect-ratio: 1;
+	  object-fit: cover;
+	}
+  }
+  
+  .sr-only:not(:focus):not(:active) {
+	clip: rect(0 0 0 0); 
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap; 
+	width: 1px;
+  }
+</style>
+				
 
 		</section><!--/.explore-->
 		<!--explore end -->
@@ -682,8 +575,7 @@
 					<div class="row">
 						<div class="col-sm-5">
 							<p>
-								&copy;copyright. designed and developed by <a href="https://www.themesine.com/">themesine</a>
-							</p><!--/p-->
+								&copy;2024 Service Provider Dashboard. All rights reserved.</p><!--/p-->
 						</div>
 						<div class="col-sm-7">
 							<div class="footer-social">

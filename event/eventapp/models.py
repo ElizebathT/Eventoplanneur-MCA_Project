@@ -163,12 +163,26 @@ class Feedback(models.Model):
 class Service(models.Model):
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=100)
-    start_range = models.IntegerField()
-    end_range = models.IntegerField()
     image = models.ImageField(upload_to='service_images/')
     locations = models.TextField(null=True)
     services_provided = models.TextField()
     description = models.TextField()
+    rating = models.IntegerField(default=0,null=True)
+    booked_dates = models.ManyToManyField('BookedDate', blank=True)
+    def add_booked_date(self, new_date):
+        # Add the new date to the booked_dates relationship
+        booked_date_obj, created = BookedDate.objects.get_or_create(date=new_date)
+        self.booked_dates.add(booked_date_obj)
+        self.save()
+
+        # Return the updated booked dates as a string
+        return ', '.join(str(date) for date in self.booked_dates.all())
 
     def __str__(self):
         return self.name
+
+class BookedDate(models.Model):
+    date = models.DateField()
+
+    def __str__(self):
+        return str(self.date)
