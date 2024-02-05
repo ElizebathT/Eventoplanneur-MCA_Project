@@ -4,41 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>View service</title>
+  <title>Update</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
+    
 </head>
 <style>
-  
-  .rating {
-    display: inline-block;
-  }
-  
-  .rating input {
-    display: none;
-  }
-  
-  .rating label {
-    float: right;
-    cursor: pointer;
-    color: #ccc;
-    transition: color 0.3s;
-  }
-  
-  .rating label:before {
-    content: '\2605';
-    font-size: 30px;
-  }
-  
-  .rating input:checked ~ label,
-  .rating label:hover,
-  .rating label:hover ~ label {
-    color: #6f00ff;
-    transition: color 0.3s;
-  }
-  
+  /* Reset some default styles */
   body {
     margin: 0;
     padding: 0;
@@ -117,7 +89,7 @@
   }
 
   /* Style for the selected locations textarea */
-  #location ,#services_provided,#description,#capacity{
+  #location ,#services_provided, #booked_dates{
     width: 100%;
     padding: 12px;
     border: 1px solid #6c757d;
@@ -184,7 +156,7 @@
     width: 100%;
   }
 
-  #data-input {
+  #data-input, #date-input{
     flex: 1;
     padding: 12px;
     border: 1px solid #6c757d;
@@ -326,55 +298,20 @@
             <td>
               <div class="mb-3">
               <label for="name" class="form-label">Name<span>*</span> :</label>
-              <input type="text" id="name" name="name" class="form-control" value="{{form.name.value}}" required>
+              <input type="text" id="name" name="name" class="form-control" value="{{form.name.value}}"required>
               <span id="nameError" class="error-text"></span>
               </div>
             </td>
             <td>
           <div class="mb-3">
-          <label for="category" class="form-label">Category<span>*</span> :</label>
-          <input type="text" id="category" name="category" class="form-control" value="{{form.category.value}}" required>
-          <span id="categoryError" class="error-text"></span>
+            <label for="category" class="form-label">Category<span>*</span> :</label>
+            <input type="text" id="category" name="category" class="form-control" value="{{form.category.value}}" required>
+            <span id="categoryError" class="error-text"></span>
       </div>
     </td>
-        </tr><tr>
-          <td>
-            <div class="mb-3">
-                <label for="locations" class="form-label">Locations<span>*</span> :</label><br>
-                <input type="text" id="locations" name="locations"  value="{{form.locations.value}}">
-                <span id="locationsError" class="error-text"></span>
-            </div>
-        </td>
-        <td>
-          <div class="mb-3">
-              <label for="capacity" class="form-label">Maximum Capacity<span>*</span> :</label><br>
-              <input type="text" id="capacity" name="capacity"  value="{{form.capacity.value}}">
-              <span id="capacityError" class="error-text"></span>
-          </div>
-      </td>
-  </tr>
-  <tr>
-
-    <td>
-      <div class="mb-3 services-container">
-          <label for="services_provided" class="form-label">Services Provided<span>*</span> :</label>
-          <input type="text" id="services_provided" name="services_provided"  value="{{form.services_provided.value}}">
-          <span id="nameError" style="color: red;"></span>
-      </div>
-  </td>
-</td>
-              <td>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description<span>*</span>:</label>
-                    <textarea type="text" id="description" name="description">{{form.description.value}}</textarea>
-                <span id="descriptionError" class="error-text"></span><br>
-                
-                </div></td>
-            </tr><tr><td>
-              <span>* Required fields</span><br>
-          
-            </td><td>
-              <button><a href="{% url 'eventapp:services' %}" class="btn2"> Back </a></button>
+        </tr>
+              <button  type="submit"><a class="btn2">Save</a></button>
+              <button><a href="{% url 'eventapp:providerhome' %}" class="btn2"> Back </a></button>
           {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
             </td></tr></form>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

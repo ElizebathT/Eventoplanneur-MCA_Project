@@ -137,7 +137,7 @@
       <p>Experience seamless event planning with our comprehensive range of services. From conference management to social events, we've got you covered.
     Our team of dedicated event professionals is here to help you create unforgettable moments that leave a lasting impression.
     Ready to make your event a success? Book your desired service now and let us bring your vision to life!</p>
-    <button id="book-service-btn" class="btn">Book a Service</button>
+    <button id="book-service-btn" class="btn"><a href="{% url 'eventapp:services' %}">Book a Service</a></button>
     </div>
   </section>
   <section id="services" class="our-services-section">
@@ -162,6 +162,7 @@
           <h3 class="service-title">Venue Booking</h3>
           <p class="service-description">Host engaging webinars that connect and educate your audience.</p>
         </div>
+        <button id="book-service-btn" class="btn"><a href="{% url 'eventapp:services' %}">View all</a></button>
       </div>
     </div>
   </section>

@@ -17,4 +17,5 @@ urlpatterns = [
     path('delete_conference/<int:del_id>',views.delete_conference,name='delete_conference'),
     path('payment/<int:pay_id>', views.payment, name='payment'),
     path('viewservices/<int:service_id>',views.viewservices,name='viewservices'),
+    path('availability/<int:service_id>',views.availability,name='availability'),
 ]

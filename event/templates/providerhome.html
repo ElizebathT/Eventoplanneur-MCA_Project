@@ -87,6 +87,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#contact">Contact</a>
                 </li>
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                    
+                    <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+                    {% endif %}
+                  </li>
             </ul>
         </div>
     </nav>
@@ -125,7 +131,9 @@
             </div>
         </div>
     </div>
-
+    {% for i in service %}
+    <p class="card-text">Company: {{ i.name }}<br><br></p>
+    {% endfor %}
     <!-- Footer -->
     <footer>
         <p>&copy; 2024 Service Provider Dashboard. All rights reserved.</p>

@@ -103,7 +103,7 @@ def verify(request):
         user.is_verified = True
         user.verification_token = None
         user.save()
-        return redirect('/')  # Redirect to login page after successful verification
+        return redirect('eventapp:login')  # Redirect to login page after successful verification
     else:
         return render(request, 'invalid_token.html')  # Handle invalid token
     
@@ -165,8 +165,12 @@ def admindash(request):
 def attendeehome(request):
     return render(request, 'attendeehome.html')
 
+@login_required
 def providerhome(request):
-    return render(request, 'providerhome.html')
+    orgs=request.user
+    service=Service.objects.filter(org_user=orgs)
+    context = {'service': service}
+    return render(request, 'providerhome.html', context)
 
 def gallery(request):
     return render(request, 'gallery.html')
@@ -285,47 +289,7 @@ def register_webinar(request):
                 message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} from {webinar.start_time} to {webinar.end_time}.'
                 from_email = 'eventoplanneur@gmail.com'  # Replace with your email address
                 recipient_list = [recipient_email]  # Use the organizer's email or another recipient
-
                 send_mail(subject, message, from_email, recipient_list)
-
-            
-                # webinar_link = 'http://127.0.0.1:8000/'
-                # matching_colleges = AICTE.objects.filter(departments='5')
-                
-                # for i in matching_colleges:
-                #     college = EventOrganizer.objects.filter(aicte=i.aicte_id)
-                #     for j in college:
-                #         subject = f'Upcoming Webinar: {webinar.title}'
-                #         message = f'Hello,\n\nThere is an upcoming webinar that you may be interested in: {webinar.title} on {webinar.date} at {webinar.time}.\n\nYou can find more details and register for the webinar here: {webinar_link}.\nRegister before:{webinar.deadline}\n\nPoster Link: {webinar.poster}'
-                #         from_email = 'elizatom9@gmail.com'  # Replace with your email address
-                #         recipient_list = [j.email]  # Use the college's email or another recipient
-
-                # send_mail(subject, message, from_email, recipient_list)
-
-
-
-                # interested_users = ['elizebaththomasv@gmail.com', 'elizatom9@gmail.com']  # Replace with actual email addresses
-                # webinar_link = 'http://127.0.0.1:8000/'  # Replace with the actual webinar details page URL
-                # email_subject = f'Upcoming Webinar: {webinar.title}'
-                # email_message = f'Hello,\n\nThere is an upcoming webinar that you may be interested in: {webinar.title} on {webinar.date} at {webinar.time}.\n\nYou can find more details and register for the webinar here: {webinar_link}.\nRegister before:{webinar.deadline}\n\nPoster Link: {webinar.poster}'
-                # from_email = 'elizatom9@gmail.com' 
-                # send_mail(email_subject, email_message, from_email, interested_users)
-
-                # Assuming this is the hosting department
-                # matching_colleges = AICTE.objects.filter(departments=hosting_department)
-
-                # # Find matching colleges based on specified programs
-                # specified_programs = webinar.programs_offered.all()
-                # matching_colleges |= AICTE.objects.filter(programs_offered__in=specified_programs)
-
-                # # Send emails to matching colleges
-                # for college in matching_colleges:
-                #     subject = 'Webinar Notification'
-                #     message = f'There is an upcoming webinar: {webinar.title} on {webinar.date} at {webinar.time} that may be of interest to your college. You can find more details and register for the webinar here: {webinar_link}'
-                #     from_email = 'your@email.com'  # Replace with your email address
-                #     recipient_list = [college.email]  # Use the college's email or another recipient
-
-                #     send_mail(subject, message, from_email, recipient_list)
 
                 messages.success(request, "Webinar saved successfully")
                 return redirect('eventapp:register_webinar')
@@ -812,3 +776,16 @@ def viewservices(request, service_id):
         form = ServiceForm(instance=task)
     return render(request, 'viewservices.html', {'form': form})
 
+def availability(request, service_id):
+    task = get_object_or_404(Service, id=service_id)
+
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, instance=task)
+        if form.is_valid():
+            # Process the form data if it's valid
+            form.save()
+            # Redirect or render a success page
+    else:
+        # If it's a GET request, just display the form with the existing data
+        form = ServiceForm(instance=task)
+    return render(request, 'availability.html', {'form': form})

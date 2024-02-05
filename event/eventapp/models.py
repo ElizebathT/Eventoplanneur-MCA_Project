@@ -168,6 +168,8 @@ class Service(models.Model):
     services_provided = models.TextField()
     description = models.TextField()
     rating = models.IntegerField(default=0,null=True)
+    capacity = models.IntegerField(null=True)
+    org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
     booked_dates = models.ManyToManyField('BookedDate', blank=True)
     def add_booked_date(self, new_date):
         # Add the new date to the booked_dates relationship
