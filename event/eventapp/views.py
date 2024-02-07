@@ -774,7 +774,7 @@ def viewservices(request, service_id):
     else:
         # If it's a GET request, just display the form with the existing data
         form = ServiceForm(instance=task)
-    return render(request, 'viewservices.html', {'form': form})
+    return render(request, 'viewservices.html', {'form': form,'service_id': service_id})
 
 def availability(request, service_id):
     task = get_object_or_404(Service, id=service_id)
@@ -789,3 +789,69 @@ def availability(request, service_id):
         # If it's a GET request, just display the form with the existing data
         form = ServiceForm(instance=task)
     return render(request, 'availability.html', {'form': form})
+
+from .models import Service, BookService
+from .forms import ServiceForm, BookServiceForm
+
+def book_services(request, service_id):
+    service_task = get_object_or_404(Service, id=service_id)
+    service_form = ServiceForm(instance=service_task)
+    location_values = service_task.locations.split(',')
+    services_required = service_task.services_provided.split(',')
+
+    book_service_form = BookServiceForm(request.POST or None)
+
+    if request.method == 'POST':
+        if book_service_form.is_valid():
+            # Create a new BookService instance
+            book_service = book_service_form.save(commit=False)
+            
+            # Associate it with the Service instance
+            book_service.service = service_task
+            book_service.org_user = request.user
+            # Save the BookService instance
+            book_service.save()
+            
+            messages.success(request, "Service booked successfully")
+            # Redirect or render a success page
+        else:
+            # Handle the case where the form is not valid
+            messages.error(request, book_service_form.errors)
+
+    return render(request, 'book_services.html', {
+        'service_form': service_form,
+        'book_service_form': book_service_form,
+        'location_values': location_values,
+        'services_required': services_required,
+        'service_id': service_id
+    })
+
+def view_bookings(request):
+    current_user = request.user
+    
+    # Filter BookService instances where the org_user of the associated service is the current user
+    booked_services = BookService.objects.filter(service__org_user=current_user)
+
+    # Get a list of unique org_users from booked_services
+    unique_org_users = booked_services.values_list('org_user', flat=True).distinct()
+
+    # Filter EventOrganizer objects for the unique org_users
+    organizer = EventOrganizer.objects.filter(org_user__in=unique_org_users)
+
+    return render(request, 'view_bookings.html', {'booked_services': booked_services, 'organizer': organizer})
+
+def bookings(request):
+    current_user = request.user
+    booking_instances = BookService.objects.filter(org_user=current_user)
+    return render(request, 'bookings.html', {'booking_instances': booking_instances})
+
+def approve_booking(request, booking_id):
+    booking_instance = get_object_or_404(BookService, pk=booking_id)
+    booking_instance.status = "approved"
+    booking_instance.save()
+    return redirect('eventapp:view_bookings')
+def reject_booking(request, booking_id):
+    booking_instance = get_object_or_404(BookService, pk=booking_id)
+    booking_instance.status = "rejected"
+    booking_instance.save()
+    return redirect('eventapp:view_bookings')

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>View service</title>
+  <title>Book service</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -117,7 +117,7 @@
   }
 
   /* Style for the selected locations textarea */
-  #location ,#services_provided,#description,#capacity{
+  #location ,#services_provided,#description,#capacity,#participants,#budget{
     width: 100%;
     padding: 12px;
     border: 1px solid #6c757d;
@@ -311,7 +311,7 @@
   </nav>
   <div class="container">
     <div class="events">
-        <h4>Details of Service</h4>
+        <h4>Book Service</h4>
         {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -319,67 +319,132 @@
         {% endfor %}
     </ul>
 {% endif %}
-        <form method="post" id="service" enctype="multipart/form-data">
+        <form method="post" id="service" enctype="multipart/form-data" action="{% url 'book_services' service_id %}">
           {% csrf_token %}
           <table>
           <tr>
             <td>
               <div class="mb-3">
               <label for="name" class="form-label">Name<span>*</span> :</label>
-              <input type="text" id="name" name="name" class="form-control" value="{{form.name.value}}" readonly>
+              <input type="text" id="name" name="name" class="form-control" value="{{service_form.name.value}}" readonly>
               <span id="nameError" class="error-text"></span>
               </div>
             </td>
             <td>
           <div class="mb-3">
-          <label for="category" class="form-label">Category<span>*</span> :</label>
-          <input type="text" id="category" name="category" class="form-control" value="{{form.category.value}}" readonly>
-          <span id="categoryError" class="error-text"></span>
+          <label for="date" class="form-label">Date<span>*</span> :</label>
+          <input type="date" id="date" name="date" class="form-control" >
+          <span id="Error" class="error-text"></span>
       </div>
     </td>
         </tr><tr>
           <td>
             <div class="mb-3">
-                <label for="locations" class="form-label">Locations<span>*</span> :</label><br>
-                <input type="text" id="locations" name="locations"  value="{{form.locations.value}}" readonly>
-                <span id="locationsError" class="error-text"></span>
-            </div>
+              <label for="location" class="form-label">Location<span>*</span> :</label><br>
+              <select id="location" name="location">
+                  {% for l in location_values %}
+                      <option value="{{ l }}">{{ l }}</option>
+                  {% endfor %}
+              </select>
+              <span id="locationsError" class="error-text"></span>
+          </div>
+          
         </td>
         <td>
           <div class="mb-3">
-              <label for="capacity" class="form-label">Maximum Capacity<span>*</span> :</label><br>
-              <input type="text" id="capacity" name="capacity"  value="{{form.capacity.value}}" readonly>
+              <label for="capacity" class="form-label">Number of participants<span>*</span> :</label><br>
+              <input type="text" id="capacity" name="capacity"  value="{{service_form.capacity.value}}" hidden>
+              <input type="number" id="participants" name="participants" >
               <span id="capacityError" class="error-text"></span>
           </div>
       </td>
+      <script>
+        $(document).ready(function() {
+            $("#participants").on("input", function() {
+                // Get the values of capacity and participants
+                var capacity = parseInt($("#capacity").val());
+                var participants = parseInt($("#participants").val());
+        
+                // Check if the number of participants exceeds the capacity
+                if (!isNaN(capacity) && !isNaN(participants) && participants > capacity) {
+                    $("#capacityError").text("Capacity exceeded. ");
+                } else {
+                    $("#capacityError").text("");
+                }
+            });
+        });
+        </script>
   </tr>
   <tr>
 
     <td>
       <div class="mb-3 services-container">
-          <label for="services_provided" class="form-label">Services Provided<span>*</span> :</label>
-          <input type="text" id="services_provided" name="services_provided"  value="{{form.services_provided.value}}" readonly>
-          <span id="nameError" style="color: red;"></span>
+          <label for="services_required" class="form-label">Services Required<span>*</span> :</label><br>
+          <!-- Your existing HTML for the select element -->
+<select id="services_required" name="services_required" multiple style="width:100%;">
+  {% for service in services_required %}
+      <option value="{{ service }}">{{ service }}</option>
+  {% endfor %}
+</select>
+
+<!-- Display selected services -->
+<!-- Display selected services -->
+<!-- Display selected services -->
+<div id="selectedServices" >
+  {% if service_form.services_required.value %}
+    Selected Services: 
+    {% for selected_service in service_form.services_required.value %}
+        {{ selected_service }}
+        {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  {% else %}
+    <!-- Display nothing if no services are selected initially -->
+  {% endif %}
+</div>
+
+<!-- Add this script for AJAX -->
+<script>
+$(document).ready(function() {
+    function updateSelectedServices() {
+        // Get the selected values from the select element
+        var selectedServices = $("#services_required").val();
+
+        // Update the selected services display
+        var displayText = selectedServices ? "Selected Services: " + selectedServices.join(", ") : "";
+        $("#selectedServices").text(displayText);
+    }
+
+    // Initialize the selected services display
+    updateSelectedServices();
+
+    // Listen for changes in the select element
+    $("#services_required").change(function() {
+        updateSelectedServices();
+    });
+});
+</script>
+
+        <span id="nameError" style="color: red;"></span>
       </div>
   </td>
+  <!-- Add this script for AJAX -->
+  <!-- Add this script tag to include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<td>
+  <div class="mb-3">
+      <label for="budget" class="form-label">Maximum Budget<span>*</span> :</label><br>
+      <input type="number" id="budget" name="budget" >
+      <span id="budgetError" class="error-text"></span>
+  </div>
 </td>
-              <td>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description<span>*</span>:</label>
-                    <textarea type="text" style="width=100%; height=100%" id="description" name="description" readonly>{{form.description.value}}</textarea>
-                <span id="descriptionError" class="error-text"></span><br>
-                
-                </div></td>
             </tr><tr><td>
               <span>* Required fields</span><br>
           
             </td><td>
               <button><a style="text-decoration:none;color:white;" href="{% url 'eventapp:services' %}" class="btn2"> Back </a></button>
-              <button id="sendButton" type="submit">
-                    <a href="{% url 'book_services' service_id %}" style="text-decoration:none;color:white;">Book Now</a>
-            </button>
-            
-            
+              <button id="sendButton" type="submit">Send Request
+        </button>
             </td></tr></form>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       
@@ -392,6 +457,7 @@
 </div>
 </body>
 </html> {% endcomment %}
+
 
 {% load static %}
 <!DOCTYPE html>
@@ -478,7 +544,7 @@
       border-radius: 8px;
       transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     }
-    #locations ,#services_provided,#description,#capacity{
+    #location ,#services_required,#description,#capacity,#participants,#budget{
       width: 100%;
       padding: 12px;
       border: 1px solid #6c757d;
@@ -521,50 +587,119 @@
       </div>
       <div class="card-body">
         <!-- Your form content here -->
-
-        <form method="post" id="service" enctype="multipart/form-data">
+        <form method="post" id="service" enctype="multipart/form-data" action="{% url 'book_services' service_id %}">
           {% csrf_token %}
-          <div class="mb-3">
+              <div class="mb-3">
               <label for="name" class="form-label">Name<span>*</span> :</label>
-              <input type="text" id="name" name="name" class="form-control" value="{{form.name.value}}" readonly>
+              <input type="text" id="name" name="name" class="form-control" value="{{service_form.name.value}}" readonly>
               <span id="nameError" class="error-text"></span>
               </div>
           <div class="mb-3">
-          <label for="category" class="form-label">Category<span>*</span> :</label>
-          <input type="text" id="category" name="category" class="form-control" value="{{form.category.value}}" readonly>
-          <span id="categoryError" class="error-text"></span>
+          <label for="date" class="form-label">Date<span>*</span> :</label>
+          <input type="date" id="date" name="date" class="form-control" >
+          <span id="Error" class="error-text"></span>
       </div>
             <div class="mb-3">
-                <label for="locations" class="form-label">Locations<span>*</span> :</label><br>
-                <input type="text" id="locations" name="locations"  value="{{form.locations.value}}" readonly>
-                <span id="locationsError" class="error-text"></span>
-            </div>
+              <label for="location" class="form-label">Location<span>*</span> :</label><br>
+              <select id="location" name="location">
+                  {% for l in location_values %}
+                      <option value="{{ l }}">{{ l }}</option>
+                  {% endfor %}
+              </select>
+              <span id="locationsError" class="error-text"></span>
+          </div>
+          
           <div class="mb-3">
-              <label for="capacity" class="form-label">Maximum Capacity<span>*</span> :</label><br>
-              <input type="text" id="capacity" name="capacity"  value="{{form.capacity.value}}" readonly>
+              <label for="capacity" class="form-label">Number of participants<span>*</span> :</label><br>
+              <input type="text" id="capacity" name="capacity"  value="{{service_form.capacity.value}}" hidden>
+              <input type="number" id="participants" name="participants" >
               <span id="capacityError" class="error-text"></span>
           </div>
+      <script>
+        $(document).ready(function() {
+            $("#participants").on("input", function() {
+                // Get the values of capacity and participants
+                var capacity = parseInt($("#capacity").val());
+                var participants = parseInt($("#participants").val());
+        
+                // Check if the number of participants exceeds the capacity
+                if (!isNaN(capacity) && !isNaN(participants) && participants > capacity) {
+                    $("#capacityError").text("Capacity exceeded. ");
+                } else {
+                    $("#capacityError").text("");
+                }
+            });
+        });
+        </script>
+
       <div class="mb-3 services-container">
-          <label for="services_provided" class="form-label">Services Provided<span>*</span> :</label>
-          <input type="text" id="services_provided" name="services_provided"  value="{{form.services_provided.value}}" readonly>
-          <span id="nameError" style="color: red;"></span>
+          <label for="services_required" class="form-label">Services Required<span>*</span> :</label><br>
+          <!-- Your existing HTML for the select element -->
+<select id="services_required" name="services_required" multiple style="width:100%;">
+  {% for service in services_required %}
+      <option value="{{ service }}">{{ service }}</option>
+  {% endfor %}
+</select>
+
+<!-- Display selected services -->
+<!-- Display selected services -->
+<!-- Display selected services -->
+<div id="selectedServices" >
+  {% if service_form.services_required.value %}
+    Selected Services: 
+    {% for selected_service in service_form.services_required.value %}
+        {{ selected_service }}
+        {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  {% else %}
+    <!-- Display nothing if no services are selected initially -->
+  {% endif %}
+</div>
+
+<!-- Add this script for AJAX -->
+<script>
+$(document).ready(function() {
+    function updateSelectedServices() {
+        // Get the selected values from the select element
+        var selectedServices = $("#services_required").val();
+
+        // Update the selected services display
+        var displayText = selectedServices ? "Selected Services: " + selectedServices.join(", ") : "";
+        $("#selectedServices").text(displayText);
+    }
+
+    // Initialize the selected services display
+    updateSelectedServices();
+
+    // Listen for changes in the select element
+    $("#services_required").change(function() {
+        updateSelectedServices();
+    });
+});
+</script>
+
+        <span id="nameError" style="color: red;"></span>
       </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description<span>*</span>:</label>
-                    <textarea type="text" style="width=100%; height=100%" id="description" name="description" readonly>{{form.description.value}}</textarea>
-                <span id="descriptionError" class="error-text"></span><br>
-                
-                </div>
+  </td>
+  <!-- Add this script for AJAX -->
+  <!-- Add this script tag to include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<td>
+  <div class="mb-3">
+      <label for="budget" class="form-label">Maximum Budget<span>*</span> :</label><br>
+      <input type="number" id="budget" name="budget" >
+      <span id="budgetError" class="error-text"></span>
+  </div>
+</td>
+            </tr><tr><td>
               <span>* Required fields</span><br>
           
+            </td><td>
               <button><a style="text-decoration:none;color:white;" href="{% url 'eventapp:services' %}" class="btn2"> Back </a></button>
-              <button id="sendButton" type="submit">
-                    <a href="{% url 'book_services' service_id %}" style="text-decoration:none;color:white;">Book Now</a>
-            </button>
-            
-            
-          </form>
-
+              <button id="sendButton" type="submit">Send Request
+        </button>
+            </td></tr></form>
         </div>
       </div>
     </div>

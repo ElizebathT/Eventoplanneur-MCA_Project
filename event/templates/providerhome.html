@@ -116,8 +116,10 @@
                 </div>
                 <div class="col-md-4">
                     <div class="feature-box">
+                        <a href="{% url 'eventapp:view_bookings' %}">
                         <h4>View Bookings</h4>
                         <p>Access your booking schedule to stay organized and manage your time effectively.</p>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -131,10 +133,17 @@
             </div>
         </div>
     </div>
-    {% for i in service %}
-    <p class="card-text">Company: {{ i.name }}<br><br></p>
-    {% endfor %}
-    <!-- Footer -->
+    <script type="text/javascript">
+        (function(d, m){
+            var kommunicateSettings = 
+                {"appId":"158f681ddd67f875047f4f96fc90b4989","popupWidget":true,"automaticChatOpenOnNavigation":true};
+            var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+            s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+            var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+            window.kommunicate = m; m._globals = kommunicateSettings;
+        })(document, window.kommunicate || {});
+    /* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+    </script><!-- Footer -->
     <footer>
         <p>&copy; 2024 Service Provider Dashboard. All rights reserved.</p>
     </footer>

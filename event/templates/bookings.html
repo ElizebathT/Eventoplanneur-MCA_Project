@@ -1,0 +1,90 @@
+{% load static %}
+{% if user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+</head>
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" >User: {{ user.email }}</a>
+              <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+              {% endif %}
+            </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <style>
+    th{
+        background-color:#004080;
+        color:white;
+    }
+  </style>
+<br><br><br>
+<div class="container mt-5">
+    <h2>Your Bookings</h2>
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Location</th>
+                <th>Services Required</th>
+                <th>Budget</th>
+                <th>Participants</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking_instance in booking_instances %}
+                <tr>
+                    <td>{{ booking_instance.service.name }}</td>
+                    <td>{{ booking_instance.location }}</td>
+                    <td>{{ booking_instance.services_required }}</td>
+                    <td>{{ booking_instance.budget }}</td>
+                    <td>{{ booking_instance.participants }}</td>
+                    <td>{{ booking_instance.date }}</td>
+                    <td style="background-color: {% if booking_instance.status == 'approved' %}green{% elif booking_instance.status == 'rejected' %}red{% elif booking_instance.status == 'pending' %}orange{% endif %}; color: white;">
+                        {{ booking_instance.status }}
+                    </td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+    <!-- Link to Bootstrap JS (add the appropriate version) and other JS files if needed -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+
+</body>
+</html>
+{% endif %}

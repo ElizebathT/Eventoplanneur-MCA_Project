@@ -18,4 +18,7 @@ urlpatterns = [
     path('payment/<int:pay_id>', views.payment, name='payment'),
     path('viewservices/<int:service_id>',views.viewservices,name='viewservices'),
     path('availability/<int:service_id>',views.availability,name='availability'),
+    path('book_services/<int:service_id>', views.book_services, name='book_services'),
+    path('approve/<int:booking_id>/', views.approve_booking, name='approve_booking'),
+    path('reject/<int:booking_id>/', views.reject_booking, name='reject_booking'),
 ]

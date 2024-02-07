@@ -41,6 +41,7 @@ urlpatterns = [
     path('providerhome/', views.providerhome, name='providerhome'),
     path('services/', views.services, name='services'),
     path('addservices/', views.addservices, name='addservices'),
-    
+    path('view_bookings/', views.view_bookings, name='view_bookings'),
+    path('bookings/', views.bookings, name='bookings'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

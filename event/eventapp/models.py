@@ -182,6 +182,20 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
+    
+class BookService(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    location = models.CharField(max_length=100)
+    services_required = models.TextField()
+    budget = models.IntegerField()
+    participants = models.IntegerField()
+    date = models.DateField(null=True) 
+    org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
+    status = models.TextField(default="pending")
+    def __str__(self):
+        return f"{self.service.name} - {self.location}"
+    def is_current_user(self, current_user):
+        return self.org_user == current_user
 
 class BookedDate(models.Model):
     date = models.DateField()

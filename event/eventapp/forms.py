@@ -1,5 +1,5 @@
 from django import forms
-from .models import Webinar, EventOrganizer, Conference, Attendee, Feedback
+from .models import Webinar, EventOrganizer, Conference, Attendee, Feedback, BookService
 
 class WebinarForm(forms.ModelForm):
     class Meta:
@@ -58,3 +58,9 @@ class ServiceForm(forms.ModelForm):
 
         if existing_service:
             raise forms.ValidationError("This service already exists.")
+
+
+class BookServiceForm(forms.ModelForm):
+    class Meta:
+        model = BookService
+        fields = ['location', 'services_required', 'budget', 'date', 'participants']
