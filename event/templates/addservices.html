@@ -275,6 +275,7 @@
       <a class="navbar-brand" href="{% url 'eventapp:providerhome' %}">
         <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
       </a>
+      <a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -373,7 +374,6 @@
                 <option value="alappuzha">Alappuzha</option>
               <option value="kottayam">Kottayam</option>
               <option value="palakkad">Palakkad</option>
-              <option value="kollam">Kollam</option>
               <option value="wayanad">Wayanad</option>
               <option value="idukki">Idukki</option>
                 
@@ -423,7 +423,7 @@
       <div class="mb-3 services-container">
           <label for="data-input" class="form-label">Services Provided<span>*</span> :</label>
           <div class="services-input-container">
-              <input type="text"  id="data-input" list="services-list" placeholder="Enter services" oninput="showAutocomplete()">
+              <input type="text"  id="data-input" autocomplete="off" list="services-list" placeholder="Enter services" oninput="showAutocomplete()">
               <datalist id="services-list">
                   <!-- Populate the datalist options dynamically using JavaScript -->
               </datalist>
@@ -435,7 +435,7 @@
   </td>
   
   <script>
-      var servicesList = ['Menu Planning', 'Food Preparation and Cooking', 'Event Setup and Decoration', 'Service Staff', 'Equipment Rental', 'Event Space Rental', 'Setup and Cleanup', 'Catering Coordination', 'Audio-Visual Equipment', 'Event Planning Assistance', 'Installation and Setup', 'Customized Lighting Plans', 'Backdrop Lighting', 'On-Site Technicians', 'Live Performances', 'DJ Services', 'Interactive Hosts', 'Online Performances', 'Performing Arts', 'Theme Development', 'Floral Arrangements', 'Balloon Decor', 'Table Settings and Linens', 'Backdrop and Stage Design', 'Room Reservations', 'Front Desk Services', 'Digital Marketing', 'Product Photography', 'Promotional Videos']; // Add your list of services here
+      var servicesList = ['Menu Planning', 'Freight Transport','Passenger Transport','Food Preparation and Cooking', 'Event Setup and Decoration', 'Service Staff', 'Equipment Rental', 'Event Space Rental', 'Setup and Cleanup', 'Catering Coordination', 'Audio-Visual Equipment', 'Event Planning Assistance', 'Installation and Setup', 'Customized Lighting Plans', 'Backdrop Lighting', 'On-Site Technicians', 'Live Performances', 'DJ Services', 'Interactive Hosts', 'Online Performances', 'Performing Arts', 'Theme Development', 'Floral Arrangements', 'Balloon Decor', 'Table Settings and Linens', 'Backdrop and Stage Design', 'Room Reservations', 'Front Desk Services', 'Digital Marketing', 'Product Photography', 'Promotional Videos']; // Add your list of services here
   
       function showAutocomplete() {
           var inputElement = document.getElementById('data-input');

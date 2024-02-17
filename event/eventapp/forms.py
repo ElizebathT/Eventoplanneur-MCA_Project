@@ -44,7 +44,7 @@ from .models import Service
 class ServiceForm(forms.ModelForm):
     class Meta:
         model = Service
-        fields = ['name', 'category', 'image', 'locations', 'services_provided', 'capacity','description','booked_dates']
+        fields = ['name', 'category', 'image', 'locations', 'services_provided', 'capacity','description']
     
     def clean(self):
         cleaned_data = super().clean()

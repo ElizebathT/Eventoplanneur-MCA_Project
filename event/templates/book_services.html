@@ -592,13 +592,57 @@ $(document).ready(function() {
               <div class="mb-3">
               <label for="name" class="form-label">Name<span>*</span> :</label>
               <input type="text" id="name" name="name" class="form-control" value="{{service_form.name.value}}" readonly>
+              <input type="text" id="service_id" name="service_id" class="form-control" value="{{ service_form.instance.id }}" hidden>
               <span id="nameError" class="error-text"></span>
               </div>
-          <div class="mb-3">
-          <label for="date" class="form-label">Date<span>*</span> :</label>
-          <input type="date" id="date" name="date" class="form-control" >
-          <span id="Error" class="error-text"></span>
-      </div>
+              <div class="mb-3">
+                <label for="date" class="form-label">Date<span>*</span> :</label>
+                <input type="date" id="date" name="date" class="form-control" onchange="checkAvailability()">
+                <span id="dateError" class="error-text"></span>
+            </div>
+            
+            <script>
+                function checkAvailability() {
+                    var selectedDate = document.getElementById('date').value;
+                    var selectedLocation = document.getElementById('location').value;  // Replace 'location' with the actual id of your location input field
+                    var service_id = document.getElementById('service_id').value;
+            
+                    // Check if the selected date is less than today
+                    var today = new Date();
+                    var selectedDateTime = new Date(selectedDate + 'T00:00:00');
+                    
+                    if (selectedDateTime < today) {
+                        document.getElementById('dateError').innerHTML = 'Please select a future date';
+                        return;
+                    } else {
+                        document.getElementById('dateError').innerHTML = '';
+                    }
+            
+                    // AJAX request to check availability
+                    $.ajax({
+                        type: 'POST',
+                        url: '/check_availability/',
+                        data: {
+                            'service_id': service_id,
+                            'date': selectedDate,
+                            'location': selectedLocation,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            if (response.available) {
+                                document.getElementById('dateError').innerHTML = '';  // Clear previous error message
+                            } else {
+                                document.getElementById('dateError').innerHTML = 'Bookings full on this date';
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            </script>
+            
+        
             <div class="mb-3">
               <label for="location" class="form-label">Location<span>*</span> :</label><br>
               <select id="location" name="location">
@@ -608,29 +652,32 @@ $(document).ready(function() {
               </select>
               <span id="locationsError" class="error-text"></span>
           </div>
-          
           <div class="mb-3">
-              <label for="capacity" class="form-label">Number of participants<span>*</span> :</label><br>
-              <input type="text" id="capacity" name="capacity"  value="{{service_form.capacity.value}}" hidden>
-              <input type="number" id="participants" name="participants" >
-              <span id="capacityError" class="error-text"></span>
-          </div>
-      <script>
-        $(document).ready(function() {
-            $("#participants").on("input", function() {
-                // Get the values of capacity and participants
-                var capacity = parseInt($("#capacity").val());
-                var participants = parseInt($("#participants").val());
+            <label for="capacity" class="form-label">Number of participants<span>*</span> :</label><br>
+            <input type="text" id="capacity" name="capacity" value="{{ service_form.capacity.value }}" hidden>
+            <input type="number" id="participants" name="participants">
+            <span id="capacityError" class="error-text"></span>
+        </div>
         
-                // Check if the number of participants exceeds the capacity
-                if (!isNaN(capacity) && !isNaN(participants) && participants > capacity) {
-                    $("#capacityError").text("Capacity exceeded. ");
-                } else {
-                    $("#capacityError").text("");
-                }
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $("#participants").on("input", function() {
+                    // Get the values of capacity and participants
+                    var capacity = parseInt($("#capacity").val());
+                    var participants = parseInt($("#participants").val());
+        
+                    // Check if the number of participants exceeds the capacity
+                    if (!isNaN(capacity) && !isNaN(participants) && participants > capacity) {
+                        $("#capacityError").text("Capacity exceeded.");
+                    } else {
+                        $("#capacityError").text("");
+                    }
+                });
             });
-        });
         </script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        
 
       <div class="mb-3 services-container">
           <label for="services_required" class="form-label">Services Required<span>*</span> :</label><br>
@@ -687,10 +734,31 @@ $(document).ready(function() {
 
 <td>
   <div class="mb-3">
-      <label for="budget" class="form-label">Maximum Budget<span>*</span> :</label><br>
-      <input type="number" id="budget" name="budget" >
-      <span id="budgetError" class="error-text"></span>
+    <label for="budget" class="form-label">Maximum Budget<span>*</span> :</label><br>
+    <input type="number" id="budget" name="budget" max="10000000"> <!-- Set the maximum value as needed -->
+    <span id="budgetError" class="error-text"></span>
+    
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#budget").on("input", function() {
+            // Get the maximum budget limit
+            var maxBudget = parseInt($("#budget").attr("max"));
+
+            // Get the entered budget
+            var enteredBudget = parseInt($("#budget").val());
+
+            // Check if the entered budget exceeds the maximum limit
+            if (!isNaN(maxBudget) && !isNaN(enteredBudget) && enteredBudget > maxBudget) {
+                $("#budgetError").text("Exceeds maximum budget limit.");
+            } else {
+                $("#budgetError").text("");
+            }
+        });
+    });
+</script>
+
 </td>
             </tr><tr><td>
               <span>* Required fields</span><br>

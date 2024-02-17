@@ -777,18 +777,9 @@ def viewservices(request, service_id):
     return render(request, 'viewservices.html', {'form': form,'service_id': service_id})
 
 def availability(request, service_id):
-    task = get_object_or_404(Service, id=service_id)
 
-    if request.method == 'POST':
-        form = ServiceForm(request.POST, instance=task)
-        if form.is_valid():
-            # Process the form data if it's valid
-            form.save()
-            # Redirect or render a success page
-    else:
-        # If it's a GET request, just display the form with the existing data
-        form = ServiceForm(instance=task)
-    return render(request, 'availability.html', {'form': form})
+    return render(request, 'availability.html')
+
 
 from .models import Service, BookService
 from .forms import ServiceForm, BookServiceForm
@@ -855,3 +846,16 @@ def reject_booking(request, booking_id):
     booking_instance.status = "rejected"
     booking_instance.save()
     return redirect('eventapp:view_bookings')
+
+from django.http import JsonResponse
+
+def check_availability(request):
+    if request.method == 'POST':
+        service_id = request.POST.get('service_id')
+        date = request.POST.get('date')
+        location = request.POST.get('location')
+
+        # Check if there is any service booked on the selected date for the given location
+        is_available = not BookService.objects.filter(service_id=service_id, date=date, location=location).exists()
+        print('jjj')
+        return JsonResponse({'available': is_available})

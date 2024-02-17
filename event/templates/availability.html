@@ -283,7 +283,7 @@
   </nav>
   <div class="container">
     <div class="events">
-        <h4>Details of Service</h4>
+        <h4>Update Availabilty</h4>
         {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -291,29 +291,12 @@
         {% endfor %}
     </ul>
 {% endif %}
-        <form method="post" id="service" enctype="multipart/form-data">
-          {% csrf_token %}
-          <table>
-          <tr>
-            <td>
-              <div class="mb-3">
-              <label for="name" class="form-label">Name<span>*</span> :</label>
-              <input type="text" id="name" name="name" class="form-control" value="{{form.name.value}}"required>
-              <span id="nameError" class="error-text"></span>
-              </div>
-            </td>
-            <td>
-          <div class="mb-3">
-            <label for="category" class="form-label">Category<span>*</span> :</label>
-            <input type="text" id="category" name="category" class="form-control" value="{{form.category.value}}" required>
-            <span id="categoryError" class="error-text"></span>
-      </div>
-    </td>
-        </tr>
-              <button  type="submit"><a class="btn2">Save</a></button>
-              <button><a href="{% url 'eventapp:providerhome' %}" class="btn2"> Back </a></button>
-          {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
-            </td></tr></form>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Update Dates</button>
+</form>
+
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       
       

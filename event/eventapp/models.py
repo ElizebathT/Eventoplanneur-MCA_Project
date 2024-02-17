@@ -41,7 +41,6 @@ class CustomUser(AbstractUser):
    
 class EventOrganizer(models.Model):
     name = models.CharField(max_length=255)
-    emails = models.EmailField(unique=True,blank=True, null=True)
     phone_number = models.CharField(max_length=15)
     address = models.TextField()
     website = models.URLField(blank=True, null=True)
@@ -170,16 +169,6 @@ class Service(models.Model):
     rating = models.IntegerField(default=0,null=True)
     capacity = models.IntegerField(null=True)
     org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
-    booked_dates = models.ManyToManyField('BookedDate', blank=True)
-    def add_booked_date(self, new_date):
-        # Add the new date to the booked_dates relationship
-        booked_date_obj, created = BookedDate.objects.get_or_create(date=new_date)
-        self.booked_dates.add(booked_date_obj)
-        self.save()
-
-        # Return the updated booked dates as a string
-        return ', '.join(str(date) for date in self.booked_dates.all())
-
     def __str__(self):
         return self.name
     
@@ -197,8 +186,4 @@ class BookService(models.Model):
     def is_current_user(self, current_user):
         return self.org_user == current_user
 
-class BookedDate(models.Model):
-    date = models.DateField()
 
-    def __str__(self):
-        return str(self.date)
