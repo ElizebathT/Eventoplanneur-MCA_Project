@@ -241,7 +241,7 @@ inputField.addEventListener("input", function() {
 
 		</section><!--/.welcome-hero-->
 		<!--welcome-hero end -->
-		<section class="welcome-hero" style="background-color: white">
+		<section class="welcome-hero" >
 			<div class="container">
 				<div class="row">
 					{% if search %}
@@ -254,6 +254,7 @@ inputField.addEventListener("input", function() {
 										</figure>
 										<div class="article-body">
 											<h2>{{ i.name }}</h2><br>
+											<p>{{ i.description|slice:":150" }}</p>
 											<a href="{% url 'viewservices' i.id %}" class="read-more">
 												Read more</a>
 										</div>
@@ -409,19 +410,20 @@ inputField.addEventListener("input", function() {
 
 {% endblock %}
 <style>
-article {
-	--img-scale: 1.001;
-	--title-color: black;
-	--link-icon-translate: -20px;
-	--link-icon-opacity: 0;
-	position: relative;
-	border-radius: 16px;
-	box-shadow: none;
-	background: #fff;
-	transform-origin: center;
-	transition: all 0.4s ease-in-out;
-	overflow: hidden;
-  }
+	article {
+		--img-scale: 1.001;
+		--title-color: black;
+		--link-icon-translate: -20px;
+		--link-icon-opacity: 0;
+		position: relative;
+		border-radius: 16px;
+		box-shadow: none;
+		background: #fff;
+		transform-origin: center;
+		transition: all 0.4s ease-in-out;
+		overflow: hidden;
+		height: 420px; /* Set your desired fixed height */
+	  }
   
   article a::after {
 	position: absolute;
@@ -434,7 +436,6 @@ article {
   /* basic article elements styling */
   article h2 {
 	margin: 0 0 18px 0;
-	font-family: "Bebas Neue", cursive;
 	font-size: 1.9rem;
 	letter-spacing: 0.06em;
 	color: var(--title-color);

@@ -836,6 +836,29 @@ def bookings(request):
     booking_instances = BookService.objects.filter(org_user=current_user)
     return render(request, 'bookings.html', {'booking_instances': booking_instances})
 
+from .models import BookService, Review
+
+def review_service(request):
+    current_user = request.user
+    booking_instances = BookService.objects.filter(org_user=current_user, status='completed')
+
+    return render(request, 'review_service.html', {'booking_instances': booking_instances})
+
+def submit_review(request):
+    if request.method == 'POST':
+        service_id = request.POST.get('service')
+        rating = request.POST.get('rating')
+        comments = request.POST.get('comments')
+
+        # Assuming you have a Review model with a foreign key to the Service model
+        service = Service.objects.get(id=service_id)
+        review = Review.objects.create(service=service, rating=rating, comments=comments)
+
+        return redirect('review_service')
+    else:
+        # Handle other HTTP methods if needed
+        return redirect('review_service')
+
 def approve_booking(request, booking_id):
     booking_instance = get_object_or_404(BookService, pk=booking_id)
     booking_instance.status = "approved"

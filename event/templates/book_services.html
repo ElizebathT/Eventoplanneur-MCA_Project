@@ -586,9 +586,17 @@ $(document).ready(function() {
         <h4>Details of Service</h4>
       </div>
       <div class="card-body">
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
         <!-- Your form content here -->
         <form method="post" id="service" enctype="multipart/form-data" action="{% url 'book_services' service_id %}">
           {% csrf_token %}
+          
               <div class="mb-3">
               <label for="name" class="form-label">Name<span>*</span> :</label>
               <input type="text" id="name" name="name" class="form-control" value="{{service_form.name.value}}" readonly>
@@ -725,7 +733,7 @@ $(document).ready(function() {
 });
 </script>
 
-        <span id="nameError" style="color: red;"></span>
+        <span id="serviceError" style="color: red;"></span>
       </div>
   </td>
   <!-- Add this script for AJAX -->
@@ -768,6 +776,27 @@ $(document).ready(function() {
               <button id="sendButton" type="submit">Send Request
         </button>
             </td></tr></form>
+            <script>
+              function validateForm() {
+                  // Check conditions here
+                  var dateError = document.getElementById("dateError").innerText;
+                  var capacityError = document.getElementById("capacityError").innerText;
+                  var budgetError = document.getElementById("budgetError").innerText;
+          
+                  // If there are errors, prevent form submission
+                  if (dateError || capacityError || budgetError) {
+                      return false; // Prevent form submission
+                  }
+          
+                  // If no errors, allow form submission
+                  return true;
+              }
+          
+              // Add your existing checkAvailability() function if needed
+              function checkAvailability() {
+                  // Your existing logic for checking date availability
+              }
+          </script>
         </div>
       </div>
     </div>

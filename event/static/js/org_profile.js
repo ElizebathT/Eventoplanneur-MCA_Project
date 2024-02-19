@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     var profile = document.getElementById("profile");
-    var emailInput = document.getElementById("email");
         var college = document.getElementById("college");
         var aicte = document.getElementById("aicte");
-        var emailError = document.getElementById("emailError");
         var nameInput = document.getElementById("name");
         var nameError = document.getElementById("nameError");
         var phone_number = document.getElementById("phone_number");
@@ -19,12 +17,9 @@ document.addEventListener("DOMContentLoaded", function() {
         var address = document.getElementById("address");
         var addressError = document.getElementById("addressError");
         var aicteError = document.getElementById("aicteError");
-        if (emailInput === "" || nameInput === "" || phone_number === "" || location === "") {
+        if (nameInput === "" || phone_number === "" || location === "") {
             errorElement.innerText = "Please fill every fields";
         }
-        emailInput.addEventListener("input", function() {
-            validateField(emailInput, emailError, validateEmail);
-        });
 
         nameInput.addEventListener("input", function() {
             validateField(nameInput, nameError, validateName);
@@ -72,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     function validateForm() {
         
-        if (emailError.innerText || nameError.innerText || phone_numberError.innerText || locationError.innerText || websiteError.innerText || departmentsError.innerText ||aicteError.innerText || programs_offeredError.innerText || accreditationError.innerText ) {
+        if (nameError.innerText || phone_numberError.innerText || locationError.innerText || websiteError.innerText || departmentsError.innerText ||aicteError.innerText || programs_offeredError.innerText || accreditationError.innerText ) {
             return false; // Return false to prevent form submission
         }
 
@@ -90,14 +85,6 @@ document.addEventListener("DOMContentLoaded", function() {
         function validateField(input, errorElement, validationFunction) {
             var errorMessage = validationFunction(input.value);
             errorElement.innerText = errorMessage;
-        }
-
-        function validateEmail(email) {
-            var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!pattern.test(email)) {
-                return "Invalid email";
-            }
-            return "";
         }
         
     async function isValidWebsite(website, websiteError) {

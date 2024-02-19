@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Homepage</title>
+  <title>Reviews</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'css/home.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
@@ -24,7 +24,7 @@
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
           <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
           <li class="nav-item">
@@ -38,46 +38,7 @@
       </div>
     </div>
   </nav>
-  <style>
-    th{
-        background-color:#004080;
-        color:white;
-    }
-  </style>
-<br><br><br>
-<div class="container mt-5">
-    <h2>Your Bookings</h2>
-    
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Service</th>
-                <th>Location</th>
-                <th>Services Required</th>
-                <th>Budget</th>
-                <th>Participants</th>
-                <th>Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for booking_instance in booking_instances %}
-                <tr>
-                    <td>{{ booking_instance.service.name }}</td>
-                    <td>{{ booking_instance.location }}</td>
-                    <td>{{ booking_instance.services_required }}</td>
-                    <td>{{ booking_instance.budget }}</td>
-                    <td>{{ booking_instance.participants }}</td>
-                    <td>{{ booking_instance.date }}</td>
-                    <td style="background-color: {% if booking_instance.status == 'approved' %}green{% elif booking_instance.status == 'rejected' %}red{% elif booking_instance.status == 'pending' %}orange{% endif %}; color: white;">
-                        {{ booking_instance.status }}
-                    </td>
-                    
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+
 
     <!-- Link to Bootstrap JS (add the appropriate version) and other JS files if needed -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -24,7 +24,7 @@
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
-          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
           <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
           <li class="nav-item">
@@ -102,7 +102,7 @@
       <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card h-100">
-                <a href="{% url 'eventapp:listwebinars' %}">
+                <a href="{% url 'eventapp:webinar' %}">
                 <img src="{% static 'images/webinar.jfif' %}" class="card-img-top" alt="Webinar">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Webinar</h5>

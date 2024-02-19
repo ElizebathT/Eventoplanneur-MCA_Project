@@ -130,9 +130,27 @@
         <td>
           <div class="mb-3">
               <label for="fee" class="form-label">Fee<span>*</span>:</label>
-              <input type="number" id="fee" name="fee" class="form-control" required>
+              <input type="number" id="fee" name="fee" class="form-control" max="10000000" required>
               <span id="feeError" class="error-text"></span>
           </div></td></tr><tr>
+            <script>
+              $(document).ready(function() {
+                  $("#fee").on("input", function() {
+                      // Get the maximum budget limit
+                      var maxBudget = parseInt($("#fee").attr("max"));
+          
+                      // Get the entered budget
+                      var enteredBudget = parseInt($("#fee").val());
+          
+                      // Check if the entered budget exceeds the maximum limit
+                      if (!isNaN(maxBudget) && !isNaN(enteredBudget) && enteredBudget > maxBudget) {
+                          $("#feeError").text("Exceeds maximum fee limit.");
+                      } else {
+                          $("#feeError").text("");
+                      }
+                  });
+              });
+          </script>
         <td>
           <div class="mb-3">
             <label for="start_time" class="form-label">Start Time<span>*</span>:</label>
@@ -196,9 +214,27 @@
             <td>
               <div class="mb-3">
                   <label for="max_participants" class="form-label">Maximum Participants<span>*</span>:</label>
-                  <input type="number" id="max_participants" name="max_participants" class="form-control" required>
+                  <input type="number" id="max_participants" name="max_participants" class="form-control" max="100000" required>
                   <span id="maxError" class="error-text"></span>
               </div></td></tr>
+              <script>
+                $(document).ready(function() {
+                    $("#max_participants").on("input", function() {
+                        // Get the maximum budget limit
+                        var maxBudget = parseInt($("#max_participants").attr("max"));
+            
+                        // Get the entered budget
+                        var enteredBudget = parseInt($("#max_participants").val());
+            
+                        // Check if the entered budget exceeds the maximum limit
+                        if (!isNaN(maxBudget) && !isNaN(enteredBudget) && enteredBudget > maxBudget) {
+                            $("#maxError").text("Exceeds maximum max participants limit.");
+                        } else {
+                            $("#maxError").text("");
+                        }
+                    });
+                });
+            </script>
             <tr><td><div class="form-group">
                   <label for="speakers">Speakers:</label>
                   <div id="speakers-container">
@@ -230,7 +266,29 @@
           {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
       </form>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      
+      <!-- ... Your existing HTML code ... -->
+
+<script>
+  document.getElementById('webinar').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission behavior
+
+      // Your form processing logic goes here
+
+      // Display a pop-up window (you can customize this)
+      var confirmation = confirm('Webinar registration successful! Do you want to book services?');
+
+      // Redirect or perform additional actions based on the user's choice
+      if (confirmation) {
+          // Redirect to a different page or perform other actions
+          window.location.href = '{% url "eventapp:services" %}';
+      } else {
+          // Do nothing or handle other scenarios
+      }
+  });
+</script>
+
+<!-- ... Your existing HTML code ... -->
+
       <script>       
         
           $(document).ready(function() {
