@@ -169,6 +169,7 @@ class Service(models.Model):
     rating = models.IntegerField(default=0,null=True)
     capacity = models.IntegerField(null=True)
     org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
+    rate = models.IntegerField(default=0,null=True)
     def __str__(self):
         return self.name
     
@@ -185,7 +186,9 @@ class BookService(models.Model):
         return f"{self.service.name} - {self.location}"
     def is_current_user(self, current_user):
         return self.org_user == current_user
-
+    @property
+    def amount(self):
+        return self.service.rate * self.participants
 
 class Review(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)

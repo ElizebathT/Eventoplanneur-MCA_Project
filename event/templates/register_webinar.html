@@ -270,7 +270,7 @@
 
 <script>
   document.getElementById('webinar').addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent the default form submission behavior
+      // Prevent the default form submission behavior
 
       // Your form processing logic goes here
 
@@ -280,9 +280,9 @@
       // Redirect or perform additional actions based on the user's choice
       if (confirmation) {
           // Redirect to a different page or perform other actions
-          window.location.href = '{% url "eventapp:services" %}';
+          window.location.href = '{% url "eventapp:services_required" %}';
       } else {
-          // Do nothing or handle other scenarios
+        window.location.href = '{% url "eventapp:register_webinar" %}';
       }
   });
 </script>

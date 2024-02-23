@@ -17,6 +17,7 @@ from django.utils import timezone
 # import requests
 from django.http import JsonResponse
 from django.utils.crypto import get_random_string
+import uuid
 
  
 def is_valid_email(email):
@@ -831,10 +832,16 @@ def view_bookings(request):
 
     return render(request, 'view_bookings.html', {'booked_services': booked_services, 'organizer': organizer})
 
+
+from django.shortcuts import render, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import BookService  # Import your BookService model here
+
 def bookings(request):
     current_user = request.user
     booking_instances = BookService.objects.filter(org_user=current_user)
     return render(request, 'bookings.html', {'booking_instances': booking_instances})
+
 
 from .models import BookService, Review
 
@@ -880,5 +887,89 @@ def check_availability(request):
 
         # Check if there is any service booked on the selected date for the given location
         is_available = not BookService.objects.filter(service_id=service_id, date=date, location=location).exists()
-        print('jjj')
+        
         return JsonResponse({'available': is_available})
+
+def bookings(request):
+    currency = 'INR'
+    amount = 200000  # Rs. 200
+ 
+    # Create a Razorpay Order
+    razorpay_order = razorpay_client.order.create(dict(amount=amount,
+                                                       currency=currency,
+                                                       payment_capture='0'))
+ 
+    # order id of newly created order.
+    razorpay_order_id = razorpay_order['id']
+    callback_url = 'eventapp:bookings'
+    current_user = request.user
+    booking_instances = BookService.objects.filter(org_user=current_user)
+
+    # Create a context dictionary for booking instances
+    context = {
+        'booking_instances': booking_instances,
+    }
+    context['razorpay_order_id'] = razorpay_order_id
+    context['razorpay_merchant_key'] = settings.RAZOR_KEY_ID
+    context['razorpay_amount'] = amount
+    context['currency'] = currency
+    context['callback_url'] = callback_url
+ 
+    return render(request, 'bookings.html', context=context)
+ 
+ 
+# we need to csrf_exempt this url as
+# POST request will be made by Razorpay
+# and it won't have the csrf token.
+@csrf_exempt
+def service_paymenthandler(request):
+ 
+    # only accept POST request.
+    if request.method == "POST":
+        try:
+           
+            # get the required parameters from post request.
+            payment_id = request.POST.get('razorpay_payment_id', '')
+            razorpay_order_id = request.POST.get('razorpay_order_id', '')
+            signature = request.POST.get('razorpay_signature', '')
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature
+            }
+ 
+            # verify the payment signature.
+            result = razorpay_client.utility.verify_payment_signature(
+                params_dict)
+            if result is not None:
+                amount = 200000  # Rs. 200
+                try:
+ 
+                    # capture the payemt
+                    razorpay_client.payment.capture(payment_id, amount)
+ 
+                    # render success page on successful caputre of payment
+                    return render(request, 'service_paymentsuccess.html')
+                except:
+ 
+                    # if there is an error while capturing payment.
+                    return render(request, 'service_paymentfail.html')
+            else:
+ 
+                # if signature verification fails.
+                return render(request, 'service_paymentfail.html')
+        except:
+ 
+            # if we don't find the required parameters in POST data
+            return HttpResponseBadRequest()
+    else:
+       # if other than POST request is made.
+        return HttpResponseBadRequest()
+def service_paymentsuccess(request):
+    return render(request, 'service_paymentsuccess.html')
+
+def service_paymentfail(request):
+    return render(request, 'service_paymentfail.html')
+
+def services_required(request):
+    return render(request, 'services_required.html')

@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Services Form</title>
+    <!-- Add CSS styles if needed -->
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    {% block content %}
+        <h1>Choose Services</h1>
+        <form method="POST" action="{% url 'services_required' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="service_categories">Service Categories:</label><br/>
+            <select id="service_categories" name="service_categories[]" multiple>
+                <option value="" disabled selected>Select a category</option>
+                <option value="catering">Catering</option>
+                <option value="venue">Venue</option>
+                <option value="transportation">Transportation</option>
+                <option value="sound and lighting">Sound and Lighting</option>
+                <option value="entertainment ">Entertainment </option>
+                <option value="decoration ">Decoration </option>
+                <option value="accomodation ">Accommodation </option>
+                <option value="event staffing ">Event Staffing </option>
+                <option value="promotion ">Promotion </option>
+                <option value="photography and videography ">Photography &amp; Videography </option>
+            </select><br/>
+            <input type="submit" value="Submit"/>
+        </form>
+    {% endblock %}
+</body>
+</html>

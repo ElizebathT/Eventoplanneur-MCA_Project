@@ -491,60 +491,16 @@
                 <span class="error-text">Provide as much detail as possible to help us better understand your services and requirements.</span>
                 </div></td>
             </tr>
+            <tr><td>
+              <div class="mb-3">
+                <label for="rate" class="form-label">Rate (per head)<span>*</span>:</label>
+                <input type="number" id="rate" name="rate" class="form-control" required>
+                <span id="rateError" class="error-text"></span>
+            </div>
+            </td></tr>
             <tr>
-              {% comment %} <td>
-                <div class="mb-3">
-                  <label for="booked_dates" class="form-label">Booked Dates<span>*</span>:</label>
-                  <div class="dates-input-container">
-                    <input type="date" id="date-input" list="dates-list" placeholder="Select date" autocomplete="off">
-                    <datalist id="dates-list">
-                        <!-- Populate the datalist options dynamically using JavaScript -->
-                    </datalist>
-                    <button type="button" id="add-button" onclick="addDate()">+</button>
-                </div>
-                <textarea id="booked_dates" name="booked_dates" class="selected-dates" placeholder="Selected Dates:">
-                    {% for booked_date in service.booked_dates.all %}
-                        {{ booked_date.date }}, 
-                    {% endfor %}
-                </textarea>
-                <span id="dateError" style="color: red;"></span>
-                </div>
-                <!-- In your HTML template -->
-<script>
-  function addDate() {
-      var inputElement = document.getElementById('date-input');
-      var selectedDatesDiv = document.getElementById('booked_dates');
-      var errorSpan = document.getElementById('dateError');
-
-      var newDate = inputElement.value;
-
-      if (newDate === '') {
-          errorSpan.textContent = 'Please select a date.';
-          return;
-      }
-
-      errorSpan.textContent = '';
-
-      // Call a JavaScript function to update the textarea directly
-      updateSelectedDates(newDate);
-      
-      inputElement.value = '';  // Clear the input field
-  }
-
-  function updateSelectedDates(newDate) {
-      var selectedDatesDiv = document.getElementById('booked_dates');
-      var existingDates = selectedDatesDiv.textContent.trim();
-
-      if (existingDates === '') {
-          selectedDatesDiv.textContent = newDate;
-      } else {
-          selectedDatesDiv.textContent = existingDates + ', ' + newDate;
-      }
-  }
-</script>
-
-                 {% endcomment %}
 <td>
+
               <span>* Required fields</span><br>
           
             </td></tr><tr><td>

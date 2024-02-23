@@ -45,5 +45,9 @@ urlpatterns = [
     path('bookings/', views.bookings, name='bookings'),
     path('check_availability/', views.check_availability, name='check_availability'),
     path('review_service/', views.review_service, name='review_service'),
+    path('service_paymentsuccess/', views.service_paymentsuccess, name='service_paymentsuccess'),
+    path('service_paymentfail/', views.service_paymentfail, name='service_paymentfail'),
+    path('service_paymenthandler/', views.service_paymenthandler, name='service_paymenthandler'),
+    path('services_required/', views.services_required, name='services_required'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
