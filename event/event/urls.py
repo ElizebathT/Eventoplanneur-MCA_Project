@@ -23,4 +23,5 @@ urlpatterns = [
     path('book_services/<int:service_id>', views.book_services, name='book_services'),
     path('approve/<int:booking_id>/', views.approve_booking, name='approve_booking'),
     path('reject/<int:booking_id>/', views.reject_booking, name='reject_booking'),
+    path('services_required/<int:webinar_id>', views.services_required, name='services_required'),
 ]

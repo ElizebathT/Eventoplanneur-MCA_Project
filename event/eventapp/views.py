@@ -1,3 +1,4 @@
+import datetime
 from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
 #from .models import User
@@ -234,7 +235,8 @@ def login(request):
 def webinar(request):
     orgs=request.user
     update_webinar=Webinar.objects.filter(org_user=orgs, status=1)
-    context = {'update_webinar': update_webinar}
+    now = datetime.datetime.now()
+    context = {'update_webinar': update_webinar,'today':now}
     return render(request, 'webinar.html', context)
 
 def view_webinar(request,update_id):
@@ -971,5 +973,11 @@ def service_paymentsuccess(request):
 def service_paymentfail(request):
     return render(request, 'service_paymentfail.html')
 
-def services_required(request):
-    return render(request, 'services_required.html')
+def services_required(request, webinar_id):
+    service_options = ['catering', 'venue', 'transportation', 'sound and lighting', 'entertainment', 'decoration', 'accommodation', 'event staffing', 'promotion', 'photography and videography']
+    
+    if request.method == 'POST':
+        selected_services = request.POST.getlist('service_categories[]')
+        # Process the selected services
+        
+    return render(request, 'services_required.html', {'service_options': service_options})

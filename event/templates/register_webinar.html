@@ -261,31 +261,13 @@
                 </div></td>
             </tr><tr><td>
               <span>* Required fields</span><br>
-          <button  type="submit"><a class="btn mr-2">Register</a></button></td><td>
+          <button  type="submit">Register</button></td><td>
             <button><a href="{% url 'eventapp:webinar' %}" class="btn mr-2"> Back </a></button>
           {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
       </form>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <!-- ... Your existing HTML code ... -->
 
-<script>
-  document.getElementById('webinar').addEventListener('submit', function(event) {
-      // Prevent the default form submission behavior
-
-      // Your form processing logic goes here
-
-      // Display a pop-up window (you can customize this)
-      var confirmation = confirm('Webinar registration successful! Do you want to book services?');
-
-      // Redirect or perform additional actions based on the user's choice
-      if (confirmation) {
-          // Redirect to a different page or perform other actions
-          window.location.href = '{% url "eventapp:services_required" %}';
-      } else {
-        window.location.href = '{% url "eventapp:register_webinar" %}';
-      }
-  });
-</script>
 
 <!-- ... Your existing HTML code ... -->
 

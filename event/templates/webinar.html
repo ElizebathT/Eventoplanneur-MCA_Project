@@ -44,7 +44,6 @@
     -webkit-text-fill-color: #fff !important;
     border: 5px solid #fff !important; 
     box-shadow: #222 1px 0 10px;
-    text-decoration: underline;
   }
 </style>
 <body>
@@ -89,30 +88,11 @@
                 <p class="card-text">Time: {{ i.start_time }}<br><br></p>
                 <a href="{% url 'view_webinar' i.id %}" class="btn mr-2"><i class="fas fa-link"></i> View </a>
                 <a href="{% url 'update_webinar' i.id %}" class="btn"><i class="fab fa-link"></i> Update</a>
-                <a href="{% url 'delete_webinar' i.id %}" class="btn"><i class="fab fa-link"></i> Delete</a>
+                <a href="{% url 'delete_webinar' i.id %}" class="btn"><i class="fab fa-link"></i> Delete</a><br><br>
+                <a style="width: 100%;" href="{% url 'services_required' i.id %}" class="btn"><i class="fab fa-link"></i> Book Services</a>
           </div></div></div>{% endfor %}
           {% endblock %}
       </div>
-      {% comment %} <div class="sidebar">
-        <div class="notifications">
-            <h4>Notifications</h4>
-            <ul id="notificationList">
-                <li><strong>Upcoming Webinar: </strong>Digital Transformation:<br> Navigating the Future of Business</li>
-                <li><strong>Don't forget!: </strong>Webinar on Cybersecurity Essentials: <br>Safeguarding Your Digital Presence is just around the corner.</li>
-                <li><strong>Upcoming Webinar: </strong>Mindful Wellness: <br>Strategies for a Balanced Life</li>
-            </ul>
-        </div>
-        <div class="chatbot">
-            <h4>Chatbot</h4>
-            <div class="chat-messages" id="chatMessages">
-                <!-- Sample chatbot messages will be added dynamically here -->
-            </div>
-            <div class="chat-input">
-                <input type="text" id="chatInput" placeholder="Type your message...">
-                <button id="sendButton">Send</button>
-            </div>
-        </div>
-      </div> {% endcomment %}
       
     </div>
     

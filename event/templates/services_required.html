@@ -13,29 +13,72 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Add these links in the head section of your HTML file -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </head>
+<style>
+    form{
+        padding-left: 1.5rem;
+    }
+    h1,form{
+        margin:30px;
+        text-align:center;
+    }
+    .form-check{
+        text-align:left;
+    }
+    
+</style>
 <body>
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+            <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
+              <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+              <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+              <li class="nav-item">
+                  {% if user.is_authenticated %}
+                  <a class="nav-link" >User: {{ user.email }}</a>
+                  <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+                  {% endif %}
+                </li>
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
     {% block content %}
         <h1>Choose Services</h1>
-        <form method="POST" action="{% url 'services_required' %}" enctype="multipart/form-data">
+        <form method="POST"  enctype="multipart/form-data" class="needs-validation" novalidate>
             {% csrf_token %}
-            <label for="service_categories">Service Categories:</label><br/>
-            <select id="service_categories" name="service_categories[]" multiple>
-                <option value="" disabled selected>Select a category</option>
-                <option value="catering">Catering</option>
-                <option value="venue">Venue</option>
-                <option value="transportation">Transportation</option>
-                <option value="sound and lighting">Sound and Lighting</option>
-                <option value="entertainment ">Entertainment </option>
-                <option value="decoration ">Decoration </option>
-                <option value="accomodation ">Accommodation </option>
-                <option value="event staffing ">Event Staffing </option>
-                <option value="promotion ">Promotion </option>
-                <option value="photography and videography ">Photography &amp; Videography </option>
-            </select><br/>
-            <input type="submit" value="Submit"/>
+            <div class="form-group">
+                <label for="serviceCategories">Service Categories:</label><br/>
+        
+                {% for option in service_options %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="{{ option }}" name="service_categories[]" value="{{ option }}">
+                        <label class="form-check-label" for="{{ option }}">{{ option|capfirst }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        
     {% endblock %}
 </body>
 </html>
