@@ -6,79 +6,169 @@
     <title>Services Form</title>
     <!-- Add CSS styles if needed -->
     <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{% static 'css/home.css' %}">
-  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add custom CSS -->
+    <!-- Add favicon -->
+    <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+    <!-- Add jQuery and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <!-- Add Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- Add these links in the head section of your HTML file -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        // Hide all services and packages initially
+        $(".service-item").hide();
+
+        // Function to calculate and update the total sum
+        function updateTotalSum() {
+            var totalSum = 0;
+
+            // Iterate through all checked checkboxes
+            $("input[type='checkbox']:checked").each(function () {
+                var category = $(this).val();
+                // Iterate through services of the selected category
+                $(".service-item[data-category='" + category + "']").each(function () {
+                    // Remove the dollar sign and parse the rate, then add to total sum
+                    totalSum += parseFloat($(this).find(".rate").text());
+                });
+            });
+            console.log(parseFloat($(this).find(".rate").text().replace('$', '')))
+            // Update the total sum display
+            $(".sum-value").text(totalSum.toFixed(2));
+        }
+
+        // On checkbox change, toggle visibility of corresponding services and packages
+        $("input[type='checkbox']").change(function () {
+            var category = $(this).val();
+            $(".service-item[data-category='" + category + "']").toggle();
+
+            // Call the function to update the total sum
+            updateTotalSum();
+        });
+    });
+</script>
+
+  
 </head>
 <style>
-    form{
-        padding-left: 1.5rem;
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+.form-check-input:checked+.form-check-label {
+    color: #008080;
+}
+h1 {
+    color: #007bff;
+}
+
+.form-check-label {
+    font-weight: normal;
+}
+
+
+.service-item {
+    margin-left: 20px;
+    background-color:#f2f7ff;
+}
+
+@media (max-width: 767px) {
+    .navbar-nav.ml-auto {
+        margin-top: 10px;
     }
-    h1,form{
-        margin:30px;
-        text-align:center;
-    }
-    .form-check{
-        text-align:left;
-    }
-    
+}
+
 </style>
-<body>
+<body style="background-color: #f2f7ff;">
     <nav class="navbar navbar-expand-md bg-dark navbar-dark">
         <div class="container">
-          <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
-            <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
-          </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
-              <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
-              <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
-              <li class="nav-item">
-                  {% if user.is_authenticated %}
-                  <a class="nav-link" >User: {{ user.email }}</a>
-                  <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
-                  {% endif %}
-                </li>
-              
-            </ul>
-          </div>
+            <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+                <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                        <a class="nav-link" >User: {{ user.email }}</a>
+                        <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
         </div>
-      </nav>
+    </nav>
     {% block content %}
-        <h1>Choose Services</h1>
-        <form method="POST"  enctype="multipart/form-data" class="needs-validation" novalidate>
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="serviceCategories">Service Categories:</label><br/>
-        
-                {% for option in service_options %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="{{ option }}" name="service_categories[]" value="{{ option }}">
-                        <label class="form-check-label" for="{{ option }}">{{ option|capfirst }}</label>
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Choose Services</h1>
+    {% if webinar_location %}
+        <p> Location: {{ webinar_location }}</p>
+    {% endif %}
+
+    {% if webinar_date %}
+        <p> Date: {{ webinar_date }}</p>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="serviceCategories">Service Categories:</label><br/>
+        {% for option in service_options %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="{{ option }}" name="service_categories[]" value="{{ option }}">
+                <label class="form-check-label" for="{{ option }}">{{ option|capfirst }}</label>
+            </div>
+        {% endfor %}
+    </div>
+    
+    {% if packages %}
+        <div class="container mt-4">
+            <h2>Packages:</h2>
+            <input type="text" id="participants" name="participants" value="{{ participants }}" hidden>
+            <div class="row">
+                {% for package in packages %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush services-list">
+                                    {% for service in package.services.all %}
+
+                                        <li class="list-group-item service-item" data-category="{{ service.category }}">
+                                            <a href="{% url 'viewservices' service.id %}" class="d-block text-decoration-none">{{ service.name }}</a><br>
+                                            <small class="text-muted ms-auto" id="rate">${{ service.rate }}/person</small>
+                                        </li>
+                                    {% endfor %}
+                                    
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
-        
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        
+            
+        </div>
+    {% else %}
+        <p class="container mt-4">No packages available.</p>
+    {% endif %}
+</div>
     {% endblock %}
 </body>
 </html>

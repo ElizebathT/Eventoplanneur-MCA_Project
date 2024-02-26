@@ -557,8 +557,25 @@
                 </div>
               <span>* Required fields</span><br>
           
-              <button><a style="text-decoration:none;color:white;" href="{% url 'eventapp:services' %}" class="btn2"> Back </a></button>
-              <button id="sendButton" type="submit">
+              <a class="btn2" onclick="goBack()" style="background-color: #F3B95F; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin-left: 79px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+    Go Back
+</a>
+<script>
+  function goBack() {
+      window.history.back();
+  }
+</script><button id="sendButton" type="submit">
                     <a href="{% url 'book_services' service_id %}" style="text-decoration:none;color:white;">Book Now</a>
             </button>
             

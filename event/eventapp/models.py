@@ -166,12 +166,26 @@ class Service(models.Model):
     locations = models.TextField(null=True)
     services_provided = models.TextField()
     description = models.TextField()
-    rating = models.IntegerField(default=0,null=True)
+    rating = models.IntegerField(default=0, null=True)
     capacity = models.IntegerField(null=True)
-    org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
-    rate = models.IntegerField(default=0,null=True)
+    org_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    rate = models.IntegerField(default=0, null=True)
+
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Add the service to the user's package
+        user_package, created = Package.objects.get_or_create(user=self.org_user)
+        user_package.services.add(self)
+
+class Package(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    services = models.ManyToManyField(Service)
+
+    def __str__(self):
+        return f"Package for {self.user.email}"
     
 class BookService(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)

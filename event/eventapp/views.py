@@ -2,7 +2,7 @@ import datetime
 from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
 #from .models import User
-from .models import Service,CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee
+from .models import Service,CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee,Package
 import re
 from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login
@@ -973,11 +973,38 @@ def service_paymentsuccess(request):
 def service_paymentfail(request):
     return render(request, 'service_paymentfail.html')
 
+# def services_required(request, webinar_id):
+#     service_options = ['catering', 'venue', 'transportation', 'sound and lighting', 'entertainment', 'decoration', 'accommodation', 'event staffing', 'promotion', 'photography and videography']
+
+#     # Fetch the webinar information from the database
+#     webinar = get_object_or_404(Webinar, id=webinar_id)
+
+#     if request.method == 'POST':
+#         selected_services = request.POST.getlist('service_categories[]')
+#         # Process the selected services
+
+#     return render(request, 'services_required.html', {
+#         'service_options': service_options,
+#         'webinar_location': webinar.location,
+#         'webinar_date': webinar.date,
+#     })
+
 def services_required(request, webinar_id):
-    service_options = ['catering', 'venue', 'transportation', 'sound and lighting', 'entertainment', 'decoration', 'accommodation', 'event staffing', 'promotion', 'photography and videography']
-    
+    # Assuming you also want to fetch webinar information
+    webinar = get_object_or_404(Webinar, id=webinar_id)
+    service_options = ['catering', 'venue', 'transportation', 'sound and lighting', 'entertainment', 'decoration', 'accomodation', 'event staffing', 'promotion', 'photography and videography']
+
+    # Fetch all packages for the current user (adjust the filter condition based on your needs)
+    packages = Package.objects.all()
+
     if request.method == 'POST':
         selected_services = request.POST.getlist('service_categories[]')
         # Process the selected services
-        
-    return render(request, 'services_required.html', {'service_options': service_options})
+
+    return render(request, 'services_required.html', {
+        'webinar_location': webinar.location,
+        'service_options': service_options,
+        'webinar_date': webinar.date,
+        'participants': webinar.max_participants,
+        'packages': packages,
+    })
