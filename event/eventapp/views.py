@@ -1002,7 +1002,7 @@ def services_required(request, webinar_id):
         # Process the selected services
 
     return render(request, 'services_required.html', {
-        'webinar_location': webinar.location,
+        'webinar_location': webinar.location.lower(),
         'service_options': service_options,
         'webinar_date': webinar.date,
         'participants': webinar.max_participants,

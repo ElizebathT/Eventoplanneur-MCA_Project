@@ -27,39 +27,20 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
-<script>
+{% comment %} <script>
     $(document).ready(function () {
         // Hide all services and packages initially
         $(".service-item").hide();
 
-        // Function to calculate and update the total sum
-        function updateTotalSum() {
-            var totalSum = 0;
-
-            // Iterate through all checked checkboxes
-            $("input[type='checkbox']:checked").each(function () {
-                var category = $(this).val();
-                // Iterate through services of the selected category
-                $(".service-item[data-category='" + category + "']").each(function () {
-                    // Remove the dollar sign and parse the rate, then add to total sum
-                    totalSum += parseFloat($(this).find(".rate").text());
-                });
-            });
-            console.log(parseFloat($(this).find(".rate").text().replace('$', '')))
-            // Update the total sum display
-            $(".sum-value").text(totalSum.toFixed(2));
-        }
-
+        
         // On checkbox change, toggle visibility of corresponding services and packages
         $("input[type='checkbox']").change(function () {
             var category = $(this).val();
             $(".service-item[data-category='" + category + "']").toggle();
 
-            // Call the function to update the total sum
-            updateTotalSum();
         });
     });
-</script>
+</script> {% endcomment %}
 
   
 </head>
@@ -70,20 +51,29 @@ body {
 .form-check-input:checked+.form-check-label {
     color: #008080;
 }
-h1 {
-    color: #007bff;
+h3{
+    color:#00356B;
+    padding:20px;
 }
-
+p{
+    color:#00356B;
+    padding-left:20px;
+}
+.containers{
+    margin-left: 50px;
+    margin-right:50px;
+    background-color:white;
+}
 .form-check-label {
     font-weight: normal;
 }
-
-
 .service-item {
     margin-left: 20px;
     background-color:#f2f7ff;
 }
-
+.form-group{
+    margin-left: 90px;
+}
 @media (max-width: 767px) {
     .navbar-nav.ml-auto {
         margin-top: 10px;
@@ -93,14 +83,15 @@ h1 {
 </style>
 <body style="background-color: #f2f7ff;">
     <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
-                <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <div class="con">
+            
             <div class="collapse navbar-collapse" id="navbarCollapse">
+                <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+                    <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
@@ -119,8 +110,8 @@ h1 {
         </div>
     </nav>
     {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-5">Choose Services</h1>
+<div class="containers mt-5">
+    <h3 class="text-center mb-5">Choose Services</h3>
     {% if webinar_location %}
         <p> Location: {{ webinar_location }}</p>
     {% endif %}
@@ -144,24 +135,77 @@ h1 {
             <h2>Packages:</h2>
             <input type="text" id="participants" name="participants" value="{{ participants }}" hidden>
             <div class="row">
-                {% for package in packages %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush services-list">
-                                    {% for service in package.services.all %}
-
+                
+                {% comment %} {% for package in packages %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush services-list">
+                                {% for service in package.services.all %}
+                                    {% if webinar_location in service.locations %}
                                         <li class="list-group-item service-item" data-category="{{ service.category }}">
                                             <a href="{% url 'viewservices' service.id %}" class="d-block text-decoration-none">{{ service.name }}</a><br>
                                             <small class="text-muted ms-auto" id="rate">${{ service.rate }}/person</small>
+
+                                            {% if service.date == webinar_date %}
+                                                <span class="badge bg-danger">Booked</span>
+                                            {% else %}
+                                                <span class="badge bg-success">Available</span>
+                                            {% endif %}
                                         </li>
-                                    {% endfor %}
-                                    
-                                </ul>
-                            </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
+            {% endfor %} {% endcomment %}
+            {% for package in packages %}
+            <div class="package">
+                <h3>{{ package.name }}</h3>
+                <ul class="list-group">
+                    {% for service in package.services.all %}
+                        {% if webinar_location in service.locations %}
+                            <li class="list-group-item service-item" data-category="{{ service.category }}">
+                                <a href="{% url 'viewservices' service.id %}" class="d-block text-decoration-none">{{ service.name }}</a><br>
+                                <small class="text-muted ms-auto" id="rate">${{ service.rate }}/person</small>
+        
+                                {% if service.date == webinar_date %}
+                                    <span class="badge bg-danger">Booked</span>
+                                {% else %}
+                                    <span class="badge bg-success">Available</span>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+
+        <script>
+            $(document).ready(function () {
+                // Hide all services and packages initially
+                $(".service-item").hide();
+        
+                // O        n checkbox change, toggle visibility of corresponding services and packages
+                $("input[type='checkbox']").change(function () {
+                    var category = $(this).val();
+                    $(".service-item[data-category='" + category + "']").toggle();
+                });
+        
+                // Sort packages based on the number of displayed services
+                var packages = $(".package");
+                packages.sort(function (a, b) {
+                    var servicesA = $(a).find(".service-item:visible").length;
+                    var servicesB = $(b).find(".service-item:visible").length;
+                    return servicesB - servicesA;
+                });
+        
+                // Append sorted packages to the container
+                $(".container").append(packages);
+            });
+        </script>
+        
             </div>
             
         </div>
