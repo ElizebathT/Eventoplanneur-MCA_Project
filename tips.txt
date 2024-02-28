@@ -1,19 +1,13 @@
 
-services checkbox
-services of 1 provider shown together
 
 view services-> edit/add
 profile
-rate per head...
-payment
+payment to admin
 status complete->review
-package services
-details from webinar
 bill download
 
 rate negotiate
 certificates
 reports
 otp
-advance payed status
-register webinar->organiser name,number
+admin verify provider

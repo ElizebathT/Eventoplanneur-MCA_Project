@@ -873,6 +873,13 @@ def approve_booking(request, booking_id):
     booking_instance.status = "approved"
     booking_instance.save()
     return redirect('eventapp:view_bookings')
+
+def service_complete(request, booking_id):
+    booking_instance = get_object_or_404(BookService, pk=booking_id)
+    booking_instance.status = "service completed"
+    booking_instance.save()
+    return redirect('eventapp:view_bookings')
+
 def reject_booking(request, booking_id):
     booking_instance = get_object_or_404(BookService, pk=booking_id)
     booking_instance.status = "rejected"
@@ -906,10 +913,11 @@ def bookings(request):
     callback_url = 'eventapp:bookings'
     current_user = request.user
     booking_instances = BookService.objects.filter(org_user=current_user)
-
+    
     # Create a context dictionary for booking instances
     context = {
         'booking_instances': booking_instances,
+        
     }
     context['razorpay_order_id'] = razorpay_order_id
     context['razorpay_merchant_key'] = settings.RAZOR_KEY_ID
@@ -919,7 +927,22 @@ def bookings(request):
  
     return render(request, 'bookings.html', context=context)
  
- 
+def pay_advance(request, booking_id):
+    # Fetch the booking instance based on the booking_id
+    booking_instance = BookService.objects.get(id=booking_id)
+
+    # Check if the booking_instance exists and if it's in a state where advance payment can be made
+    if booking_instance and booking_instance.status == 'pending':
+        # Perform actions to mark the booking as advance paid
+        booking_instance.status = 'advance_paid'
+        booking_instance.save()
+
+        # Add a success message
+        messages.success(request, 'Advance payment successful.')
+
+    # Redirect back to the booking page
+    return redirect('eventapp:bookings')
+
 # we need to csrf_exempt this url as
 # POST request will be made by Razorpay
 # and it won't have the csrf token.

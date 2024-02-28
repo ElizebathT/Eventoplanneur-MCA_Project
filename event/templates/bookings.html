@@ -76,7 +76,8 @@
                     <td>{{ booking_instance.participants }}</td>
                     <td>{{ booking_instance.date }}</td>
                     {% if booking_instance.status == 'approved' %}
-                    <td><button id="pay-btn" class="btn btn-success">Pay Advance</button></td>
+                    <td><button onclick="payAdvance({{ booking_instance.id }})" class="btn btn-success">Pay Advance</button>
+                    </td>
                     {% else %}
                     <td style="background-color: {% if booking_instance.status == 'approved' %}green{% elif booking_instance.status == 'rejected' %}red{% elif booking_instance.status == 'pending' %}orange{% endif %}; color: white;">
                       {{ booking_instance.status }}</td>
@@ -84,6 +85,23 @@
                     
                 </tr>
             {% endfor %}
+            <script>
+              function payAdvance(bookingId) {
+                  // Assuming you are using JavaScript to make an asynchronous request to the pay_advance view
+                  // You can use AJAX or fetch to achieve this
+                  // For simplicity, I'm using a basic example using fetch
+                  fetch(`/pay_advance/${bookingId}/`)
+                      .then(response => {
+                          if (response.ok) {
+                              // Redirect to the booking page after successful payment
+                              window.location.href = '/bookings/';
+                          } else {
+                              // Handle error scenario
+                              console.error('Error making payment');
+                          }
+                      });
+              }
+          </script>
         </tbody>
     </table>
 </div>
@@ -128,133 +146,3 @@
 </body>
 </html>
 {% endif %}
-
-{% comment %} {% load static %}
-{% if user.is_authenticated %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Homepage</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{% static 'css/home.css' %}">
-  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
-</head>
-<body>
-  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
-        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
-          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
-          <li class="nav-item">
-              {% if user.is_authenticated %}
-              <a class="nav-link" >User: {{ user.email }}</a>
-              <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
-              {% endif %}
-            </li>
-          
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <style>
-    th{
-        background-color:#004080;
-        color:white;
-    }
-  </style>
-<br><br><br>
-<div class="container mt-5">
-    <h2>Your Bookings</h2>
-    
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Service</th>
-                <th>Location</th>
-                <th>Services Required</th>
-                <th>Amount</th>
-                <th>Participants</th>
-                <th>Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        
-        <tbody>
-            {% for booking_instance in booking_instances %}
-                <tr>
-                    <td>{{ booking_instance.service.name }}</td>
-                    <td>{{ booking_instance.location }}</td>
-                    <td>{{ booking_instance.services_required }}</td>
-                    <td>{{ booking_instance.amount }}</td>
-                    <td>{{ booking_instance.participants }}</td>
-                    <td>{{ booking_instance.date }}</td>
-                    {% if booking_instance.status == 'approved' %}
-                    <td><a href="{% url 'bookings' booking_instance.id %}" id="pay-btn" class="btn">Pay</a></td>
-                    {% else %}
-                    <td style="background-color: {% if booking_instance.status == 'approved' %}green{% elif booking_instance.status == 'rejected' %}red{% elif booking_instance.status == 'pending' %}orange{% endif %}; color: white;">
-                      {{ booking_instance.status }}</td>
-                      {% endif %}
-                  
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<!-- Razorpay's Javascript code. -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-	var options = {
-	
-	// Enter the Key ID generated from the Dashboard
-	key: "{{ razorpay_merchant_key }}",
-	
-	// Amount is in currency subunits.
-	// Default currency is INR. Hence,
-	// 50000 refers to 50000 paise
-	amount: "{{ razorpay_amount }}",
-	currency: 'INR',
-	
-	// Your/store name.
-	name: "Dj Razorpay",
-	
-	// Pass the `id` obtained in the response of Step 1
-	order_id: "{{ razorpay_order_id }}",
-	callback_url: "{{ callback_url }}",
-	};
-	
-	// initialise razorpay with the options.
-	var rzp1 = new Razorpay(options);
-	
-	// add event listener to the payment button.
-	document.getElementById("pay-btn").onclick = function (e) {
-        rzp1.open();
-        e.preventDefault();
-        };
-</script>
-    <!-- Link to Bootstrap JS (add the appropriate version) and other JS files if needed -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-    <script>
-      console.log("Razorpay Key:", "{{ razorpay_merchant_key }}");
-      // Rest of your Razorpay script
-  </script>
-  
-</body>
-</html>
-{% endif %} {% endcomment %}

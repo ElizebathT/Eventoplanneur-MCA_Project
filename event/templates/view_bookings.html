@@ -95,12 +95,28 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'eventapp:providerhome' %}">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
         <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" >User: {{ user.email }}</a>
+              <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+              {% endif %}
+            </li>
+          
+        </ul>
     </div>
   </nav>
 
@@ -134,6 +150,12 @@
                   {% if booked_service.status == 'pending' %}
                     <a href="{% url 'approve_booking' booked_service.id %}" class="btn btn-success">Approve</a>
                     <a href="{% url 'reject_booking' booked_service.id %}" class="btn btn-danger ml-2">Reject</a>
+                  {% elif booked_service.status == 'advance paid' %}
+                  <a href="{% url 'service_complete' booked_service.id %}" class="btn btn-success">Service Completed</a>
+                  {% elif booked_service.status == 'service completed'  %}
+                    <span class="badge badge-success">
+                      {{ booked_service.status }}
+                    </span>
                   {% else %}
                     <span class="badge {% if booked_service.status == 'approved' %}badge-success{% elif booked_service.status == 'rejected' %}badge-danger{% endif %}">
                       {{ booked_service.status }}
