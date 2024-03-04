@@ -64,3 +64,12 @@ class BookServiceForm(forms.ModelForm):
     class Meta:
         model = BookService
         fields = ['location', 'services_required', 'budget', 'date', 'participants']
+
+# forms.py
+from django import forms
+from .models import Review
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'comment']

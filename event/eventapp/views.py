@@ -1,6 +1,7 @@
 import datetime
 from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
+from numpy import mean
 #from .models import User
 from .models import Service,CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee,Package
 import re
@@ -764,20 +765,26 @@ def addservices(request):
         form = ServiceForm()
 
     return render(request, 'addservices.html', {'form': form})
-
 def viewservices(request, service_id):
-    task = get_object_or_404(Service, id=service_id)
+    service = get_object_or_404(Service, id=service_id)
+    reviews = Review.objects.filter(service__id=service_id)
+    average_rating = mean([review.rating for review in reviews]) if reviews else None
 
     if request.method == 'POST':
-        form = ServiceForm(request.POST, instance=task)
+        form = ServiceForm(request.POST, instance=service)
         if form.is_valid():
-            # Process the form data if it's valid
             form.save()
             # Redirect or render a success page
     else:
-        # If it's a GET request, just display the form with the existing data
-        form = ServiceForm(instance=task)
-    return render(request, 'viewservices.html', {'form': form,'service_id': service_id})
+        form = ServiceForm(instance=service)
+
+    return render(request, 'viewservices.html', {
+        'form': form,
+        'service': service,
+        'reviews': reviews,
+        'average_rating': average_rating,
+        'service_id':service_id
+    })
 
 def availability(request, service_id):
 
@@ -844,29 +851,6 @@ def bookings(request):
     booking_instances = BookService.objects.filter(org_user=current_user)
     return render(request, 'bookings.html', {'booking_instances': booking_instances})
 
-
-from .models import BookService, Review
-
-def review_service(request):
-    current_user = request.user
-    booking_instances = BookService.objects.filter(org_user=current_user, status='completed')
-
-    return render(request, 'review_service.html', {'booking_instances': booking_instances})
-
-def submit_review(request):
-    if request.method == 'POST':
-        service_id = request.POST.get('service')
-        rating = request.POST.get('rating')
-        comments = request.POST.get('comments')
-
-        # Assuming you have a Review model with a foreign key to the Service model
-        service = Service.objects.get(id=service_id)
-        review = Review.objects.create(service=service, rating=rating, comments=comments)
-
-        return redirect('review_service')
-    else:
-        # Handle other HTTP methods if needed
-        return redirect('review_service')
 
 def approve_booking(request, booking_id):
     booking_instance = get_object_or_404(BookService, pk=booking_id)
@@ -1031,3 +1015,35 @@ def services_required(request, webinar_id):
         'participants': webinar.max_participants,
         'packages': packages,
     })
+
+from .models import Review
+from .forms import ReviewForm
+@login_required
+def review_service(request):
+    review_submitted = False
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            service_id = request.POST.get('service_id')
+            
+            service = Service.objects.get(id=service_id)
+            review = form.save(commit=False)
+            review.user = request.user
+            review.service = service
+            review.save()
+            review_submitted = True
+    else:
+        form = ReviewForm()
+    completed_services = BookService.objects.filter(org_user=request.user, status='service completed')
+    service_id = request.GET.get('q')
+    services = Service.objects.all()
+    reviews = Review.objects.all()
+    query = request.GET.get('q')
+    
+    if query:
+        reviews = reviews.filter(service=query)
+    
+    context = {'form': form, 'completed_services': completed_services, 'review_submitted': review_submitted,'reviews': reviews, 'services': services, 'query': query}
+    
+    return render(request, 'review_service.html', context)

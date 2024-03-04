@@ -1,5 +1,4 @@
 {% load static %}
-{% if user.is_authenticated %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +6,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reviews</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+ 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
 </head>
+<style>
+  /* Style for the select element */
+  #service-select {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 200px;
+  }
+
+  /* Style for the options within the select element */
+  #service-select option {
+      background-color: #f8f9fa;
+      color: #333;
+  }
+
+  /* Style for when the select element is open */
+  #service-select:focus {
+      outline: none;
+      border-color: #007bff;
+  }
+  #search{
+    margin:50px;
+  }
+  p{
+    margin:10px;
+  }
+  .review{
+    background-color:#f9dada;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    padding:5px;
+    margin:10px;
+  }
+.col-md-6{
+  margin-top:50px;
+  border-radius: 15px;
+}
+.reviews{
+  background-color:white;
+  margin:50px;
+  padding: 10px;
+  border-radius: 10px;
+}
+h2{
+  margin-top:20px;
+  text-align: center;
+}
+body{
+  background-color:#ff8a8a;
+  color:#0d2c42;
+}
+.btn{
+  background-color:#ff6d6d;
+  margin-left:300px;
+  margin-bottom:20px;
+  color:white;
+}
+.col-md-8{
+  background-color:#f9dada;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+</style>
 <body>
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
@@ -40,6 +104,154 @@
   </nav>
 
 
+{% block content %}
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <h2 class="text-center mb-4">Review Service</h2>
+
+        {% if review_submitted %}
+          <p class="alert alert-success">Review submitted successfully!</p>
+        {% endif %}
+
+        <form method="post" action="{% url 'eventapp:review_service' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="service_id">Select Service:</label>
+            <select class="form-control" name="service_id" id="service_id">
+              {% for service in completed_services %}
+                <option value="{{ service.service.id }}">{{ service.service.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <br><label for="rating">Rating:</label><br>
+          <div class="rating">
+  <input type="radio" id="star5" name="rating" value="5">
+  <label for="star5"></label>
+  <input type="radio" id="star4" name="rating" value="4">
+  <label for="star4"></label>
+  <input type="radio" id="star3" name="rating" value="3">
+  <label for="star3"></label>
+  <input type="radio" id="star2" name="rating" value="2">
+  <label for="star2"></label>
+  <input type="radio" id="star1" name="rating" value="1">
+  <label for="star1"></label>
+</div>
+
+<style>
+.rating {
+  display: inline-block;
+}
+nav{
+  position: fixed;
+  z-index:20;
+}
+.rating input {
+  display: none;
+}
+
+.rating label {
+  float: right;
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.rating label:before {
+  content: '\2605';
+  font-size: 30px;
+  transition: color 0.3s;
+}
+
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+  color: #ffc300;
+  transform: scale(1.2);
+  transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+@keyframes bounce {
+  to {
+    transform: scale(1.3);
+  }
+}
+</style>
+<br><label for="comment">Review:</label><br>
+{{ form.comment }}
+<style>
+  textarea {
+    width:100%;
+    height:200px;
+  }
+</style>  
+
+          <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+<div class="reviews">
+  <h2>All Reviews</h2>
+  <div id="search">
+  <form method="GET">
+    
+  <select name="q" id="service-select">
+      <option value="">Select a service</option>
+      {% for service in services %}
+          <option value="{{ service.id }}">{{ service.name }}</option>
+      {% endfor %}
+  </select>
+    <button class="btn" type="submit">Search</button>
+  </form>
+
+  <div class="row">
+    {% comment %} {% for review in reviews %}
+      <div class="col-md-6">
+        <div class="review">
+          <p><strong>Service:</strong> {{ review.service.service.name }}</p>
+          <p><strong>User:</strong> {{ review.user }}</p>
+          <p><strong>Rating:</strong><div class="rating">
+            <input type="radio" name="rating" {% if review.rating == 5 %} checked {% endif %} readonly>
+            <label></label>
+            <input type="radio" name="rating" {% if review.rating == 4 %} checked {% endif %} readonly>
+            <label></label>
+            <input type="radio" name="rating" {% if review.rating == 3 %} checked {% endif %} readonly>
+            <label ></label>
+            <input type="radio" name="rating" {% if review.rating == 2 %} checked {% endif %} readonly>
+            <label ></label>
+            <input type="radio" name="rating" {% if review.rating == 1 %} checked {% endif %} readonly>
+            <label></label>
+          </div>
+          </p>
+          <p><strong>Comment:</strong> {{ review.comment }}</p>
+        </div>
+      </div>
+    {% empty %}
+      <p>No reviews found.</p>
+    {% endfor %} {% endcomment %}
+    {% for review in reviews %}
+    <div class="col-md-6">
+      <div class="review">
+      <p><strong>Service:</strong> {{ review.service.name }}</p>
+      <p><strong>User:</strong> {{ review.user }}</p>
+        <p><strong>Rating:</strong> 
+            {% for _ in ""|ljust:review.rating %}
+                <i class="fas fa-star" style="color: #ffd700;"></i>
+            {% endfor %}
+            
+        </p>
+        <p><strong>Comment:</strong> {{ review.comment }}</p>
+    </div></div>
+    <hr>
+    {% empty %}
+      <p>No reviews found.</p>
+{% endfor %}
+  </div>
+</div></div>
+
     <!-- Link to Bootstrap JS (add the appropriate version) and other JS files if needed -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
@@ -48,4 +260,3 @@
 
 </body>
 </html>
-{% endif %}

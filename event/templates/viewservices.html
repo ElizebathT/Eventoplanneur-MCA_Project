@@ -1,397 +1,3 @@
-{% comment %} {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>View service</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-</head>
-<style>
-  
-  .rating {
-    display: inline-block;
-  }
-  
-  .rating input {
-    display: none;
-  }
-  
-  .rating label {
-    float: right;
-    cursor: pointer;
-    color: #ccc;
-    transition: color 0.3s;
-  }
-  
-  .rating label:before {
-    content: '\2605';
-    font-size: 30px;
-  }
-  
-  .rating input:checked ~ label,
-  .rating label:hover,
-  .rating label:hover ~ label {
-    color: #6f00ff;
-    transition: color 0.3s;
-  }
-  
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa; /* Set a light background color */
-    color: #495057; /* Set text color */
-  }
-  a{
-    color:white;
-    text-decoration:none;
-  }
-  /* Style for the container */
-  .container {
-    margin-top: 30px;
-  }
-
-  /* Style for the form */
-  #service {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Style for form labels */
-  .form-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #495057;
-  }
-
-  /* Style for form inputs */
-  .form-control {
-    width: 100%;
-    height:auto;
-    padding: 12px;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .form-control:focus {
-    border-color: #6c757d;
-    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
-  }
-
-  /* Style for buttons */
-  button {
-    padding: 12px 20px;
-    margin-right: 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #6c757d;
-    color: white;
-    box-shadow: 0 0 10px rgba(108, 117, 125, 0.5);
-  }
-
-  /* Style for error text */
-  .error-text {
-    color: #ff6347; /* Tomato color */
-  }
-
-  /* Style for the preview image */
-  #preview {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-top: 10px;
-  }
-
-  /* Style for the selected locations textarea */
-  #location ,#services_provided,#description,#capacity{
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #6c757d;
-    border-radius: 8px;
-    margin-top: 15px;
-    box-sizing: border-box;
-    font-size: 14px;
-  }
-  #locations {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #6c757d;
-    border-radius: 8px;
-    background-color: #fff;
-    color: #495057;
-    font-size: 14px;
-    margin-top: 15px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  #locations option {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  #locations:focus {
-    border-color: #6c757d;
-    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
-  }
-
-  /* Additional styles for the navbar */
-  .navbar {
-    background-color: #495057;
-    color: #fff;
-  }
-
-  .navbar-brand {
-    font-weight: bold;
-    color: #fff !important;
-  }
-
-  .navbar-toggler-icon {
-    background-color: #fff;
-  }
-
-  /* Style for the events container */
-  .events {
-    background-color: rgba(108, 117, 125, 0.2);
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 20px;
-    color: #495057;
-  }
-
-  /* Style for the footer */
-  span {
-    color: #ff6347; /* Tomato color */
-  }
-  /* Style for the services input container */
-  .services-input-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-
-  #data-input {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #6c757d;
-    border-radius: 8px 0 0 8px;
-    margin-right: 5px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  #add-button {
-    width: 40px;
-    padding: 12px;
-    background-color: #6c757d;
-    color: #fff;
-    border: 1px solid #6c757d;
-    border-radius: 0 8px 8px 0;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  #add-button:hover {
-    background-color: #495057;
-  }
-
-  /* Additional styles for the navbar */
-  .navbar {
-    background-color: #495057;
-    color: #fff;
-  }
-
-  .navbar-brand {
-    font-weight: bold;
-    color: #fff !important;
-  }
-
-  .navbar-toggler-icon {
-    background-color: #fff;
-  }
-
-  /* Style for the events container */
-  .events {
-    background-color: rgba(108, 117, 125, 0.2);
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 20px;
-    color: #495057;
-  }
-
-  /* Style for the footer */
-  span {
-    color: #ff6347; /* Tomato color */
-  }
-  #service {
-    background-color: #f2f9fc; /* Light blue background */
-  }
-
-  button {
-    background-color: #007bff; /* Blue button background */
-    color: white;
-  }
-
-  #add-button {
-    background-color: #0056b3; /* Darker blue for add button */
-    border: 1px solid #0056b3;
-  }
-
-  #add-button:hover {
-    background-color: #004080; /* Darker blue on hover */
-  }
-
-  /* Update background color for the locations dropdown */
-  #locations {
-    background-color: #fff; /* White background for dropdown */
-    color: #495057;
-  }
-
-  #locations:focus {
-    border-color: #6c757d;
-    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
-  }
-
-  /* Additional styles for the navbar */
-  .navbar {
-    background-color: #004080; /* Darker blue navbar */
-    color: #fff;
-  }
-
-  .navbar-brand {
-    font-weight: bold;
-    color: #fff !important;
-  }
-
-  .navbar-toggler-icon {
-    background-color: #fff;
-  }
-
-  /* Style for the events container */
-  .events {
-    background-color: rgba(108, 117, 125, 0.2);
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 20px;
-    color: #495057;
-  }
-
-  /* Style for the footer */
-  span {
-    color: #ff6347; /* Tomato color */
-  }
-</style>
-
-
-<body>
-  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="{% url 'eventapp:providerhome' %}">
-        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-    </div>
-  </nav>
-  <div class="container">
-    <div class="events">
-        <h4>Details of Service</h4>
-        {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-        <form method="post" id="service" enctype="multipart/form-data">
-          {% csrf_token %}
-          <table>
-          <tr>
-            <td>
-              <div class="mb-3">
-              <label for="name" class="form-label">Name<span>*</span> :</label>
-              <input type="text" id="name" name="name" class="form-control" value="{{form.name.value}}" readonly>
-              <span id="nameError" class="error-text"></span>
-              </div>
-            </td>
-            <td>
-          <div class="mb-3">
-          <label for="category" class="form-label">Category<span>*</span> :</label>
-          <input type="text" id="category" name="category" class="form-control" value="{{form.category.value}}" readonly>
-          <span id="categoryError" class="error-text"></span>
-      </div>
-    </td>
-        </tr><tr>
-          <td>
-            <div class="mb-3">
-                <label for="locations" class="form-label">Locations<span>*</span> :</label><br>
-                <input type="text" id="locations" name="locations"  value="{{form.locations.value}}" readonly>
-                <span id="locationsError" class="error-text"></span>
-            </div>
-        </td>
-        <td>
-          <div class="mb-3">
-              <label for="capacity" class="form-label">Maximum Capacity<span>*</span> :</label><br>
-              <input type="text" id="capacity" name="capacity"  value="{{form.capacity.value}}" readonly>
-              <span id="capacityError" class="error-text"></span>
-          </div>
-      </td>
-  </tr>
-  <tr>
-
-    <td>
-      <div class="mb-3 services-container">
-          <label for="services_provided" class="form-label">Services Provided<span>*</span> :</label>
-          <input type="text" id="services_provided" name="services_provided"  value="{{form.services_provided.value}}" readonly>
-          <span id="nameError" style="color: red;"></span>
-      </div>
-  </td>
-</td>
-              <td>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description<span>*</span>:</label>
-                    <textarea type="text" style="width=100%; height=100%" id="description" name="description" readonly>{{form.description.value}}</textarea>
-                <span id="descriptionError" class="error-text"></span><br>
-                
-                </div></td>
-            </tr><tr><td>
-              <span>* Required fields</span><br>
-          
-            </td><td>
-              <button><a style="text-decoration:none;color:white;" href="{% url 'eventapp:services' %}" class="btn2"> Back </a></button>
-              <button id="sendButton" type="submit">
-                    <a href="{% url 'book_services' service_id %}" style="text-decoration:none;color:white;">Book Now</a>
-            </button>
-            
-            
-            </td></tr></form>
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      
-      
-    
-<script src="{% static 'js/services.js' %}"></script>
-      
-    </div>
-    
-</div>
-</body>
-</html> {% endcomment %}
 
 {% load static %}
 <!DOCTYPE html>
@@ -403,7 +9,155 @@
   <title>View service</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
-  <style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+<style>
+  .notification {
+    display: flex;
+    padding: 5px;
+    margin: 10px;
+    flex-direction: column;
+    isolation: isolate;
+    position: relative;
+    max-width: 960px;
+    height: auto;
+    background: #e9ecef;
+    border-radius: 1rem;
+    overflow: hidden;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+    --gradient: linear-gradient(to bottom, #2eadff, #3d83ff, #7e61ff);
+    --color: #32a6ff
+  }
+  
+  .notification:before {
+    position: absolute;
+    content: "";
+    inset: 0.0625rem;
+    border-radius: 0.9375rem;
+    background: #e9ecef;
+    z-index: 2
+  }
+  
+  .notification:after {
+    position: absolute;
+    content: "";
+    width: 0.25rem;
+    inset: 0.65rem auto 0.65rem 0.5rem;
+    border-radius: 0.125rem;
+    background: var(--gradient);
+    transition: transform 300ms ease;
+    z-index: 4;
+  }
+  
+  .notification:hover:after {
+    transform: translateX(0.15rem)
+  }
+  
+  .notititle {
+    color: var(--color);
+    padding: 0.65rem 0.25rem 0.4rem 1.25rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: transform 300ms ease;
+    z-index: 5;
+  }
+  
+  .notification:hover .notititle {
+    transform: translateX(0.15rem)
+  }
+  
+  .notibody {
+    color: #99999d;
+    padding: 0 1.25rem;
+    transition: transform 300ms ease;
+    z-index: 5;
+  }
+  
+  .notification:hover .notibody {
+    transform: translateX(0.25rem)
+  }
+  
+  .notiglow,
+  .notiborderglow {
+    position: absolute;
+    width: 20rem;
+    height: 20rem;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle closest-side at center, white, transparent);
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+  
+  .notiglow {
+    z-index: 3;
+  }
+  
+  .notiborderglow {
+    z-index: 1;
+  }
+  
+  .notification:hover .notiglow {
+    opacity: 0.1
+  }
+  
+  .notification:hover .notiborderglow {
+    opacity: 0.1
+  }
+  .col-md-6{
+  justify-content: space-between;
+  }
+  .note {
+    color: var(--color);
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 0.9rem;
+    width: 75%;
+  }
+  .rating {
+    display: inline-block;
+  }
+  nav{
+    position: fixed;
+    z-index:20;
+  }
+  .rating input {
+    display: none;
+  }
+  .search{
+    background-color:#e9ecef;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    padding:5px;
+    margin:10px;
+  }
+  .rating label {
+    float: right;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .rating label:before {
+    content: '\2605';
+    font-size: 30px;
+    transition: color 0.3s;
+  }
+  
+  .rating input:checked ~ label,
+  .rating label:hover,
+  .rating label:hover ~ label {
+    color: #ffc300;
+    transform: scale(1.2);
+    transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  
+  @keyframes bounce {
+    to {
+      transform: scale(1.3);
+    }
+  }
     body {
       margin: 0;
       padding: 0;
@@ -511,6 +265,23 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" >User: {{ user.email }}</a>
+              <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+              {% endif %}
+            </li>
+          
+        </ul>
+      </div>
     </div>
   </nav>
 
@@ -528,6 +299,15 @@
               <label for="name" class="form-label">Name<span>*</span> :</label>
               <input type="text" id="name" name="name" class="form-control" value="{{form.name.value}}" readonly>
               <span id="nameError" class="error-text"></span>
+            </div>
+            <div class="mb-3">
+              {% if average_rating %}
+                  <p><strong>Average Rating:</strong>
+                      {% for _ in ""|ljust:average_rating|add:"0" %}
+                          <i class="fas fa-star" style="color: #ffd700;"></i>
+                      {% endfor %}
+                  </p>
+              {% endif %}
               </div>
           <div class="mb-3">
           <label for="category" class="form-label">Category<span>*</span> :</label>
@@ -583,9 +363,21 @@
           </form>
 
         </div>
-      </div>
+      </div><br>
+      <h4>Reviews</h4>
+    <div class="col-md-6">
+    {% for review in reviews %}
+    <div class="notification">
+      <div class="notiglow"></div>
+      <div class="notiborderglow"></div>
+      <div class="notititle"><p><strong></strong> {{ review.user }}</p></div>
+      <div class="notibody"><p><strong></strong> {{ review.comment }}</p></div>
     </div>
-  
+
+    {% empty %}
+      <p>No reviews found.</p>
+{% endfor %}
+  </div></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'js/services.js' %}"></script>
   </body>

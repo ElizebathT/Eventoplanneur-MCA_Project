@@ -204,12 +204,11 @@ class BookService(models.Model):
     def amount(self):
         return self.service.rate * self.participants
 
-class Review(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    rating = models.IntegerField()
-    comments = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
 
+class Review(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField()
     def __str__(self):
         return f"Review for {self.service.name} by {self.user.username}"

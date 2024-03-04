@@ -79,7 +79,7 @@
                     <td><button onclick="payAdvance({{ booking_instance.id }})" class="btn btn-success">Pay Advance</button>
                     </td>
                     {% else %}
-                    <td style="background-color: {% if booking_instance.status == 'approved' %}green{% elif booking_instance.status == 'rejected' %}red{% elif booking_instance.status == 'pending' %}orange{% endif %}; color: white;">
+                    <td style="background-color: {% if booking_instance.status == 'approved' %}green{% elif booking_instance.status == 'rejected' %}red{% elif booking_instance.status == 'service completed' %}blue{% elif booking_instance.status == 'pending' %}orange{% endif %}; color: white;">
                       {{ booking_instance.status }}</td>
                       {% endif %}
                     
