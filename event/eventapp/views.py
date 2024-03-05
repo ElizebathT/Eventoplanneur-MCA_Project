@@ -234,10 +234,10 @@ def login(request):
 
 @login_required
 def webinar(request):
-    orgs=request.user
-    update_webinar=Webinar.objects.filter(org_user=orgs, status=1)
+    org_user = request.user
+    update_webinar = Webinar.objects.filter(org_user=org_user, status=1).order_by('date')
     now = datetime.datetime.now()
-    context = {'update_webinar': update_webinar,'today':now}
+    context = {'update_webinar': update_webinar, 'today': now}
     return render(request, 'webinar.html', context)
 
 def view_webinar(request,update_id):
@@ -1003,13 +1003,14 @@ def services_required(request, webinar_id):
 
     # Fetch all packages for the current user (adjust the filter condition based on your needs)
     packages = Package.objects.all()
-
     if request.method == 'POST':
         selected_services = request.POST.getlist('service_categories[]')
         # Process the selected services
-
+    webinar_location=None
+    if webinar.location:
+        webinar_location=webinar.location.lower()
     return render(request, 'services_required.html', {
-        'webinar_location': webinar.location.lower(),
+        'webinar_location': webinar_location,
         'service_options': service_options,
         'webinar_date': webinar.date,
         'participants': webinar.max_participants,

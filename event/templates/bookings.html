@@ -60,7 +60,7 @@
                 <th>Service</th>
                 <th>Location</th>
                 <th>Services Required</th>
-                <th>Budget</th>
+                
                 <th>Participants</th>
                 <th>Date</th>
                 <th>Status</th>
@@ -72,14 +72,14 @@
                     <td>{{ booking_instance.service.name }}</td>
                     <td>{{ booking_instance.location }}</td>
                     <td>{{ booking_instance.services_required }}</td>
-                    <td>{{ booking_instance.budget }}</td>
+                    
                     <td>{{ booking_instance.participants }}</td>
                     <td>{{ booking_instance.date }}</td>
                     {% if booking_instance.status == 'approved' %}
                     <td><button onclick="payAdvance({{ booking_instance.id }})" class="btn btn-success">Pay Advance</button>
                     </td>
                     {% else %}
-                    <td style="background-color: {% if booking_instance.status == 'approved' %}green{% elif booking_instance.status == 'rejected' %}red{% elif booking_instance.status == 'service completed' %}blue{% elif booking_instance.status == 'pending' %}orange{% endif %}; color: white;">
+                    <td style="background-color: {% if booking_instance.status == 'approved' %}green{% elif booking_instance.status == 'advance paid' %}black{% elif booking_instance.status == 'rejected' %}red{% elif booking_instance.status == 'service completed' %}blue{% elif booking_instance.status == 'pending' %}orange{% endif %}; color: white;">
                       {{ booking_instance.status }}</td>
                       {% endif %}
                     

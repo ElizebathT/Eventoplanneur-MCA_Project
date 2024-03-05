@@ -469,6 +469,7 @@ $(document).ready(function() {
   <title>View service</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -621,7 +622,7 @@ $(document).ready(function() {
               </div>
               <div class="mb-3">
                 <label for="date" class="form-label">Date<span>*</span> :</label>
-                <input type="date" id="date" name="date" class="form-control" onchange="checkAvailability()">
+                <input type="date" id="date" name="date" class="form-control">
                 <span id="dateError" class="error-text"></span>
             </div>
             
@@ -664,48 +665,51 @@ $(document).ready(function() {
                         }
                     });
                 } */
-                function checkAvailability() {
-                  var selectedDate = document.getElementById('date').value;
-                  var selectedLocation = document.getElementById('location').value;  // Replace 'location' with the actual id of your location input field
-                  var service_id = document.getElementById('service_id').value;
+                $(document).ready(function() {
+                  $("#date").on("input", function() {
+                      var selectedDate = document.getElementById('date').value;
+                      var selectedLocation = document.getElementById('location').value;
+                      var service_id = document.getElementById('service_id').value;
               
-                  // Check if the selected date is less than today
-                  var today = new Date();
-                  var selectedDateTime = new Date(selectedDate + 'T00:00:00');
-                  
-                  if (selectedDateTime < today) {
-                      document.getElementById('dateError').innerHTML = 'Please select a future date';
-                      return;
-                  } else {
-                      document.getElementById('dateError').innerHTML = '';
-                  }
+                      // Check if the selected date is less than today
+                      var today = new Date();
+                      var selectedDateTime = new Date(selectedDate + 'T00:00:00');
               
-                  // AJAX request to check availability and number of participants
-                  $.ajax({
-                      type: 'POST',
-                      url: '/check_availability/',
-                      data: {
-                          'service_id': service_id,
-                          'date': selectedDate,
-                          'location': selectedLocation,
-                          'csrfmiddlewaretoken': '{{ csrf_token }}'
-                      },
-                      success: function(response) {
-                          if (response.available && response.participants < 500) {
-                              document.getElementById('dateError').innerHTML = '';  // Clear previous error message
-                          } else {
-                              if (!response.available) {
-                                  document.getElementById('dateError').innerHTML = 'Bookings full on this date';
-                              } else {
-                                  document.getElementById('dateError').innerHTML = 'Number of participants exceeds limit';
-                              }
-                          }
-                      },
-                      error: function(error) {
-                          console.log(error);
+                      if (selectedDateTime < today) {
+                          document.getElementById('dateError').innerHTML = 'Please select a future date';
+                          return;
+                      } else {
+                          document.getElementById('dateError').innerHTML = '';
                       }
+              
+                      // AJAX request to check availability and number of participants
+                      $.ajax({
+                          type: 'POST',
+                          url: '/check_availability/',
+                          data: {
+                              'service_id': service_id,
+                              'date': selectedDate,
+                              'location': selectedLocation,
+                              'csrfmiddlewaretoken': '{{ csrf_token }}'
+                          },
+                          success: function(response) {
+                              if (response.available && response.participants < 500) {
+                                  document.getElementById('dateError').innerHTML = '';  // Clear previous error message
+                              } else {
+                                  if (!response.available) {
+                                      document.getElementById('dateError').innerHTML = 'Bookings full on this date';
+                                  } else {
+                                      document.getElementById('dateError').innerHTML = 'Number of participants exceeds limit';
+                                  }
+                              }
+                          },
+                          error: function(error) {
+                              console.log(error);
+                          }
+                      });
                   });
-              }
+              });
+              
             </script>
             
         
@@ -798,34 +802,6 @@ $(document).ready(function() {
   <!-- Add this script tag to include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<td>
-  <div class="mb-3">
-    <label for="budget" class="form-label">Maximum Budget<span>*</span> :</label><br>
-    <input type="number" id="budget" name="budget" max="10000000"> <!-- Set the maximum value as needed -->
-    <span id="budgetError" class="error-text"></span>
-    
-  </div>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $("#budget").on("input", function() {
-            // Get the maximum budget limit
-            var maxBudget = parseInt($("#budget").attr("max"));
-
-            // Get the entered budget
-            var enteredBudget = parseInt($("#budget").val());
-
-            // Check if the entered budget exceeds the maximum limit
-            if (!isNaN(maxBudget) && !isNaN(enteredBudget) && enteredBudget > maxBudget) {
-                $("#budgetError").text("Exceeds maximum budget limit.");
-            } else {
-                $("#budgetError").text("");
-            }
-        });
-    });
-</script>
-
-</td>
             </tr><tr><td>
               <span>* Required fields</span><br>
           

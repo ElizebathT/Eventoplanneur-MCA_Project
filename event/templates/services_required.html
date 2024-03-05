@@ -112,6 +112,7 @@ p{
     {% block content %}
 <div class="containers mt-5">
     <h3 class="text-center mb-5">Choose Services</h3>
+    
     {% if webinar_location %}
         <p> Location: {{ webinar_location }}</p>
     {% endif %}
@@ -165,18 +166,32 @@ p{
                 <h3>{{ package.name }}</h3>
                 <ul class="list-group">
                     {% for service in package.services.all %}
-                        {% if webinar_location in service.locations %}
-                            <li class="list-group-item service-item" data-category="{{ service.category }}">
-                                <a href="{% url 'viewservices' service.id %}" class="d-block text-decoration-none">{{ service.name }}</a><br>
-                                <small class="text-muted ms-auto" id="rate">${{ service.rate }}/person</small>
-        
-                                {% if service.date == webinar_date %}
-                                    <span class="badge bg-danger">Booked</span>
-                                {% else %}
-                                    <span class="badge bg-success">Available</span>
-                                {% endif %}
-                            </li>
+                        {% if webinar_location %}
+                            {% if webinar_location in service.locations %}
+                                <li class="list-group-item service-item" data-category="{{ service.category }}">
+                                    <a href="{% url 'viewservices' service.id %}" class="d-block text-decoration-none">{{ service.name }}</a><br>
+                                    <small class="text-muted ms-auto" id="rate">${{ service.rate }}/person</small>
+                                    <p>{{ service.date }}</p>
+                                    {% if service.date == webinar_date %}
+                                        <span class="badge bg-danger">Booked</span>
+                                    {% else %}
+                                        <span class="badge bg-success">Available</span>
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                        {% else %}
+                        <li class="list-group-item service-item" data-category="{{ service.category }}">
+                            <a href="{% url 'viewservices' service.id %}" class="d-block text-decoration-none">{{ service.name }}</a><br>
+                            <small class="text-muted ms-auto" id="rate">${{ service.rate }}/person</small>
+    
+                            {% if service.date == webinar_date %}
+                                <span class="badge bg-danger">Booked</span>
+                            {% else %}
+                                <span class="badge bg-success">Available</span>
+                            {% endif %}
+                        </li>
                         {% endif %}
+
                     {% endfor %}
                 </ul>
             </div>
@@ -214,5 +229,24 @@ p{
     {% endif %}
 </div>
     {% endblock %}
+    <a class="btn2" onclick="goBack()" style="background-color: #F3B95F; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin-left: 79px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+    Go Back
+</a>
+<script>
+  function goBack() {
+      window.history.back();
+  }
+</script>
 </body>
 </html>

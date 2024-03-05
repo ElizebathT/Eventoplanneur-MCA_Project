@@ -125,6 +125,7 @@
   .navbar {
     background-color: #495057;
     color: #fff;
+   
   }
 
   .navbar-brand {
@@ -270,18 +271,33 @@
 
 
 <body>
-  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="{% url 'eventapp:providerhome' %}">
-        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="{% static 'images/logo.jpg' %}" alt="Logo" width="50"> 
       </a>
-      <a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'eventapp:providerhome' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#contact">Contact</a>
+            </li>
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                
+                <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+                {% endif %}
+              </li>
+        </ul>
     </div>
-  </nav>
+</nav>
   <div class="container">
     <div class="events">
         <h4>Details of Service</h4>

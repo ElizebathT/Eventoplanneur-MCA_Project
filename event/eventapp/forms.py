@@ -63,7 +63,7 @@ class ServiceForm(forms.ModelForm):
 class BookServiceForm(forms.ModelForm):
     class Meta:
         model = BookService
-        fields = ['location', 'services_required', 'budget', 'date', 'participants']
+        fields = ['location', 'services_required', 'date', 'participants']
 
 # forms.py
 from django import forms

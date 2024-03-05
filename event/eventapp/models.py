@@ -191,7 +191,6 @@ class BookService(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     location = models.CharField(max_length=100)
     services_required = models.TextField()
-    budget = models.IntegerField()
     participants = models.IntegerField()
     date = models.DateField(null=True) 
     org_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
