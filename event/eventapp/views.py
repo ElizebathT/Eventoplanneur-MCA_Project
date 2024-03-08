@@ -232,13 +232,24 @@ def login(request):
     return render(request, 'login.html')
 
 
+from django.db.models import Q
 @login_required
 def webinar(request):
     org_user = request.user
-    update_webinar = Webinar.objects.filter(org_user=org_user, status=1).order_by('date')
+    search_query = request.GET.get('search', '')
+    
+    if search_query:
+        update_webinar = Webinar.objects.filter(
+            Q(org_user=org_user, status=1),
+            Q(title__icontains=search_query) | Q(date__icontains=search_query) | Q(start_time__icontains=search_query)
+        ).order_by('date')
+    else:
+        update_webinar = Webinar.objects.filter(org_user=org_user, status=1).order_by('date')
+
     now = datetime.datetime.now()
-    context = {'update_webinar': update_webinar, 'today': now}
+    context = {'update_webinar': update_webinar, 'today': now, 'search_query': search_query}
     return render(request, 'webinar.html', context)
+
 
 def view_webinar(request,update_id):
     task=Webinar.objects.get(id=update_id)

@@ -232,23 +232,24 @@ nav{
     {% empty %}
       <p>No reviews found.</p>
     {% endfor %} {% endcomment %}
-    {% for review in reviews|slice:":8" %}
+    {% for review in reviews|dictsortreversed:"rating"|slice:":8" %}
     <div class="col-md-6">
-      <div class="review">
-      <p><strong>Service:</strong> {{ review.service.name }}</p>
-      <p><strong>User:</strong> {{ review.user }}</p>
-        <p><strong>Rating:</strong> 
-            {% for _ in ""|ljust:review.rating %}
-                <i class="fas fa-star" style="color: #ffd700;"></i>
-            {% endfor %}
-            
-        </p>
-        <p><strong>Comment:</strong> {{ review.comment }}</p>
-    </div></div>
+        <div class="review">
+            <p><strong>Service:</strong> {{ review.service.name }}</p>
+            <p><strong>User:</strong> {{ review.user }}</p>
+            <p><strong>Rating:</strong> 
+                {% for _ in ""|ljust:review.rating %}
+                    <i class="fas fa-star" style="color: #ffd700;"></i>
+                {% endfor %}
+            </p>
+            <p><strong>Comment:</strong> {{ review.comment }}</p>
+        </div>
+    </div>
     <hr>
-    {% empty %}
-      <p>No reviews found.</p>
+{% empty %}
+    <p>No reviews found.</p>
 {% endfor %}
+
   </div>
 </div></div>
 

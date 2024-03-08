@@ -19,7 +19,12 @@
     background: #111 !important;;
     
   }
-  
+  .input-group{
+    width:500px;
+  }
+  .input-group-append{
+    margin-left:10px;
+  }
   .card {
     background: #222;
   border: 1px solid #dd2476;
@@ -75,23 +80,40 @@
     <div style="margin-left:100px;margin-right:225px" ><br>
       <h4 style="margin-left:50px;color:white">My Webinars</h4>
         <a href="{% url 'eventapp:register_webinar' %}"><button id="sendButton" style="margin-left:300px;width:50%;background:var(--gradient) !important;">Host a Webinar</button></a><br>
-        {% block content %}
-        
-        <div class="container mx-auto mt-3">
+       
+
+{% block content %}
+    <div class="container mx-auto mt-3">
         <div class="row">
-        {% for i in update_webinar %}
-        <div class="col-md-6">
-          <div class="card" style="width: 300px;">
-            <div class="card-body">
-              <h5 class="card-title">{{ i.title }}</h5><br>
-              <p class="card-text">Date: {{ i.date|date:"F j, Y" }}<br><p>
-                <p class="card-text">Time: {{ i.start_time }}<br><br></p>
-                <a href="{% url 'view_webinar' i.id %}" class="btn mr-2"><i class="fas fa-link"></i> View </a>
-                <a href="{% url 'update_webinar' i.id %}" class="btn"><i class="fab fa-link"></i> Update</a>
-                <a href="{% url 'delete_webinar' i.id %}" class="btn"><i class="fab fa-link"></i> Delete</a><br><br>
-                <a style="width: 100%;" href="{% url 'services_required' i.id %}" class="btn"><i class="fab fa-link"></i> Book Services</a>
-          </div></div></div>{% endfor %}
-          {% endblock %}
+            <div class="col-md-12 mb-3">
+                <form method="GET" action="{% url 'eventapp:webinar' %}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="Search Webinars">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% for i in update_webinar %}
+                <div class="col-md-6">
+                    <div class="card" style="width: 300px;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ i.title }}</h5><br>
+                            <p class="card-text">Date: {{ i.date|date:"F j, Y" }}<br><p>
+                            <p class="card-text">Time: {{ i.start_time }}<br><br></p>
+                            <a href="{% url 'view_webinar' i.id %}" class="btn mr-2"><i class="fas fa-link"></i> View </a>
+                            <a href="{% url 'update_webinar' i.id %}" class="btn"><i class="fab fa-link"></i> Update</a>
+                            <a href="{% url 'delete_webinar' i.id %}" class="btn"><i class="fab fa-link"></i> Delete</a><br><br>
+                            <a style="width: 100%;" href="{% url 'services_required' i.id %}" class="btn"><i class="fab fa-link"></i> Book Services</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
       </div>
       
     </div>

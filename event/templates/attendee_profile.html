@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+  <!-- Add these lines to include jQuery and jQuery UI -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 </head>
 <style>
     span{
@@ -85,6 +90,55 @@
                 </ul>
                 <input type="hidden" name="interests" id="interests-input" value="{{ form.initial.interests|join:', ' }}">
             </div>
+            
+            <!-- Add the following script for autocomplete -->
+            <script>
+                $(function () {
+                    var availableInterests = [ "Programming",
+                    "Web Development",
+                    "Data Science",
+                    "Artificial Intelligence",
+                    "Design",
+                    "Photography",
+                    "Music",
+                    "Sports",
+                    "Cooking",
+                    "Travel"];
+            
+                    $("#data-input").autocomplete({
+                        source: availableInterests,
+                        minLength: 1,
+                        select: function (event, ui) {
+                            // Add selected item to the list
+                            addToInterestList(ui.item.value);
+                            // Clear the input field after selecting an item
+                            $(this).val("");
+                            return false;
+                        }
+                    });
+            
+                    $("#add-button").on("click", function () {
+                        // Add the input value to the list
+                        var inputValue = $("#data-input").val();
+                        addToInterestList(inputValue);
+                        // Clear the input field after clicking the button
+                        $("#data-input").val("");
+                    });
+            
+                    function addToInterestList(interest) {
+                        // Add the interest to the list
+                        $("#data-list").append("<li>" + interest + "</li>");
+                        // Update the hidden input field with the joined interests
+                        var currentInterests = $("#interests-input").val();
+                        if (currentInterests !== "") {
+                            currentInterests += ", ";
+                        }
+                        currentInterests += interest;
+                        $("#interests-input").val(currentInterests);
+                    }
+                });
+            </script>
+            
             <input type="submit" class="btn btn-primary" value="Submit">
         </form> 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

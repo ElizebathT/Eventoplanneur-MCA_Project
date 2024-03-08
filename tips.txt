@@ -1,9 +1,7 @@
 
-
 view services-> edit/add
 profile
 payment to admin
-status complete->review
 bill download
 
 rate negotiate
@@ -11,3 +9,6 @@ certificates
 reports
 otp
 admin verify provider
+total budget
+notification
+panel correction
