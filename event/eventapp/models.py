@@ -88,6 +88,8 @@ class Webinar(models.Model):
     status = models.IntegerField(default=1,null=True,blank=True)
     def __str__(self):
         return self.title
+    def get_registrations(self):
+        return WebinarRegistration.objects.filter(webinar=self)
 
     
 class AICTE(models.Model):

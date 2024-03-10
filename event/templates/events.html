@@ -18,7 +18,9 @@
     background: #111 !important;;
     
   }
-  
+  .input-group{
+    width:500px;
+  }
   .card {
     background: #222;
   border: 1px solid #F1D302;
@@ -28,6 +30,7 @@
   }
   
   .btn {
+    margin-left:5px;
     border: 5px solid;
     border-image-slice: 1;
     background: var(--gradient) !important;
@@ -84,7 +87,16 @@
     <div class="container mx-auto mt-4" >
       
       <div class="row">
-
+        <div class="col-md-12 mb-3">
+          <form method="GET" action="{% url 'eventapp:events' %}">
+              <div class="input-group">
+                  <input type="text" class="form-control" name="search" placeholder="Search Webinars">
+                  <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
+                  </div>
+              </div>
+          </form>
+      </div>
         {% for i in webinars|slice:"-6:" %}
         <div class="col-md-4">
             <div class="card" style="width: 18rem;">

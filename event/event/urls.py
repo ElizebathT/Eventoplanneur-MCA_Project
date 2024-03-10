@@ -26,5 +26,5 @@ urlpatterns = [
     path('services_required/<int:webinar_id>', views.services_required, name='services_required'),
     path('pay_advance/<int:booking_id>/', views.pay_advance, name='pay_advance'),
     path('service_complete/<int:booking_id>/', views.service_complete, name='service_complete'),
-    
+    path('display_registrations/<int:webinar_id>/', views.display_registrations, name='display_registrations'),    
 ]

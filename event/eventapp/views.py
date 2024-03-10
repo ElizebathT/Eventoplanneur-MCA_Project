@@ -165,6 +165,7 @@ def orghome(request):
 def admindash(request):
     return render(request, 'admindash.html')
 
+
 def attendeehome(request):
     return render(request, 'attendeehome.html')
 
@@ -551,9 +552,15 @@ def listwebinars(request):
     return render(request, 'listwebinars.html', context)
 
 def events(request):
-    webinars=Webinar.objects.all().order_by('-date')[:8]
-    return render(request, 'events.html', {'webinars': webinars})
+    query = request.GET.get('search')
+    if query:
+        # If there's a search query, filter webinars based on the title or any other relevant field
+        webinars = Webinar.objects.filter(Q(title__icontains=query) | Q(description__icontains=query)).order_by('-date')[:8]
+    else:
+        # If there's no search query, retrieve the latest 8 webinars
+        webinars = Webinar.objects.all().order_by('-date')[:9]
 
+    return render(request, 'events.html', {'webinars': webinars})
 def register_for_webinar(request, webinar_id):
     user = request.user
     webinar = Webinar.objects.get(pk=webinar_id)
@@ -1059,3 +1066,8 @@ def review_service(request):
     context = {'form': form, 'completed_services': completed_services, 'review_submitted': review_submitted,'reviews': reviews, 'services': services, 'query': query}
     
     return render(request, 'review_service.html', context)
+
+def display_registrations(request, webinar_id):
+    webinar = Webinar.objects.get(pk=webinar_id)
+    registrations = webinar.get_registrations()
+    return render(request, 'registration_list.html', {'webinar': webinar, 'registrations': registrations})

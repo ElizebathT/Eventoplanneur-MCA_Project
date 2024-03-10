@@ -12,3 +12,6 @@ admin verify provider
 total budget
 notification
 panel correction
+
+back button 
+search in attendee
