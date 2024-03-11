@@ -213,3 +213,12 @@ class Review(models.Model):
     comment = models.TextField()
     def __str__(self):
         return f"Review for {self.service.name} by {self.user.username}"
+    
+class ServiceProvider(models.Model):
+    name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=15)
+    address = models.TextField()
+    website = models.URLField(blank=True, null=True)
+    service_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
+    def __str__(self):
+        return self.name

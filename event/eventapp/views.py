@@ -3,12 +3,12 @@ from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
 from numpy import mean
 #from .models import User
-from .models import Service,CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee,Package
+from .models import Service,CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee,Package,ServiceProvider
 import re
 from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User,auth
-from .forms import WebinarForm, Organizer,ConferenceForm,AttendeeForm
+from .forms import WebinarForm, Organizer,ConferenceForm,AttendeeForm,Provider
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.forms import modelformset_factory
@@ -1071,3 +1071,44 @@ def display_registrations(request, webinar_id):
     webinar = Webinar.objects.get(pk=webinar_id)
     registrations = webinar.get_registrations()
     return render(request, 'registration_list.html', {'webinar': webinar, 'registrations': registrations})
+
+def edit_services(request, service_id):
+    # Retrieve the service object using the service_id
+    service = get_object_or_404(Service, id=service_id)
+
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES, instance=service)
+        if form.is_valid():
+            form.save()
+            # Redirect to the service detail page or any other appropriate page
+            return redirect('eventapp:edit_services', service_id=service.id)
+    else:
+        form = ServiceForm(instance=service)
+
+    return render(request, 'edit_services.html', {'form': form, 'service': service})
+
+def user_services(request):
+    user_services = Service.objects.filter(org_user=request.user)  # Assuming you're using Django authentication system
+    return render(request, 'user_services.html', {'user_services': user_services})
+
+@login_required
+def provider_profile(request):
+    service_user = request.user
+    try:
+        organizer_instance = ServiceProvider.objects.get(service_user=service_user)
+    except ServiceProvider.DoesNotExist:
+        organizer_instance = None
+    if request.method == "POST":
+        if organizer_instance:
+            form = Provider(request.POST, instance=organizer_instance)
+        else:
+            form = Provider(request.POST)
+        if form.is_valid():
+            event_organizer = form.save(commit=False)
+            event_organizer.service_user = service_user
+            event_organizer.save()
+            return redirect('eventapp:providerhome')
+    else:
+        form = Provider(instance=organizer_instance)
+    messages.error(request, form.errors)
+    return render(request, 'provider_profile.html', {'form': form})

@@ -82,7 +82,7 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#features">Profile</a>
+                    <a class="nav-link" href="{% url 'eventapp:provider_profile' %}">Profile</a>
                 </li><li class="nav-item">
                     <a class="nav-link" href="#features">Features</a>
                 </li>
@@ -126,8 +126,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="feature-box">
-                        <a href="{% url 'eventapp:addservices' %}">
-                        <h4>Add New Services</h4>
+                        <a href="{% url 'eventapp:user_services' %}">
+                        <h4>Add/Edit Services</h4>
                         <p>Add or modify the services you offer to attract a wider range of clients.</p>
                         </a>
                     </div>

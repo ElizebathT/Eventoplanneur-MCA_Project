@@ -1,5 +1,5 @@
 from django import forms
-from .models import Webinar, EventOrganizer, Conference, Attendee, Feedback, BookService
+from .models import Webinar, EventOrganizer, Conference, Attendee, Feedback, BookService,ServiceProvider
 
 class WebinarForm(forms.ModelForm):
     class Meta:
@@ -14,6 +14,10 @@ class Organizer(forms.ModelForm):
         model = EventOrganizer
         fields = '__all__'
 
+class Provider(forms.ModelForm):
+    class Meta:
+        model = ServiceProvider
+        fields = '__all__'
 class ConferenceForm(forms.ModelForm):
     class Meta:
         model = Conference

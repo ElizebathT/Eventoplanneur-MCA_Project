@@ -1,0 +1,159 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #495057;
+  }
+
+  /* Navbar styles */
+  .navbar {
+    background-color: #004080;
+    color: #fff;
+  }
+
+  .navbar-brand {
+    font-weight: bold;
+    color: #fff !important;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #fff;
+  }
+
+  /* Container styles */
+  .container {
+    margin-top: 30px;
+  }
+
+  /* Card styles */
+  .card {
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Button styles */
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  /* Footer styles */
+  footer {
+    margin-top: 30px;
+    padding: 10px 0;
+    background-color: #004080;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* Additional styles for the card body */
+  .card-body {
+    padding: 20px;
+    background-color: 
+  }
+  .btn{
+    background-color: #004080;
+    color:white;
+  }
+  /* Update background color for the locations dropdown */
+  #locations {
+    background-color: #fff;
+    color: #495057;
+  }
+
+  #locations:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
+  }
+  .custom-card {
+    max-width: 300px;
+  }
+</style>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">
+        <img src="{% static 'images/logo.jpg' %}" alt="Logo" width="50"> 
+      </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'eventapp:providerhome' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#contact">Contact</a>
+            </li>
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                
+                <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+                {% endif %}
+              </li>
+        </ul>
+    </div>
+</nav>
+
+  <!-- Back button -->
+  <div class="container">
+    <div class="row">
+    {% for service in user_services %}
+        
+        <div class="col-md-4 mb-4">
+            <div class="card custom-card" style="width: 300px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ service.name }}</h5><br>
+                    <p class="card-text"><strong>Category: </strong>{{ service.category }}<br><p>
+                    <a href="{% url 'viewservices' service.id %}" class="btn mr-2"><i class="fas fa-link"></i> View </a>
+                    <a href="{% url 'edit_services' service.id %}" class="btn"><i class="fab fa-link"></i> Edit</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div></div>
+  <a href="javascript:history.back()" class="btn btn-primary mt-3 ml-3">Back</a>
+
+  <!-- Footer -->
+  <footer class="mt-5">
+    <p>&copy; 2024 Service Provider Dashboard. All rights reserved.</p>
+  </footer>
+
+  <!-- Bootstrap scripts -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

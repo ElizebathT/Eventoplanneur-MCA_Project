@@ -75,8 +75,27 @@
       </div>
     </div>
   </nav>
+  
   <div style="margin-left:100px;margin-right:225px" >
     <br>
+    <a class="btn2" onclick="goBack()" style="background-color: #F1D302; /* Yellow */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 40px;">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back
+</a>
+<br><br>
+<script>
+  function goBack() {
+      window.history.back();
+  }
+</script>
     <h3 style="margin-left:50px;color:white" >Webinars</h3>
     <a href="{% url 'eventapp:registered_webinar' %}" ><button id="sendButton" style="margin-left:300px;width:50%;background:var(--gradient) !important;">Registered Webinars</button></a><br><br>
     {% if messages %}
@@ -87,6 +106,7 @@
     <div class="container mx-auto mt-4" >
       
       <div class="row">
+        
         <div class="col-md-12 mb-3">
           <form method="GET" action="{% url 'eventapp:events' %}">
               <div class="input-group">

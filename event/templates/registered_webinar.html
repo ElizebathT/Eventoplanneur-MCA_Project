@@ -18,7 +18,9 @@
     background: #111 !important;;
     
   }
-  
+  .input-group{
+    width:500px;
+  }
   .card {
     background: #222;
   border: 1px solid #F1D302;
@@ -28,6 +30,7 @@
   }
   
   .btn {
+    margin-left:5px;
     border: 5px solid;
     border-image-slice: 1;
     background: var(--gradient) !important;
@@ -73,12 +76,39 @@
     </div>
   </nav>
   <div style="margin-left:100px;margin-right:225px" ><br>
+    <a class="btn2" onclick="goBack()" style="background-color: #F1D302; /* Yellow */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 40px;">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back
+</a>
+<br><br>
+<script>
+  function goBack() {
+      window.history.back();
+  }
+</script>
     <h3 style="margin-left:50px;color:white">My Webinars</h3>
     
     <div class="container mx-auto mt-4" >
       
       <div class="row">
-
+        <div class="col-md-12 mb-3">
+          <form method="GET" action="{% url 'eventapp:events' %}">
+              <div class="input-group">
+                  <input type="text" class="form-control" name="search" placeholder="Search Webinars">
+                  <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
+                  </div>
+              </div>
+          </form>
+      </div>
         {% for registration in webinar %}
 <div class="col-md-4">
     <div class="card" style="width: 18rem;">

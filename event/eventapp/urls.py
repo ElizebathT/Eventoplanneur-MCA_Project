@@ -48,6 +48,7 @@ urlpatterns = [
     path('service_paymentsuccess/', views.service_paymentsuccess, name='service_paymentsuccess'),
     path('service_paymentfail/', views.service_paymentfail, name='service_paymentfail'),
     path('service_paymenthandler/', views.service_paymenthandler, name='service_paymenthandler'),
-    
+    path('user_services/', views.user_services, name='user_services'),
+    path('provider_profile/',views.provider_profile,name='provider_profile'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
