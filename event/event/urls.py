@@ -28,4 +28,5 @@ urlpatterns = [
     path('service_complete/<int:booking_id>/', views.service_complete, name='service_complete'),
     path('display_registrations/<int:webinar_id>/', views.display_registrations, name='display_registrations'),   
     path('edit_services/<int:service_id>',views.edit_services,name='edit_services'), 
+    path('certificate/<int:certificate_id>/', views.certificate_download, name='certificate_download'),
 ]

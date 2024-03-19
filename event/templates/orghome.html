@@ -25,8 +25,15 @@
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
-          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          <li class="nav-item"><a class="nav-link dropdown-toggle" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Notifications
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
+          <li>hi</li>
+          {% for notification in notifications %}
+          <li><a href="#">{{ notification.message }}</a></li>
+          {% endfor %}
+      </ul></li>
           <li class="nav-item">
               {% if user.is_authenticated %}
               <a class="nav-link" >User: {{ user.email }}</a>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Program,Department,Conference,WebinarRegistration,Attendee,Service,BookService,Package,Review,ServiceProvider
+from .models import CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Program,Department,Conference,WebinarRegistration,Attendee,Service,BookService,Package,Review,ServiceProvider,Notification,ParticipationCertificate
 
 admin.site.register(CustomUser)
 admin.site.register(Webinar)
@@ -16,3 +16,5 @@ admin.site.register(BookService)
 admin.site.register(Package)
 admin.site.register(Review)
 admin.site.register(ServiceProvider)
+admin.site.register(Notification)
+admin.site.register(ParticipationCertificate)

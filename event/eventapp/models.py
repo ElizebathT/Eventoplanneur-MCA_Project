@@ -222,3 +222,17 @@ class ServiceProvider(models.Model):
     service_user=models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
         return self.name
+    
+class Notification(models.Model):
+    message = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+class ParticipationCertificate(models.Model):
+    attendee_name = models.CharField(max_length=100)
+    webinar_title = models.CharField(max_length=100)
+    certificate_issued_date = models.DateField(auto_now_add=True)
+    date=models.DateField(null=True)
+    organization=models.CharField(max_length=100,null=True)
+    def __str__(self):
+        return f"{self.attendee_name} - {self.webinar_title}"

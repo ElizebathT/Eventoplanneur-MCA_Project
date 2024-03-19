@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
 from numpy import mean
 #from .models import User
-from .models import Service,CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee,Package,ServiceProvider
+from .models import Service,CustomUser,Webinar,EventOrganizer,AICTE,Speaker,Conference,WebinarRegistration,Attendee,Package,ServiceProvider,ParticipationCertificate
 import re
 from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login
@@ -160,7 +160,8 @@ def index(request):
     return render(request, 'index.html')
 
 def orghome(request):
-    return render(request, 'orghome.html')
+    notifications = Notification.objects.filter(is_read=False).order_by('-timestamp')[:5]
+    return render(request, 'orghome.html',{'notifications':notifications})
 
 def admindash(request):
     return render(request, 'admindash.html')
@@ -1112,3 +1113,103 @@ def provider_profile(request):
         form = Provider(instance=organizer_instance)
     messages.error(request, form.errors)
     return render(request, 'provider_profile.html', {'form': form})
+
+from .models import Notification
+
+
+def generate_certificate(request):
+    if request.method == 'POST':
+        attendee_id = request.POST.get('attendee_id')
+        webinar_title = request.POST.get('webinar_title')
+        organization = request.POST.get('organization')
+        webinar_date = request.POST.get('webinar_date')
+        # Retrieve attendee object
+        attendee = Attendee.objects.get(org_user_id=attendee_id)
+
+        # Create a certificate for the attendee
+        certificate = ParticipationCertificate.objects.create(
+            attendee_name=attendee.name,
+            webinar_title=webinar_title,
+            organization=organization,
+            date=webinar_date
+        )
+
+        return redirect('certificate_download', certificate_id=certificate.id)
+
+    return render(request, 'generate_certificate.html')
+
+
+from PIL import Image
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.pdfgen import canvas
+
+
+def certificate_download(request, certificate_id):
+    certificate = get_object_or_404(ParticipationCertificate, id=certificate_id)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="certificate.pdf"'
+
+    # Load the template image
+    template_image_path = 'D:\Project\Eventoplanneur\event\static\images\certificate.png'  # Update this with the path to your image
+    template_image = Image.open(template_image_path)
+    width, height = template_image.size
+
+    # Create a PDF document
+    doc = SimpleDocTemplate(response, pagesize=(width, height))
+
+    # Create a canvas
+    c = canvas.Canvas(response, pagesize=(width, height))
+    
+    # Add the image to the canvas
+    c.drawImage(template_image_path, 0, 0, width, height)
+
+    custom_body_style = ParagraphStyle(
+    name='CustomBodyText',
+    fontName='Helvetica',
+    fontSize=40
+    )
+
+    # Define additional styles with different font sizes
+    custom_body_style_large = ParagraphStyle(
+        name='CustomBodyTextLarge',
+        fontName='Helvetica',
+        fontSize=80
+    )
+
+    custom_body_style_small = ParagraphStyle(
+        name='CustomBodyTextSmall',
+        fontName='Helvetica',
+        fontSize=20
+    )
+    # Add elements to the PDF document
+    elements = [
+        # Add your text elements with coordinates relative to the image size
+        Paragraph(f"{certificate.attendee_name}", custom_body_style_large),
+        Paragraph(f"{certificate.webinar_title}", custom_body_style),
+        Paragraph(f"{certificate.organization}", custom_body_style),
+        Paragraph(f"{certificate.date}", custom_body_style),
+        Paragraph(f"{certificate.certificate_issued_date}", custom_body_style_small),
+    ]
+    
+    positions = [
+        (650, height - 600),  # Position for the first element
+        (700, height - 840),  # Position for the second element
+        (550, height - 965),  # Position for the first element
+        (1550, height - 840),
+        (1000, height - 1200),  # Position for the third element
+    ]
+
+    # Overlay text elements on the canvas
+    for i, element in enumerate(elements):
+        # Get the position for the current element
+        x, y = positions[i]
+        # Draw the element at the specified position
+        element.wrapOn(c, width, height)
+        element.drawOn(c, x, y)
+
+    # Save the canvas
+    c.save()
+    return response

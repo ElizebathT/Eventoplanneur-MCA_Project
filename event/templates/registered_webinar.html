@@ -115,6 +115,7 @@
       <div class="card-body">
         <h5 class="card-title">{{ registration.webinar.title }}</h5>
         <p class="card-text">Date: {{ registration.webinar.date }}</p>
+        <p class="card-text">{{ registration.webinar.event_type }}</p>
         <!-- Add other webinar details as needed -->
         <a class="btn mr-2" href="{% url 'view_webinar' registration.webinar.id %}">View</a>
       </div>
@@ -126,5 +127,6 @@
       </div>
     </div>
   </div>
+  
 </body>
 </html>

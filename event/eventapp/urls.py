@@ -50,5 +50,7 @@ urlpatterns = [
     path('service_paymenthandler/', views.service_paymenthandler, name='service_paymenthandler'),
     path('user_services/', views.user_services, name='user_services'),
     path('provider_profile/',views.provider_profile,name='provider_profile'),
+    path('generate_certificate/', views.generate_certificate, name='generate_certificate'),
+    
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

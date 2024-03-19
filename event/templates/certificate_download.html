@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Certificate</title>
+</head>
+<body>
+    {% block content %}
+    <h2>Download Your Certificate</h2>
+    <p>Please click the button below to download your participation certificate.</p>
+    <a href="{% url 'certificate_download' certificate_id=certificate.id %}" class="btn btn-primary">Download Certificate</a>
+{% endblock %}
+</body>
+</html>
