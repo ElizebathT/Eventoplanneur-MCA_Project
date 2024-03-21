@@ -1,6 +1,4 @@
 
-view services-> edit/add
-profile
 payment to admin
 bill download
 
@@ -9,9 +7,35 @@ certificates
 reports
 otp
 admin verify provider
-total budget
 notification
 panel correction
 
 back button 
-search in attendee
+
+18
+25
+26
+28
+29
+30
+31
+
+45
+46
+47
+48
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+78
+79
+80

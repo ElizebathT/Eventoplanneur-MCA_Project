@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webinars</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+</head>
+<style>
+  
+  :root {
+    --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
+  }
+  body{
+    background: #111 !important;;
+    
+  }
+  .input-group{
+    width:500px;
+  }
+  .input-group-append{
+    margin-left:10px;
+  }
+  .card {
+    background: #222;
+  border: 1px solid #dd2476;
+    color: rgba(250, 250, 250, 0.8);
+    margin-bottom: 2rem;
+  }
+  
+  .btn {
+    border: 5px solid;
+    border-image-slice: 1;
+    background: var(--gradient) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    border-image-source:  var(--gradient) !important; 
+    text-decoration: none;
+    transition: all .4s ease;
+  }
+  
+  .btn:hover, .btn:focus {
+        background: var(--gradient) !important;
+    -webkit-background-clip: none !important;
+    -webkit-text-fill-color: #fff !important;
+    border: 5px solid #fff !important; 
+    box-shadow: #222 1px 0 10px;
+  }
+</style>
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="containers">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          <li class="nav-item">
+            {% if user.is_authenticated %}
+            <a class="nav-link" >User: {{ user.email }}</a>
+            <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div style="margin-left:100px;margin-right:225px" ><br>
+    <a class="btn2" onclick="goBack()" style="background-color: #F1D302; /* Yellow */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 40px;">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back
+</a>
+<script>
+  function goBack() {
+      window.history.back();
+  }
+</script>
+    <div style="margin-left:200px;" ><br>
+      <h4 style="margin-left:50px;color:white">My Webinars</h4>
+        
+
+{% block content %}
+    <div class="container mx-auto mt-3">
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <form method="GET" action="{% url 'eventapp:completed_webinar' %}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="Search Webinars">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% for i in update_webinar %}
+                <div class="col-md-6">
+                    <div class="card" style="width: 350px;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ i.title }}</h5><br>
+                            <p class="card-text">Date: {{ i.date|date:"F j, Y" }}<br><p>
+                            <p class="card-text">Time: {{ i.start_time }}<br><br></p>
+                            <a href="{% url 'view_webinar' i.id %}" class="btn mr-2"><i class="fas fa-link"></i> View </a>
+                            
+                            <a href="{% url 'delete_webinar' i.id %}" class="btn"><i class="fab fa-link"></i> Delete</a><br><br>
+                            <a href="{% url 'update_certificate_status' i.id %}" id="generateCertificatesBtn" class="btn"><i class="fab fa-link"></i>Generate Certificates for All Participants</a><br><br>
+                            
+                            <a style="width: 100%;" href="{% url 'display_registrations' i.id %}" class="btn"><i class="fab fa-link"></i> Registrations</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+<script>
+  document.getElementById('generateCertificatesBtn').addEventListener('click', function() {
+      alert('Certificates generated successfully!');
+          }
+      );
+  </script>
+      </div>
+      
+    </div>
+    
+</body>
+</html>

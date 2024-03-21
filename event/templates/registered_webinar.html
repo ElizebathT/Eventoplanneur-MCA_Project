@@ -94,6 +94,7 @@
       window.history.back();
   }
 </script>
+<a style="margin-left:50px;" class="btn btn-outline-secondary" href="{% url 'eventapp:past_webinars' %}"><i class="fas fa-search"></i> Past Webinars</a>
     <h3 style="margin-left:50px;color:white">My Webinars</h3>
     
     <div class="container mx-auto mt-4" >
@@ -109,7 +110,7 @@
               </div>
           </form>
       </div>
-        {% for registration in webinar %}
+{% for registration in upcoming_webinars %}
 <div class="col-md-4">
     <div class="card" style="width: 18rem;">
       <div class="card-body">
@@ -122,8 +123,7 @@
     </div>
 </div>
 {% endfor %}
-
-        
+       
       </div>
     </div>
   </div>

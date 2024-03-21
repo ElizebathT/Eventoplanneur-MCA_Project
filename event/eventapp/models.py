@@ -86,6 +86,7 @@ class Webinar(models.Model):
     phone_number = models.CharField(max_length=15)
     max_participants = models.PositiveIntegerField(null=True,default=50) 
     status = models.IntegerField(default=1,null=True,blank=True)
+    certificate_status = models.IntegerField(default=0,null=True,blank=True)
     def __str__(self):
         return self.title
     def get_registrations(self):
@@ -145,6 +146,7 @@ class WebinarRegistration(models.Model):
 class Attendee(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
+    organization= models.CharField(max_length=255,blank=True, null=True)
     phone_number = models.CharField(max_length=20)
     location = models.CharField(max_length=255)
     interests = models.TextField(blank=True, null=True)

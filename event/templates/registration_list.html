@@ -81,6 +81,25 @@
       </div>
     </div>
   </nav>
+  <div style="margin-left:100px;margin-right:225px" ><br>
+    <a class="btn2" onclick="goBack()" style="background-color: #F1D302; /* Yellow */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 40px;">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back
+</a>
+<br><br>
+<script>
+  function goBack() {
+      window.history.back();
+  }
+</script>
     <div class="reg">
     {% block content %}
     <h2>Registrations for {{ webinar.title }}</h2>

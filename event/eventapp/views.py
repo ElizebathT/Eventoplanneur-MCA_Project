@@ -239,18 +239,34 @@ from django.db.models import Q
 def webinar(request):
     org_user = request.user
     search_query = request.GET.get('search', '')
-    
+    current_date = timezone.now().date()
     if search_query:
         update_webinar = Webinar.objects.filter(
             Q(org_user=org_user, status=1),
-            Q(title__icontains=search_query) | Q(date__icontains=search_query) | Q(start_time__icontains=search_query)
+            Q(title__icontains=search_query),Q(date__gte=current_date) 
         ).order_by('date')
     else:
-        update_webinar = Webinar.objects.filter(org_user=org_user, status=1).order_by('date')
+        update_webinar = Webinar.objects.filter(org_user=org_user, status=1,date__gte=current_date).order_by('date')
 
-    now = datetime.datetime.now()
-    context = {'update_webinar': update_webinar, 'today': now, 'search_query': search_query}
+    context = {'update_webinar': update_webinar, 'search_query': search_query}
     return render(request, 'webinar.html', context)
+
+from django.db.models import Q
+@login_required
+def completed_webinar(request):
+    org_user = request.user
+    search_query = request.GET.get('search', '')
+    current_date = timezone.now().date()
+    if search_query:
+        update_webinar = Webinar.objects.filter(
+            Q(org_user=org_user, status=1),
+            Q(title__icontains=search_query),Q(date__lt=current_date) 
+        ).order_by('date')
+    else:
+        update_webinar = Webinar.objects.filter(org_user=org_user, status=1,date__lt=current_date).order_by('date')
+
+    context = {'update_webinar': update_webinar, 'search_query': search_query}
+    return render(request, 'completed_webinar.html', context)
 
 
 def view_webinar(request,update_id):
@@ -562,6 +578,8 @@ def events(request):
         webinars = Webinar.objects.all().order_by('-date')[:9]
 
     return render(request, 'events.html', {'webinars': webinars})
+
+from twilio.rest import Client
 def register_for_webinar(request, webinar_id):
     user = request.user
     webinar = Webinar.objects.get(pk=webinar_id)
@@ -575,9 +593,16 @@ def register_for_webinar(request, webinar_id):
             message = f'Thank you for registering the webinar: {webinar.title} on {webinar.date} '
             from_email = 'eventoplanneur@gmail.com'  
             recipient_list = [recipient_email]  
-
+            
             send_mail(subject, message, from_email, recipient_list)
             pay_id=webinar_id
+            message_body = f"Webinar Registration Confirmed for {webinar.title} on {webinar.date} hosted by {webinar.organizer_name}."
+            client = Client("AC5649992a1008a1d4e8455e183b97072d", "11aac5884cccdfd8869d78de65606fb5")
+            message = client.messages.create(
+                from_='whatsapp:+14155238886',
+                body=message_body,
+                to='whatsapp:+919061849932'  # Replace with the user's WhatsApp number
+            )
             return redirect('payment', pay_id=pay_id) 
         else:
             messages.success(request, "You are already registered for this webinar.")
@@ -585,12 +610,31 @@ def register_for_webinar(request, webinar_id):
     else:
         messages.error(request, "Webinar reached maximum number of participants")
         return redirect('eventapp:events')
+
+from django.utils import timezone
 @login_required
 def registered_webinar(request):
     user = request.user
-    webinar_registrations = WebinarRegistration.objects.filter(user=user)
-    context = {'webinar': webinar_registrations}
+    current_date = timezone.now().date()
+    
+    upcoming_webinars = WebinarRegistration.objects.filter(user=user, webinar__date__gte=current_date)
+    
+    context = {
+        'upcoming_webinars': upcoming_webinars
+    }
     return render(request, 'registered_webinar.html', context)
+
+@login_required
+def past_webinars(request):
+    user = request.user
+    current_date = timezone.now().date()
+    
+    upcoming_webinars = WebinarRegistration.objects.filter(user=user, webinar__date__lt=current_date)
+    
+    context = {
+        'upcoming_webinars': upcoming_webinars
+    }
+    return render(request, 'past_webinars.html', context)
 
 from django.shortcuts import render
 import razorpay
@@ -1114,29 +1158,52 @@ def provider_profile(request):
     messages.error(request, form.errors)
     return render(request, 'provider_profile.html', {'form': form})
 
+def update_certificate_status(request, webinar_id):
+    webinar = Webinar.objects.get(pk=webinar_id)
+    webinar.certificate_status = 1
+    webinar.save()
+    return redirect('eventapp:completed_webinar')
+
 from .models import Notification
+from django.db.models import F
 
+def generate_certificate(request, webinar_id):
+    
+    webinar = get_object_or_404(Webinar, pk=webinar_id)
+    current_user = request.user
+    attendee = Attendee.objects.get(org_user=current_user)
+    
+    certificate = ParticipationCertificate.objects.create(
+        attendee_name=attendee.name,
+        webinar_title=webinar.title,
+        organization=webinar.organizer_name,
+        date=webinar.date
+    )
 
-def generate_certificate(request):
-    if request.method == 'POST':
-        attendee_id = request.POST.get('attendee_id')
-        webinar_title = request.POST.get('webinar_title')
-        organization = request.POST.get('organization')
-        webinar_date = request.POST.get('webinar_date')
-        # Retrieve attendee object
-        attendee = Attendee.objects.get(org_user_id=attendee_id)
+    return redirect('certificate_download', certificate_id=certificate.id)
 
-        # Create a certificate for the attendee
-        certificate = ParticipationCertificate.objects.create(
-            attendee_name=attendee.name,
-            webinar_title=webinar_title,
-            organization=organization,
-            date=webinar_date
-        )
+# from django.shortcuts import get_object_or_404
 
-        return redirect('certificate_download', certificate_id=certificate.id)
-
-    return render(request, 'generate_certificate.html')
+# def generate_certificate(request, webinar_id):
+#     if request.method == 'POST':
+#         webinar = get_object_or_404(Webinar, pk=webinar_id)
+#         registrations = WebinarRegistration.objects.filter(webinar=webinar)
+        
+#         for registration in registrations:
+#             attendee = registration.user
+#             # Create a certificate for the attendee
+#             certificate = ParticipationCertificate.objects.create(
+#                 attendee_name=attendee.name,
+#                 webinar_title=webinar.title,
+#                 organization="Your Organization",  # Update with appropriate organization info
+#                 date=webinar.date
+#             )
+#             # You may want to download or email certificates here instead of redirecting
+            
+#         # If you want to redirect after generating all certificates
+#         return redirect('eventapp:completed_webinar')
+    
+#     return render(request, 'completed_webinar.html')
 
 
 from PIL import Image
@@ -1213,3 +1280,5 @@ def certificate_download(request, certificate_id):
     # Save the canvas
     c.save()
     return response
+
+

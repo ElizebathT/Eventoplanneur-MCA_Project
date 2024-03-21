@@ -45,13 +45,61 @@
       </div>
     </div>
   </nav>
-  <section class="intro" style="background:linear-gradient(to left top, #DD2476 10%, #FF512F 90%);">
+  {% comment %} <section class="intro" style="background:linear-gradient(to left top, #DD2476 10%, #FF512F 90%);">
     <div class="intro-content">
       <h2>Welcome to EventoPlanneur</h2>
       <p>Where Every Occasion Finds Its Perfect Stage!</p>
       <p>Our site, a hub of connection and inspiration, bridges passions, fuels creativity, and empowers users to collaborate seamlessly, shaping limitless possibilities together. Our comprehensive site offers seamless event planning, registration, ticketing, and promotion tools. Engage attendees with interactive features, real-time analytics, and adaptable interfaces, ensuring successful, unforgettable events.</p>
     </div>
-  </section>
+  </section> {% endcomment %}
+  <div class="containerr">
+    <section class="intro" style="background:linear-gradient(to left top, #DD2476 10%, #FF512F 90%);">
+      <div class="intro-content">
+        <h2>Welcome to EventoPlanneur</h2>
+        <p>Where Every Occasion Finds Its Perfect Stage!</p>
+        <p>Our site, a hub of connection and inspiration, bridges passions, fuels creativity, and empowers users to collaborate seamlessly, shaping limitless possibilities together. Our comprehensive site offers seamless event planning, registration, ticketing, and promotion tools. Engage attendees with interactive features, real-time analytics, and adaptable interfaces, ensuring successful, unforgettable events.</p>
+      </div>
+    </section>
+  
+    <section class="notifications" style="background:linear-gradient(to left top, #DD2476 10%, #FF512F 90%);">
+      <div class="notifications-content">
+        <h2>Stay Updated with EventoPlanneur</h2>
+        <p>Get the latest notifications about upcoming events, promotions, and important announcements straight to your inbox or phone. Don't miss out on any exciting opportunities!</p>
+        <!-- Add your notification signup form or button here -->
+      </div>
+    </section>
+  </div>
+  <style>
+    .containerr {
+      display: flex;
+      margin-top:75px;
+    }
+    
+    .intro {
+      flex: 0 0 75%;
+    }
+    
+    .notifications {
+      flex: 1;
+    }
+    
+    .intro-content, .notifications-content {
+      
+      color: white;
+    }
+    
+    /* Adjustments to remove margin and padding */
+    .intro, .notifications {
+      margin: 0;
+      padding: 0;
+    
+    }
+    
+    .intro-content {
+      padding: 0; /* Remove padding from intro-content */
+    }
+    
+</style>
   <iframe width="100%" height="500px" src="https://www.youtube.com/embed/1zqKptk_KA0?si=Tn3XXInBmGW2JXda" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   {% comment %} <section id="event-listing" class="event-listing-section">
     <div class="container">

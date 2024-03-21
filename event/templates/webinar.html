@@ -76,10 +76,28 @@
       </div>
     </div>
   </nav>
-  
-    <div style="margin-left:100px;margin-right:225px" ><br>
+  <div style="margin-left:100px;margin-right:225px" ><br>
+    <a class="btn2" onclick="goBack()" style="background-color: #F1D302; /* Yellow */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 40px;">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back
+</a>
+<script>
+  function goBack() {
+      window.history.back();
+  }
+</script>
+    <div style="margin-left:200px;" ><br>
       <h4 style="margin-left:50px;color:white">My Webinars</h4>
-        <a href="{% url 'eventapp:register_webinar' %}"><button id="sendButton" style="margin-left:300px;width:50%;background:var(--gradient) !important;">Host a Webinar</button></a><br>
+        <a href="{% url 'eventapp:register_webinar' %}"><button id="sendButton" style="width:40%;background:var(--gradient) !important;">Host a Webinar</button></a>
+        <a href="{% url 'eventapp:completed_webinar' %}"><button id="sendButton" style="width:40%;background:var(--gradient) !important;">Completed Webinars</button></a><br>
        
 
 {% block content %}
