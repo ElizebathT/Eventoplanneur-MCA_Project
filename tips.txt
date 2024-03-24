@@ -12,30 +12,9 @@ panel correction
 
 back button 
 
-18
-25
-26
-28
-29
-30
-31
+validate all forms
 
-45
-46
-47
-48
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-78
-79
-80
+profile interests
+dropdowns and autocomplete
+
+i am not robot

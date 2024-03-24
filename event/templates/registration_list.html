@@ -17,13 +17,16 @@
   }
   body{
     background: #111 !important;;
-    
+    color:white;
   }
   .input-group{
     width:500px;
   }
   .input-group-append{
     margin-left:10px;
+  }
+  .table{
+    color:white;
   }
   .card {
     background: #222;
@@ -103,11 +106,25 @@
     <div class="reg">
     {% block content %}
     <h2>Registrations for {{ webinar.title }}</h2>
-    <ol>
-        {% for registration in registrations %}
-          <li>{{ registration.user.email }}</li>
-        {% endfor %}
-      </ol>
+    <div class="container">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Organization</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for registration in registrations %}
+          <tr>
+            <td>{{ registration.user.email }}</td>
+            <td>{{ registration.user.organization }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
   {% endblock %}
     </div>
     <footer>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Webinar, EventOrganizer, Conference, Attendee, Feedback, BookService,ServiceProvider
+from .models import Webinar, EventOrganizer, Conference, Attendee, Feedback, BookService,ServiceProvider,Question,Questionnaire
 
 class WebinarForm(forms.ModelForm):
     class Meta:
@@ -77,3 +77,13 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['rating', 'comment']
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['question']
+
+class QuestionnaireForm(forms.ModelForm):
+    class Meta:
+        model = Questionnaire
+        fields = '__all__'

@@ -614,9 +614,9 @@ def register_for_webinar(request, webinar_id):
 from django.utils import timezone
 @login_required
 def registered_webinar(request):
-    user = request.user
+    attendee = request.user
     current_date = timezone.now().date()
-    
+    user = Attendee.objects.get(email=attendee.email)
     upcoming_webinars = WebinarRegistration.objects.filter(user=user, webinar__date__gte=current_date)
     
     context = {
@@ -626,9 +626,9 @@ def registered_webinar(request):
 
 @login_required
 def past_webinars(request):
-    user = request.user
+    attendee = request.user
     current_date = timezone.now().date()
-    
+    user = Attendee.objects.get(email=attendee.email)
     upcoming_webinars = WebinarRegistration.objects.filter(user=user, webinar__date__lt=current_date)
     
     context = {
@@ -1182,30 +1182,6 @@ def generate_certificate(request, webinar_id):
 
     return redirect('certificate_download', certificate_id=certificate.id)
 
-# from django.shortcuts import get_object_or_404
-
-# def generate_certificate(request, webinar_id):
-#     if request.method == 'POST':
-#         webinar = get_object_or_404(Webinar, pk=webinar_id)
-#         registrations = WebinarRegistration.objects.filter(webinar=webinar)
-        
-#         for registration in registrations:
-#             attendee = registration.user
-#             # Create a certificate for the attendee
-#             certificate = ParticipationCertificate.objects.create(
-#                 attendee_name=attendee.name,
-#                 webinar_title=webinar.title,
-#                 organization="Your Organization",  # Update with appropriate organization info
-#                 date=webinar.date
-#             )
-#             # You may want to download or email certificates here instead of redirecting
-            
-#         # If you want to redirect after generating all certificates
-#         return redirect('eventapp:completed_webinar')
-    
-#     return render(request, 'completed_webinar.html')
-
-
 from PIL import Image
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph
@@ -1281,4 +1257,29 @@ def certificate_download(request, certificate_id):
     c.save()
     return response
 
+from django.shortcuts import render, redirect
+from .forms import QuestionForm, QuestionnaireForm
+from .models import Questionnaire, Question
 
+def questionnaire(request, webinar_id):
+    # Get or create Questionnaire instance for the given webinar_id
+    questionnaire_instance, created = Questionnaire.objects.get_or_create(webinar_id=webinar_id)
+
+    # Fetch existing questions for the questionnaire
+    existing_questions = Question.objects.filter(questionnaire=questionnaire_instance)
+            
+    if request.method == 'POST':
+        questions_text = request.POST.getlist('questions[]')  # Get list of submitted questions
+        for question_text in questions_text:
+            if question_text:
+                # Create a new Question object
+                question = Question.objects.create(
+                    question=question_text,
+                    questionnaire=questionnaire_instance
+                )
+                # Save the question object
+                question.save()
+
+
+        return redirect('eventapp:webinar')  # Redirect to some appropriate view after submitting questions
+    return render(request, 'questionnaire.html', {'existing_questions': existing_questions, 'webinar_id': webinar_id})

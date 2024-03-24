@@ -31,4 +31,6 @@ urlpatterns = [
     path('certificate/<int:certificate_id>/', views.certificate_download, name='certificate_download'),
     path('generate_certificate/<int:webinar_id>', views.generate_certificate, name='generate_certificate'),
     path('update_certificate_status/<int:webinar_id>/', views.update_certificate_status, name='update_certificate_status'),
+    path('questionnaire/<int:webinar_id>/', views.questionnaire, name='questionnaire'),   
+    
 ]

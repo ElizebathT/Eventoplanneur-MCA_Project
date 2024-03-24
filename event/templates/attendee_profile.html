@@ -72,7 +72,11 @@
                 
                 <span id="phone_numberError" class="error-text"></span>
             </div>
-    
+            <div class="mb-3">
+                <label for="organization" class="form-label">Organization:</label>
+                <input type="text" id="organization" name="organization" value="{{ form.organization.value }}" class="form-control" required>
+                <span id="organizationError" class="error-text"></span>
+            </div>
             <div class="mb-3">
                 <label for="location" class="form-label">Location:</label>
                 <input type="text" id="location" name="location"  value="{{form.location.value}}" class="form-control" required>

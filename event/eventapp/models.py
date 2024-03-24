@@ -139,9 +139,6 @@ class Conference(models.Model):
         return self.title
 
 
-class WebinarRegistration(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE)
 
 class Attendee(models.Model):
     name = models.CharField(max_length=255)
@@ -154,6 +151,10 @@ class Attendee(models.Model):
     def __str__(self):
         return self.name
     
+class WebinarRegistration(models.Model):
+    user = models.ForeignKey(Attendee, on_delete=models.CASCADE)
+    webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE)
+
 class Feedback(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -162,6 +163,14 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Questionnaire(models.Model):
+    webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE)
+
+class Question(models.Model):
+    question = models.TextField()
+    questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
+    response = models.TextField(null=True)
 
 class Service(models.Model):
     name = models.CharField(max_length=255)
