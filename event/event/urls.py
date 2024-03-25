@@ -30,7 +30,8 @@ urlpatterns = [
     path('edit_services/<int:service_id>',views.edit_services,name='edit_services'), 
     path('certificate/<int:certificate_id>/', views.certificate_download, name='certificate_download'),
     path('generate_certificate/<int:webinar_id>', views.generate_certificate, name='generate_certificate'),
-    path('update_certificate_status/<int:webinar_id>/', views.update_certificate_status, name='update_certificate_status'),
+    path('view_responses/<int:webinar_id>/', views.view_responses, name='view_responses'),
     path('questionnaire/<int:webinar_id>/', views.questionnaire, name='questionnaire'),   
-    
+    path('response/<int:webinar_id>/', views.response, name='response'),  
+    path('generate_webinar_report/<int:webinar_id>/', views.generate_webinar_report, name='generate_webinar_report'), 
 ]

@@ -581,8 +581,9 @@ def events(request):
 
 from twilio.rest import Client
 def register_for_webinar(request, webinar_id):
-    user = request.user
+    attendee = request.user
     webinar = Webinar.objects.get(pk=webinar_id)
+    user = Attendee.objects.get(email=attendee.email)
     registration_count = WebinarRegistration.objects.filter(webinar=webinar).count()
     if registration_count < webinar.max_participants:
         if not WebinarRegistration.objects.filter(user=user, webinar=webinar).exists():
@@ -1158,11 +1159,6 @@ def provider_profile(request):
     messages.error(request, form.errors)
     return render(request, 'provider_profile.html', {'form': form})
 
-def update_certificate_status(request, webinar_id):
-    webinar = Webinar.objects.get(pk=webinar_id)
-    webinar.certificate_status = 1
-    webinar.save()
-    return redirect('eventapp:completed_webinar')
 
 from .models import Notification
 from django.db.models import F
@@ -1258,15 +1254,10 @@ def certificate_download(request, certificate_id):
     return response
 
 from django.shortcuts import render, redirect
-from .forms import QuestionForm, QuestionnaireForm
-from .models import Questionnaire, Question
+from .models import Response, Question
 
 def questionnaire(request, webinar_id):
-    # Get or create Questionnaire instance for the given webinar_id
-    questionnaire_instance, created = Questionnaire.objects.get_or_create(webinar_id=webinar_id)
-
-    # Fetch existing questions for the questionnaire
-    existing_questions = Question.objects.filter(questionnaire=questionnaire_instance)
+    existing_questions = Question.objects.filter(webinar_id=webinar_id)
             
     if request.method == 'POST':
         questions_text = request.POST.getlist('questions[]')  # Get list of submitted questions
@@ -1275,7 +1266,7 @@ def questionnaire(request, webinar_id):
                 # Create a new Question object
                 question = Question.objects.create(
                     question=question_text,
-                    questionnaire=questionnaire_instance
+                    webinar_id=webinar_id
                 )
                 # Save the question object
                 question.save()
@@ -1283,3 +1274,107 @@ def questionnaire(request, webinar_id):
 
         return redirect('eventapp:webinar')  # Redirect to some appropriate view after submitting questions
     return render(request, 'questionnaire.html', {'existing_questions': existing_questions, 'webinar_id': webinar_id})
+
+def response(request, webinar_id):
+    webinar = Webinar.objects.get(pk=webinar_id)
+    questions = Question.objects.filter(webinar=webinar)  # Corrected this line
+    current_user = request.user
+    attendee = Attendee.objects.get(org_user=current_user)
+    certify = WebinarRegistration.objects.get(user=attendee, webinar=webinar)
+    
+    if request.method == 'POST':
+        # Process form submission
+        for question in questions:
+            response_text = request.POST.get('response_{}'.format(question.id))
+            # Update or create response for the question
+            response = Response.objects.create(
+                user=attendee,
+                response=response_text,
+                question=question  # Removed unnecessary get() call here
+            )
+        certify.certificate_status = 1
+        certify.save()
+        return redirect('eventapp:past_webinars')
+    return render(request, 'response.html', {'questions': questions})
+
+def view_responses(request,webinar_id):
+    questions = Question.objects.filter(webinar_id=webinar_id)
+
+    # Create a dictionary to store responses for each question
+    question_responses = {}
+
+    # Iterate over each question and retrieve its responses
+    for question in questions:
+        responses = Response.objects.filter(question_id=question.id)
+        question_responses[question] = responses
+
+    return render(request, 'view_responses.html', {'question_responses': question_responses})
+
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from django.http import HttpResponse
+from .models import Webinar, WebinarRegistration
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.platypus import Paragraph, Spacer
+from django.http import HttpResponse
+from .models import Webinar
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.barcharts import VerticalBarChart
+from reportlab.graphics import renderPDF
+from reportlab.lib import colors
+
+def generate_webinar_report(request, webinar_id):
+    # Fetch the webinar
+    webinar = Webinar.objects.get(id=webinar_id)
+    num_participants=ParticipationCertificate.objects.get(webinar_title=webinar.title)
+    # Define table data for the report
+    # Define table data for the report
+    table_data = [
+        ['Title', webinar.title],
+        ['Date', str(webinar.date)],
+        ['Online/Offline', webinar.event_type],
+        ['Organizer', webinar.organizer_name],
+        # ['Registrations', str(webinar.get_registrations().count())]
+        ['Participants', str(num_participants).count()]
+    ]
+
+    
+    # Create a PDF document
+    pdf_filename = f"webinar_report_{webinar_id}.pdf"
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{pdf_filename}"'
+    
+    # Create PDF document
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    main_heading_style = ParagraphStyle(
+    name='MainHeading',
+    fontSize=20,
+    textColor=colors.black,
+    alignment=1,  # Center alignment
+    spaceAfter=20  # Space after the paragraph
+    )
+
+    # Add main heading
+    main_heading = Paragraph("Webinar Report", main_heading_style)
+    report_content = [main_heading]
+
+    # Create table
+    
+    table = Table(table_data, colWidths=[100, 300])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.gray),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+        ('ALIGN', (0, 1), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+    
+    doc.build([main_heading, Spacer(1, 20), table])
+    
+    return response

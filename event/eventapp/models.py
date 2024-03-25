@@ -86,7 +86,7 @@ class Webinar(models.Model):
     phone_number = models.CharField(max_length=15)
     max_participants = models.PositiveIntegerField(null=True,default=50) 
     status = models.IntegerField(default=1,null=True,blank=True)
-    certificate_status = models.IntegerField(default=0,null=True,blank=True)
+    
     def __str__(self):
         return self.title
     def get_registrations(self):
@@ -152,6 +152,7 @@ class Attendee(models.Model):
         return self.name
     
 class WebinarRegistration(models.Model):
+    certificate_status=models.IntegerField(default=0,null=True,blank=True)
     user = models.ForeignKey(Attendee, on_delete=models.CASCADE)
     webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE)
 
@@ -164,14 +165,15 @@ class Feedback(models.Model):
     def __str__(self):
         return self.name
     
-class Questionnaire(models.Model):
-    webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE)
-
 class Question(models.Model):
     question = models.TextField()
-    questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
-    response = models.TextField(null=True)
+    webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE)
 
+class Response(models.Model):
+    user = models.ForeignKey(Attendee, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    response = models.TextField(null=True)
+    
 class Service(models.Model):
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=100)

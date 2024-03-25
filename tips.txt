@@ -3,7 +3,7 @@ payment to admin
 bill download
 
 rate negotiate
-certificates
+
 reports
 otp
 admin verify provider
@@ -18,3 +18,15 @@ profile interests
 dropdowns and autocomplete
 
 i am not robot
+search ->date verify
+
+What are the key features of the animation tools discussed in the webinar, and how do they differentiate from other similar tools in the market?
+Can you provide examples or case studies showcasing how these animation tools have been successfully utilized in real-world projects or industries?
+Are there any limitations or challenges associated with using these animation tools, and what strategies or workarounds exist to address them?
+How accessible are these animation tools for users with varying levels of expertise in animation, from beginners to advanced professionals?
+What are the latest trends or advancements in animation technology that these tools are incorporating or preparing for in future updates?
+What were some of the most significant challenges you faced when starting your entrepreneurial journey, and how did you overcome them?
+Can you share a pivotal moment or decision that significantly impacted the success of your venture? How did you navigate it?
+In retrospect, what advice would you give to someone who is just starting out in entrepreneurship based on your own experiences?
+How do you stay innovative and adaptable in today's rapidly changing business landscape?
+How do you plan to implement or apply the strategies discussed in the workshop to your own career development journey?

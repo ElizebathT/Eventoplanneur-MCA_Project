@@ -4,13 +4,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Events</title>
+  <title>Questionnaire</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
 </head>
 <style>
-  
+    .question {
+        margin-bottom: 20px;
+    }
+    .question label {
+        font-weight: bold;
+    }
+    .question textarea {
+        width: 100%;
+        height: 100px;
+        resize: vertical;
+    }
+    .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .submit-btn:hover {
+        background-color: #0056b3;
+    }
   :root {
     --gradient: linear-gradient(to left top, #F1D302 10%, #235789 90%) !important;
   }
@@ -93,45 +117,18 @@
       window.history.back();
   }
 </script>
-    <h3 style="margin-left:50px;color:white">My Webinars</h3>
-    
-    <p>* Complete the Questionnaire to get your Certificate</p>
-    <div class="container mx-auto mt-4" >
-      
-      <div class="row">
-        <div class="col-md-12 mb-3">
-          <form method="GET" action="{% url 'eventapp:events' %}">
-              <div class="input-group">
-                  <input type="text" class="form-control" name="search" placeholder="Search Webinars">
-                  <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
-                  </div>
-              </div>
-          </form>
-      </div>
-{% for registration in upcoming_webinars %}
-<div class="col-md-6">
-    <div class="card" style="width: 25rem;">
-      <div class="card-body">
-        <h5 class="card-title">{{ registration.webinar.title }}</h5>
-        <p class="card-text">Date: {{ registration.webinar.date }}</p>
-        <p class="card-text">{{ registration.webinar.event_type }}</p>
-        <!-- Add other webinar details as needed -->
-        <a class="btn mr-2" href="{% url 'view_webinar' registration.webinar.id %}">View</a>
-        {% if registration.certificate_status == 1 %}
-    <a class="btn mr-2" href="{% url 'generate_certificate' registration.webinar.id %}">Download Certificate</a>
-    {% else %}
-    <a class="btn mr-2" href="{% url 'response' registration.webinar.id %}">Questionnaire</a>
-{% endif %}
-
-      </div>
-    </div>
+<div class="container">
+    <h1>Webinar Questionnaire</h1>
+    <form id="questionnaireForm" method="POST" action=""> 
+        {% csrf_token %}
+        {% for question in questions %}
+        <div class="question">
+            <label for="response_{{ question.id }}">{{ question.question }}</label>
+            <textarea id="response_{{ question.id }}" name="response_{{ question.id }}" required></textarea>
+        </div>
+        {% endfor %}
+        <button type="submit" class="submit-btn">Submit Responses</button>
+    </form>
 </div>
-{% endfor %}
-       
-      </div>
-    </div>
-  </div>
-  
 </body>
 </html>

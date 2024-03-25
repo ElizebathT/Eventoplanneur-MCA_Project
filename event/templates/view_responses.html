@@ -1,36 +1,40 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Events</title>
+  <title>Webinars</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  
 </head>
 <style>
   
   :root {
-    --gradient: linear-gradient(to left top, #F1D302 10%, #235789 90%) !important;
+    --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
   }
   body{
     background: #111 !important;;
-    
+    color:white;
   }
   .input-group{
     width:500px;
   }
+  .input-group-append{
+    margin-left:10px;
+  }
   .card {
     background: #222;
-  border: 1px solid #F1D302;
+  border: 1px solid #dd2476;
     color: rgba(250, 250, 250, 0.8);
     margin-bottom: 2rem;
-    height:250px;
   }
   
   .btn {
-    margin-left:5px;
     border: 5px solid;
     border-image-slice: 1;
     background: var(--gradient) !important;
@@ -47,13 +51,37 @@
     -webkit-text-fill-color: #fff !important;
     border: 5px solid #fff !important; 
     box-shadow: #222 1px 0 10px;
-    text-decoration: underline;
   }
+  .question-card {/* Background color for question card */
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.question {
+    background-color: #e0e0e0; /* Background color for question */
+    padding: 5px 10px;
+    color:#5A5A5A;
+    border-radius: 5px;
+}
+
+.answers {
+    list-style: none;
+    padding: 0;
+}
+
+.answer { /* Background color for answer */
+    border-radius: 5px;
+    padding: 5px 10px;
+    color:white;
+    margin-top: 5px;
+}
+
 </style>
 <body>
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="containers">
-      <a class="navbar-brand" href="{% url 'eventapp:attendeehome' %}">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
         <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
@@ -63,7 +91,7 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
           <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:attendee_profile' %}">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
           <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
           <li class="nav-item">
             {% if user.is_authenticated %}
@@ -93,45 +121,23 @@
       window.history.back();
   }
 </script>
-    <h3 style="margin-left:50px;color:white">My Webinars</h3>
-    
-    <p>* Complete the Questionnaire to get your Certificate</p>
-    <div class="container mx-auto mt-4" >
-      
-      <div class="row">
-        <div class="col-md-12 mb-3">
-          <form method="GET" action="{% url 'eventapp:events' %}">
-              <div class="input-group">
-                  <input type="text" class="form-control" name="search" placeholder="Search Webinars">
-                  <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
-                  </div>
-              </div>
-          </form>
-      </div>
-{% for registration in upcoming_webinars %}
-<div class="col-md-6">
-    <div class="card" style="width: 25rem;">
-      <div class="card-body">
-        <h5 class="card-title">{{ registration.webinar.title }}</h5>
-        <p class="card-text">Date: {{ registration.webinar.date }}</p>
-        <p class="card-text">{{ registration.webinar.event_type }}</p>
-        <!-- Add other webinar details as needed -->
-        <a class="btn mr-2" href="{% url 'view_webinar' registration.webinar.id %}">View</a>
-        {% if registration.certificate_status == 1 %}
-    <a class="btn mr-2" href="{% url 'generate_certificate' registration.webinar.id %}">Download Certificate</a>
-    {% else %}
-    <a class="btn mr-2" href="{% url 'response' registration.webinar.id %}">Questionnaire</a>
-{% endif %}
 
-      </div>
+<h1>Webinar Responses</h1>
+{% for question, responses in question_responses.items %}
+<div class="question-card">
+    <div class="question">
+        <p><strong>Question:</strong> {{ question.question }}</p>
     </div>
+    <ul class="answers">
+        {% for response in responses %}
+            <li class="answer">
+                <p><strong>User:</strong> {{ response.user }}</p>
+                <p><strong>Response:</strong> {{ response.response }}</p>
+            </li>
+        {% endfor %}
+    </ul>
 </div>
 {% endfor %}
-       
-      </div>
-    </div>
-  </div>
-  
+
 </body>
 </html>
