@@ -25,106 +25,156 @@ class Hosttest(TestCase):
         login.click()
         time.sleep(2)
         email = driver.find_element(By.CSS_SELECTOR, 'input[name="email"]')
-        email.send_keys("waremo9428@twugg.com")
+        email.send_keys("tyjaconu@pelagius.net")
         password = driver.find_element(By.CSS_SELECTOR, 'input[name="password"]')
         password.send_keys("Sample@123")
         time.sleep(2)
-        submit = driver.find_element(By.CSS_SELECTOR, 'button#login.btn.btn-primary.btn-block.register-btn')
+        submit = driver.find_element(By.CSS_SELECTOR, 'button#login')
         submit.click()
         time.sleep(2)
-        driver.get("http://127.0.0.1:8000/register_webinar/")
+        driver.get("http://127.0.0.1:8000/providerhome/")
         time.sleep(3)
-        title = driver.find_element(By.NAME, "title")
-        title.send_keys("Webinar on Global Warming")
-
-        fee = driver.find_element(By.NAME, "fee")
-        fee.send_keys("100")  # You can change this value
-
-        start_time = driver.find_element(By.NAME, "start_time")
-        start_time.send_keys("09:00 AM")  # Adjust the time as needed
-
-        end_time = driver.find_element(By.NAME, "end_time")
-        end_time.send_keys("11:00 AM")  # Adjust the time as needed
-
-        date = driver.find_element(By.NAME, "date")
-        date.send_keys("26-11-2023")  # Use the desired date
-
-        deadline = driver.find_element(By.NAME, "deadline")
-        deadline.send_keys("23-11-2023")  # Use the desired date
-
-        event_type = driver.find_element(By.NAME, "event_type")
-        event_type.send_keys("Online")  # Or "Offline" if needed
-
-        # Depending on the event type, you can handle the "Livestream Link" and "Location" fields here
-
-        organizer_name = driver.find_element(By.NAME, "organizer_name")
-        organizer_name.send_keys("Dept. of Environment Studies")
-
-        phone_number = driver.find_element(By.NAME, "phone_number")
-        phone_number.send_keys("8978537890")  # Use the desired phone number
-
-        poster = driver.find_element(By.NAME, "poster")
-        poster.send_keys("https://example.com/poster.jpg")  # Use the desired image URL
-
-        max_participants = driver.find_element(By.NAME, "max_participants")
-        max_participants.send_keys("100")  # Set the maximum number of participants
-        # Find the "Speakers" section and its elements
-        speakers_container = driver.find_element(By.ID, "speakers-container")
-        speaker_designation = driver.find_element(By.NAME, "speakers_designation[]")
-        speaker_name = driver.find_element(By.NAME, "speakers_name[]")
-
-        # Fill in speaker information
-        speaker_designation.send_keys("Mr")  # You can change the designation
-        speaker_name.send_keys("John Kim")  # Enter the speaker's name
-
-
-        # For the "Speakers" section, you can add speakers dynamically if needed.
-
-        description = driver.find_element(By.NAME, "description")
-        description.send_keys("Are you concerned about the pressing issue of global warming and its far-reaching consequences? Join us for an insightful webinar where we dive deep into the science, impact, and sustainable solutions related to this critical environmental challenge.")
+        driver.get("http://127.0.0.1:8000/addservices/")
         time.sleep(3)
-        # Submit the form
-        submit_button = driver.find_element(By.XPATH, "//button[@type='submit']")
-        submit_button.click()
-        time.sleep(3)
-        driver.get("http://127.0.0.1:8000/listwebinars/")
-        time.sleep(3)
-        driver.get("http://127.0.0.1:8000/webinar/")
-        time.sleep(3)
-        driver.get("http://127.0.0.1:8000/org_profile/")
-        aicte = driver.find_element(By.NAME, "aicte_id")
-        aicte.clear()
-        aicte.send_keys("1-36488387417")
-        phone_number = driver.find_element(By.NAME, "phone_number")
-        phone_number.clear()
-        phone_number.send_keys("9034567890")
+        name = self.driver.find_element(By.ID, "name")
+        name.send_keys("Plaza Auditoriums")
 
-        website = driver.find_element(By.NAME, "website")
-        website.clear()
-        website.send_keys("https://www.model.in")
+        category = self.driver.find_element(By.ID, "category")
+        category.send_keys("Venue")  # Assuming you want to select the "Venue" category
+
+        image = self.driver.find_element(By.ID, "image")
+        image.send_keys("D:\Project\Eventoplanneur\event\media\service_images\download_2.jpg")  # Replace with the path to your image file
+
+        location = self.driver.find_element(By.ID, "location")
+        location.send_keys("Trivandrum")  # Assuming you want to select "Trivandrum" location
+
+        capacity = self.driver.find_element(By.ID, "capacity")
+        capacity.send_keys("100")
+
+        rate = self.driver.find_element(By.ID, "rate")
+        rate.send_keys("100")
+
+        description = self.driver.find_element(By.ID, "description")
+        description.send_keys("Creating a welcoming and versatile space and providing outstanding service, you can ensure that your venue is sought after by event hosts and planners.")
+        # Add service
+        service_input = self.driver.find_element(By.ID, "data-input")
+        service_input.send_keys("Event Space Rental")  # Assuming you want to add "Catering" service
+        add_button = self.driver.find_element(By.ID, "add-button")
+        add_button.click()
+
+        # Fill out other fields similarly...
 
         # Submit the form
-        submit_button = driver.find_element(By.CSS_SELECTOR, 'input[type="submit"]')
+        submit_button = self.driver.find_element(By.XPATH, "//button[@type='submit']")
         submit_button.click()
-        time.sleep(5)
-        driver.get("http://127.0.0.1:8000/login/")
-        email = driver.find_element(By.CSS_SELECTOR, 'input[name="email"]')
-        email.send_keys("ammu@gmail.com")
-        password = driver.find_element(By.CSS_SELECTOR, 'input[name="password"]')
-        password.send_keys("Sample@123")
-        time.sleep(2)
-        submit = driver.find_element(By.CSS_SELECTOR, 'button#login.btn.btn-primary.btn-block.register-btn')
-        submit.click()
-        time.sleep(2)
-        events = driver.find_element(By.CSS_SELECTOR, 'a.nav-link[href="/recommendations/"]')
-        events.click()
-        time.sleep(2)
-        view = driver.find_element(By.CSS_SELECTOR, "a.btn[href='/view_webinar/68']")
-        view.click()
-        time.sleep(2)
-        logout = driver.find_element(By.CSS_SELECTOR, "a.nav-link[href='/logout/']")
-        logout.click()
-        time.sleep(2)
+        time.sleep(4)
+        driver.get("http://127.0.0.1:8000/addservices/")
+        time.sleep(3)
+        # login = driver.find_element(By.CSS_SELECTOR, 'a.nav-link[href="/login/"]')
+        # login.click()
+        # time.sleep(2)
+        # email = driver.find_element(By.CSS_SELECTOR, 'input[name="email"]')
+        # email.send_keys("waremo9428@twugg.com")
+        # password = driver.find_element(By.CSS_SELECTOR, 'input[name="password"]')
+        # password.send_keys("Sample@123")
+        # time.sleep(2)
+        # submit = driver.find_element(By.CSS_SELECTOR, 'button#login.btn.btn-primary.btn-block.register-btn')
+        # submit.click()
+        # time.sleep(2)
+        # driver.get("http://127.0.0.1:8000/register_webinar/")
+        # time.sleep(3)
+        # title = driver.find_element(By.NAME, "title")
+        # title.send_keys("Webinar on Global Warming")
+
+        # fee = driver.find_element(By.NAME, "fee")
+        # fee.send_keys("100")  # You can change this value
+
+        # start_time = driver.find_element(By.NAME, "start_time")
+        # start_time.send_keys("09:00 AM")  # Adjust the time as needed
+
+        # end_time = driver.find_element(By.NAME, "end_time")
+        # end_time.send_keys("11:00 AM")  # Adjust the time as needed
+
+        # date = driver.find_element(By.NAME, "date")
+        # date.send_keys("26-11-2023")  # Use the desired date
+
+        # deadline = driver.find_element(By.NAME, "deadline")
+        # deadline.send_keys("23-11-2023")  # Use the desired date
+
+        # event_type = driver.find_element(By.NAME, "event_type")
+        # event_type.send_keys("Online")  # Or "Offline" if needed
+
+        # # Depending on the event type, you can handle the "Livestream Link" and "Location" fields here
+
+        # organizer_name = driver.find_element(By.NAME, "organizer_name")
+        # organizer_name.send_keys("Dept. of Environment Studies")
+
+        # phone_number = driver.find_element(By.NAME, "phone_number")
+        # phone_number.send_keys("8978537890")  # Use the desired phone number
+
+        # poster = driver.find_element(By.NAME, "poster")
+        # poster.send_keys("https://example.com/poster.jpg")  # Use the desired image URL
+
+        # max_participants = driver.find_element(By.NAME, "max_participants")
+        # max_participants.send_keys("100")  # Set the maximum number of participants
+        # # Find the "Speakers" section and its elements
+        # speakers_container = driver.find_element(By.ID, "speakers-container")
+        # speaker_designation = driver.find_element(By.NAME, "speakers_designation[]")
+        # speaker_name = driver.find_element(By.NAME, "speakers_name[]")
+
+        # # Fill in speaker information
+        # speaker_designation.send_keys("Mr")  # You can change the designation
+        # speaker_name.send_keys("John Kim")  # Enter the speaker's name
+
+
+        # # For the "Speakers" section, you can add speakers dynamically if needed.
+
+        # description = driver.find_element(By.NAME, "description")
+        # description.send_keys("Are you concerned about the pressing issue of global warming and its far-reaching consequences? Join us for an insightful webinar where we dive deep into the science, impact, and sustainable solutions related to this critical environmental challenge.")
+        # time.sleep(3)
+        # # Submit the form
+        # submit_button = driver.find_element(By.XPATH, "//button[@type='submit']")
+        # submit_button.click()
+        # time.sleep(3)
+        # driver.get("http://127.0.0.1:8000/listwebinars/")
+        # time.sleep(3)
+        # driver.get("http://127.0.0.1:8000/webinar/")
+        # time.sleep(3)
+        # driver.get("http://127.0.0.1:8000/org_profile/")
+        # aicte = driver.find_element(By.NAME, "aicte_id")
+        # aicte.clear()
+        # aicte.send_keys("1-36488387417")
+        # phone_number = driver.find_element(By.NAME, "phone_number")
+        # phone_number.clear()
+        # phone_number.send_keys("9034567890")
+
+        # website = driver.find_element(By.NAME, "website")
+        # website.clear()
+        # website.send_keys("https://www.model.in")
+
+        # # Submit the form
+        # submit_button = driver.find_element(By.CSS_SELECTOR, 'input[type="submit"]')
+        # submit_button.click()
+        # time.sleep(5)
+        # driver.get("http://127.0.0.1:8000/login/")
+        # email = driver.find_element(By.CSS_SELECTOR, 'input[name="email"]')
+        # email.send_keys("ammu@gmail.com")
+        # password = driver.find_element(By.CSS_SELECTOR, 'input[name="password"]')
+        # password.send_keys("Sample@123")
+        # time.sleep(2)
+        # submit = driver.find_element(By.CSS_SELECTOR, 'button#login.btn.btn-primary.btn-block.register-btn')
+        # submit.click()
+        # time.sleep(2)
+        # events = driver.find_element(By.CSS_SELECTOR, 'a.nav-link[href="/recommendations/"]')
+        # events.click()
+        # time.sleep(2)
+        # view = driver.find_element(By.CSS_SELECTOR, "a.btn[href='/view_webinar/68']")
+        # view.click()
+        # time.sleep(2)
+        # logout = driver.find_element(By.CSS_SELECTOR, "a.nav-link[href='/logout/']")
+        # logout.click()
+        # time.sleep(2)
+
     # def test_01_login_page(self):
     #     driver = self.driver
     #     driver.get(self.live_server_url)

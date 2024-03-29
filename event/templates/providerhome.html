@@ -112,8 +112,10 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="feature-box">
-                        <h4>Update Availability</h4>
-                        <p>Easily update your availability to let users know when you are ready to provide services.</p>
+                        <a id="addservice" href="{% url 'eventapp:addservices' %}">
+                        <h4>Add Service</h4>
+                        <p>Add a new service to enhance its functionality and meeting the needs of users or stakeholders.</p>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -127,8 +129,8 @@
                 <div class="col-md-4">
                     <div class="feature-box">
                         <a href="{% url 'eventapp:user_services' %}">
-                        <h4>Add/Edit Services</h4>
-                        <p>Add or modify the services you offer to attract a wider range of clients.</p>
+                        <h4>View/Edit Services</h4>
+                        <p>View or modify the services you offer to attract a wider range of clients.</p>
                         </a>
                     </div>
                 </div>
