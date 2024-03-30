@@ -3,6 +3,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    z-index:20;
 }
 .card-body{
   text-decoration: none;
@@ -11,11 +12,11 @@
     background-color: #fda085;
     color: white;
     text-align: center;
-    padding: 100px 0;
-    height: 600px;
+    padding: 150px 0 300px 0 ;
+    height: 900px;
   }
   .intro-content {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
   }
   
@@ -132,6 +133,10 @@
     margin-bottom: 15px;
   }
   
+  .card-img-top{
+    width: 350px;
+    height: 200px;
+  }
   #book-service-btn {
     padding: 10px 20px;
     font-size: 16px;
@@ -141,6 +146,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
+    margin-top: 10px;
   }
   
   #book-service-btn:hover {
@@ -172,7 +178,8 @@
   }
   
   .service-image {
-    max-width: 100px;
+    width: 300px;
+    height: 150px;
     margin-bottom: 10px;
   }
   
@@ -215,5 +222,9 @@
 }
 a{
   text-decoration: none;
-  color:white;
+}
+.feature-title{
+  font-size: 24px;
+  color: white;
+  text-align: center;
 }

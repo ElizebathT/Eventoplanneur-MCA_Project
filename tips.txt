@@ -6,7 +6,6 @@ rate negotiate
 
 reports
 otp
-admin verify provider
 notification
 panel correction
 
@@ -27,3 +26,6 @@ time restrict responses
 title for doc generated
 
 notify webinar based on dept
+
+navbar required only
+

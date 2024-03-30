@@ -143,10 +143,49 @@
 <div class="intro-section">
     <h1>Welcome to Our Event Website</h1>
     <p>Discover, Attend, and Enjoy the Best Events</p>
-    <input type="button"  href="#featured-events" class="btn" value="Explore Featured Events">
+    <a class="btn"  href="#featured-events">Explore Featured Events</a>
 </div>
 </header>
-<div class="event-info">
+
+<section id="featured-events" class="featured-section">
+    <div class="container">
+      <h2 class="text-center mb-4">Featured Events</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4" ><a href="{% url 'view_webinar' 66 %}">
+          <div class="feature">
+            <img src="{% static 'images/conference1.jpg' %}" alt="Featured Event 1" class="feature-image">
+            <h3 >Cyber Security 2024</h3>
+            <p class="feature-description">Join industry leaders for a groundbreaking summit on the future of technology.</p>
+          </a>
+          <a class="btn btn-primary btn-lg mr-2" type="submit" href="{% url 'register_for_webinar' 66 %}">Register</a>
+</div>
+        </div>
+        <div class="col-md-4 mb-4"><a href="{% url 'view_webinar' 81 %}">
+          <div class="feature">
+            <img src="{% static 'images/conference2.png' %}" alt="Featured Event 2" class="feature-image">
+            <h3 >UX India</h3>
+            <p class="feature-description">Learn from experts in our engaging and informative webinar series.</p>
+        </a>
+        <a class="btn btn-primary btn-lg mr-2" type="submit" href="{% url 'register_for_webinar' 81 %}">Register</a>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4"><a href="{% url 'view_webinar' 82 %}">
+          <div class="feature">
+            <img src="{% static 'images/conference3.jfif' %}" alt="Featured Event 3" class="feature-image">
+            <h3 >Nullcon Goa</h3>
+            <p class="feature-description">Celebrate the season with an unforgettable beachside party.</p>
+        </a>
+        <a class="btn btn-primary btn-lg mr-2" type="submit" href="{% url 'register_for_webinar' 82 %}">Register</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <a style="background-color:lightblue; color:black; display:block; width:200px; text-align:center; margin:20px auto;" type="submit" class="btn" href="{% url 'eventapp:recommendations' %}">View more Events</a>
+
+  
+    
+{% comment %} <div class="event-info">
     <h2>Event Information</h2>
     <p>More details about upcoming events, schedules, and speakers.</p>
 </div>
@@ -190,14 +229,15 @@
         </div>
     </div>
     <!-- Add more event highlights as needed -->
-</div>
+</div> {% endcomment %}
 
   <section class="contact-section" id="contact">
     <div class="contact-details">
         <h2 class="contact-heading">Contact Us</h2>
         <p class="contact-info">Have questions or need assistance? Feel free to get in touch with us.</p>
         <div class="contact-form">
-            <form action="submit_form.php" method="post">
+            <form action="" method="post">
+                {% csrf_token %}
                 <div class="form-group">
                     <label class="form-label" for="name">Your Name:</label>
                     <input class="form-input" type="text" id="name" name="name" required>
@@ -210,7 +250,7 @@
                     <label class="form-label" for="message">Message:</label>
                     <textarea class="form-message" id="message" name="message" rows="4" required></textarea>
                 </div>
-                <button class="form-button" type="submit">Send Message</button>
+                <button class="form-button" href="{% url 'eventapp:attendeehome' %}" type="submit">Send Message</button>
             </form>
         </div>
         <div class="social-media">

@@ -133,15 +133,6 @@ def reg_provider(request):
         user.is_verified = False
         user.is_provider=True
         user.save()
-        send_mail(
-            'Email Verification',
-            f'Click the following link to verify your email: {request.build_absolute_uri("/verify/")}?token={token}',
-            'eventoplanneur@gmail.com',
-            [email],
-            fail_silently=False,
-        )
-
-        return redirect('eventapp:verify')
     return render(request, 'reg_provider.html')
 
 def index(request):
@@ -153,9 +144,6 @@ def orghome(request):
 
 def admindash(request):
     return render(request, 'admindash.html')
-
-def attendeehome(request):
-    return render(request, 'attendeehome.html')
 
 @login_required
 def providerhome(request):
@@ -638,6 +626,9 @@ def recommendations(request, N=6):
     except Attendee.DoesNotExist:
         return render(request, 'recommendations.html', {'recommended_events': []})
     
+def attendeehome(request):
+        return render(request, 'attendeehome.html')
+    
 from django.shortcuts import render, redirect
 from .forms import ServiceForm
 
@@ -1060,14 +1051,14 @@ def generate_webinar_report(request, webinar_id):
         organization_table_data.append([organization, num_participants])
 
     # # Plotting the graph
-    # plt.figure(figsize=(10, 6))
-    # plt.bar(participants_by_organization.keys(), participants_by_organization.values())
-    # plt.xlabel('Organization')
-    # plt.ylabel('Number of Participants')
-    # plt.title('Number of Participants from Each Organization')
-    # plt.yticks(range(0, max(participants_by_organization.values()) + 1))  # Set y-ticks to whole numbers
-    # plt.tight_layout()  # Adjust layout to prevent clipping of labels
-    # plt.show()
+    plt.figure(figsize=(10, 6))
+    plt.bar(participants_by_organization.keys(), participants_by_organization.values())
+    plt.xlabel('Organization')
+    plt.ylabel('Number of Participants')
+    plt.title('Number of Participants from Each Organization')
+    plt.yticks(range(0, max(participants_by_organization.values()) + 1))  # Set y-ticks to whole numbers
+    plt.tight_layout()  # Adjust layout to prevent clipping of labels
+    plt.show()
 
     # Generating PDF
     pdf_filename = f"webinar_report_{webinar_id}.pdf"
