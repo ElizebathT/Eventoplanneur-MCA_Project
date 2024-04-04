@@ -62,7 +62,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
           <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
           <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
@@ -77,23 +77,9 @@
     </div>
   </nav>
   <div style="margin-left:100px;margin-right:225px" ><br>
-    <a class="btn2" onclick="goBack()" style="background-color: #F1D302; /* Yellow */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 40px;">
-    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back
-</a>
-<script>
-  function goBack() {
-      window.history.back();
-  }
-</script>
+    <a class="btn2" href="{% url 'eventapp:orghome' %}">
+      Back
+  </a>
     <div style="margin-left:200px;" ><br>
       <h4 style="margin-left:50px;color:white">Completed Webinars</h4>
         

@@ -123,10 +123,10 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:recommendations' %}">Events</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
-          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
+          {% comment %} <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li> {% endcomment %}
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:attendee_profile' %}">Profile</a></li>
-          <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+          {% comment %} <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li> {% endcomment %}
           <li class="nav-item">
               {% if user.is_authenticated %}
               <a class="nav-link" >User: {{ user.email }}</a>
@@ -181,10 +181,45 @@
       </div>
     </div>
   </section>
-  <a style="background-color:lightblue; color:black; display:block; width:200px; text-align:center; margin:20px auto;" type="submit" class="btn" href="{% url 'eventapp:recommendations' %}">View more Events</a>
-
   
+  <section id="categories" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Explore Categories</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <a href="{% url 'eventapp:recommendations' %}">
+                <img src="{% static 'images/webinar.jfif' %}" class="card-img-top" alt="Webinar">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Event Recommendations</h5>
+                </div>
+              </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <a href="{% url 'eventapp:registered_webinar' %}">
+                <img src="{% static 'images/conference.jpg' %}" class="card-img-top" alt="Conference">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">View your Upcoming Webinars</h5>
+                </div>
+              </a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <a href="{% url 'eventapp:past_webinars' %}">
+              <img src="{% static 'images/complete.jpg' %}" class="card-img-top" alt="Conference">
+              <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">View Completed Webinars</h5>
+              </div>
+            </a>
+          </div>
+      </div>
+    </div>
     
+    </div>
+  </section>
 {% comment %} <div class="event-info">
     <h2>Event Information</h2>
     <p>More details about upcoming events, schedules, and speakers.</p>
