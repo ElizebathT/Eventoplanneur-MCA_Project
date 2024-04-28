@@ -29,3 +29,9 @@ notify webinar based on dept
 
 navbar required only
 
+details of a attendee report
+
+feedback/review category
+
+
+
