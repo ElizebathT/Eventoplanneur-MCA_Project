@@ -52,5 +52,6 @@ urlpatterns = [
     path('provider_profile/',views.provider_profile,name='provider_profile'),
     path('completed_webinar/', views.completed_webinar, name='completed_webinar'),
     path('past_webinars/', views.past_webinars, name='past_webinars'),
+    path('review_events/', views.review_events, name='review_events'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

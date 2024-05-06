@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
     
-</head>
+{% comment %} </head>
 <style>
   /* Reset some default styles */
   body {
@@ -267,11 +267,41 @@
   span {
     color: #ff6347; /* Tomato color */
   }
+</style> {% endcomment %}
+
+<style>
+  body {
+    background: linear-gradient(to bottom, #003366, #3399ff);
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #003366, #3399ff);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -moz-linear-gradient(to bottom, #003366, #3399ff);
+    /* Firefox 3.6-15 */
+    background: -o-linear-gradient(to bottom, #003366, #3399ff);
+    /* Opera 11.10-12.00 */
+    background: linear-gradient(to bottom, #003366, #3399ff);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #fff;
+  }
+  .btn-primary {
+    background-color: #ff9900; /* Orange color */
+    border-color: #ff9900; /* Orange color */
+  }
+  .btn-primary:hover {
+    background-color: #ff6600; /* Darker orange on hover */
+    border-color: #ff6600; /* Darker orange on hover */
+  }
+  .btn-secondary {
+    background-color: #3399ff; /* Light blue color */
+    border-color: #3399ff; /* Light blue color */
+  }
+  .btn-secondary:hover {
+    background-color: #007bff; /* Dark blue on hover */
+    border-color: #007bff; /* Dark blue on hover */
+  }
 </style>
-
-
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">
         <img src="{% static 'images/logo.jpg' %}" alt="Logo" width="50"> 
       </a>
@@ -299,7 +329,7 @@
     </div>
 </nav>
   <div class="container">
-    <div class="events">
+    <div class="events p-3">
         <h4>Details of Service</h4>
         {% if messages %}
     <ul class="messages">
@@ -310,17 +340,16 @@
 {% endif %}
         <form method="post" id="service" action="{% url 'eventapp:addservices' %}" enctype="multipart/form-data">
           {% csrf_token %}
-          <table>
-          <tr>
-            <td>
-              <div class="mb-3">
+          <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
               <label for="name" class="form-label">Name<span>*</span> :</label>
               <input type="text" id="name" name="name" class="form-control" required>
               <span id="nameError" class="error-text"></span>
               </div>
-            </td>
-            <td>
-          <div class="mb-3">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
           <label for="category" class="form-label">Category<span>*</span> :</label>
           <select id="category" name="category" class="form-control" required>
             <option value="" disabled selected>Select a category</option>
@@ -337,10 +366,9 @@
         </select>
           <span id="categoryError" class="error-text"></span>
       </div>
-    </td>
-        </tr><tr>
-          <td>
-            <div class="mb-3">
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
               <label for="image" class="form-label" >Image:</label>
               <input type="file" class="form-control" id="image" name="image" required>
               <span id="imageError" class="error-text"></span>
@@ -377,8 +405,9 @@
             }
         }
       </script>
-        <td rowspan="2">
-          <div class="mb-3">
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
               <label for="location" class="form-label">Locations<span>*</span> :</label><br>
               <select id="location" name="location" multiple onchange="updateSelectedLocations()">
                 <option value="trivandrum">Trivandrum</option>
@@ -398,7 +427,9 @@
               <textarea id="locations" name="locations" class="selected-locations">Selected Locations:</textarea>
               <span id="locationsError" class="error-text"></span>
           </div>
-      </td></tr>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
   
       <script>
         function updateSelectedLocations() {
@@ -425,18 +456,13 @@
           // Update the textarea with the comma-separated string
           selectedLocationsTextarea.value = selectedLocations.join(', ');
         }
-      </script><tr>
-      <td>
-        <div class="mb-3">
+      </script>
             <label for="capacity" class="form-label">Maximum Capacity<span>*</span>:</label>
             <input type="number" id="capacity" name="capacity" class="form-control" required>
             <span id="capacityError" class="error-text"></span>
-        </div></td>
-  </tr>
-  <tr>
-
-    <td>
-      <div class="mb-3 services-container">
+        </div></div>
+        <div class="col-md-6">
+            <div class="form-group">
           <label for="data-input" class="form-label">Services Provided<span>*</span> :</label>
           <div class="services-input-container">
               <input type="text"  id="data-input" autocomplete="off" list="services-list" placeholder="Enter services" oninput="showAutocomplete()">
@@ -448,7 +474,6 @@
           <textarea id="services_provided" name="services_provided" class="selected-services" placeholder="Services:"></textarea>
           <span id="nameError" style="color: red;"></span>
       </div>
-  </td>
   
   <script>
       var servicesList = ['Menu Planning', 'Freight Transport','Passenger Transport','Food Preparation and Cooking', 'Event Setup and Decoration', 'Service Staff', 'Equipment Rental', 'Event Space Rental', 'Setup and Cleanup', 'Catering Coordination', 'Audio-Visual Equipment', 'Event Planning Assistance', 'Installation and Setup', 'Customized Lighting Plans', 'Backdrop Lighting', 'On-Site Technicians', 'Live Performances', 'DJ Services', 'Interactive Hosts', 'Online Performances', 'Performing Arts', 'Theme Development', 'Floral Arrangements', 'Balloon Decor', 'Table Settings and Linens', 'Backdrop and Stage Design', 'Room Reservations', 'Front Desk Services', 'Digital Marketing', 'Product Photography', 'Promotional Videos']; // Add your list of services here
@@ -497,33 +522,29 @@
           }
       }
   </script>
-  
-</td>
-              <td>
-                <div class="mb-3">
+</div>
+<div class="col-md-6">
+    <div class="form-group">
                     <label for="description" class="form-label">Description<span>*</span>:</label>
                     <textarea id="description" name="description" class="form-control" rows="4" cols="50" required></textarea>
                 <span id="descriptionError" class="error-text"></span>
-                <span class="error-text">Provide as much detail as possible to help us better understand your services and requirements.</span>
-                </div></td>
-            </tr>
-            <tr><td>
-              <div class="mb-3">
+                <span class="error-text">* Provide as much detail as possible to help us better understand your services and requirements.</span>
+                </div></div>
+                <div class="col-md-6">
+                    <div class="form-group">
                 <label for="rate" class="form-label">Rate (per head)<span>*</span>:</label>
                 <input type="number" id="rate" name="rate" class="form-control" required>
                 <span id="rateError" class="error-text"></span>
             </div>
-            </td></tr>
-            <tr>
-<td>
-
+            
               <span>* Required fields</span><br>
-          
-            </td></tr><tr><td>
-              <button  type="submit"><a class="btn2">Register</a></button>
-              <button><a href="{% url 'eventapp:providerhome' %}" class="btn2"> Back </a></button>
+            </div>
+          </div>
+      </div>
+              <button  type="submit" class="btn btn-primary">Register</a></button>
+              <a href="{% url 'eventapp:providerhome' %}" class="btn btn-secondary"> Back </a></button>
           {% comment %} <button id="sendButton"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:webinar' %}">Back</a></button></td></tr> {% endcomment %}
-            </td></tr></form>
+           </form>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       
       

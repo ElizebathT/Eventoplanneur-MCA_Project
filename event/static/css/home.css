@@ -152,13 +152,16 @@
   #book-service-btn:hover {
     background-color: #ff8000;
   }
-  /* ... Your existing CSS ... */
 
 .our-services-section {
     padding: 50px 0;
     text-align: center;
+    background: linear-gradient(to left top, #DD2476 10%, #FF512F 90%);
+    color: #ffffff;
   }
-  
+  h5{
+    color: #FF512F;
+  }
   .service-card-container {
     display: flex;
     justify-content: center;
@@ -194,7 +197,6 @@
     line-height: 1.6;
   }
   
-  /* ... Your existing CSS ... */
   .contact-section {
     background-color: #000000;
     color: white;

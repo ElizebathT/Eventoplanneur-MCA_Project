@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Homepage</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  {% comment %} <link rel="stylesheet" href="{% static 'css/home.css' %}"> {% endcomment %}
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
 </head>
-<style>
+{% comment %} <style>
   /* Basic CSS for styling */
   body {
       font-family: Arial, sans-serif;
@@ -109,7 +109,7 @@
   .highlight-item p {
       margin: 0;
   }
-</style>
+</style> {% endcomment %}
 <body>
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
@@ -123,10 +123,8 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:recommendations' %}">Events</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
-          {% comment %} <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li> {% endcomment %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_events' %}">Reviews & Ratings</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:attendee_profile' %}">Profile</a></li>
-          {% comment %} <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li> {% endcomment %}
           <li class="nav-item">
               {% if user.is_authenticated %}
               <a class="nav-link" >User: {{ user.email }}</a>
@@ -139,57 +137,66 @@
   </nav>
   <header>
 
-
-<div class="intro-section">
+    <header class="jumbotron jumbotron-fluid bg-primary text-white">
+      <div class="container">
     <h1>Welcome to Our Event Website</h1>
     <p>Discover, Attend, and Enjoy the Best Events</p>
-    <a class="btn"  href="#featured-events">Explore Featured Events</a>
+    <a class="btn btn-light"  href="#featured-events">Explore Featured Events</a>
 </div>
 </header>
 
-<section id="featured-events" class="featured-section">
+<section id="featured-events" class="py-5">
     <div class="container">
       <h2 class="text-center mb-4">Featured Events</h2>
       <div class="row">
-        <div class="col-md-4 mb-4" ><a href="{% url 'view_webinar' 66 %}">
-          <div class="feature">
-            <img src="{% static 'images/conference1.jpg' %}" alt="Featured Event 1" class="feature-image">
-            <h3 >Cyber Security 2024</h3>
-            <p class="feature-description">Join industry leaders for a groundbreaking summit on the future of technology.</p>
+        <div class="col-md-4 mb-4">
+          <a href="{% url 'view_webinar' 66 %}">
+            <div class="card">
+              <img src="{% static 'images/conference1.jpg' %}" alt="Featured Event 1" class="card-img-top">
+              <div class="card-body">
+                <h3 class="card-title">Cyber Security 2024</h3>
+                <p class="card-text">Join industry leaders for a groundbreaking summit on the future of technology.</p>
+                <a class="btn btn-primary btn-lg mr-2" href="{% url 'register_for_webinar' 66 %}">Register</a>
+              </div>
+            </div>
           </a>
-          <a class="btn btn-primary btn-lg mr-2" type="submit" href="{% url 'register_for_webinar' 66 %}">Register</a>
-</div>
         </div>
-        <div class="col-md-4 mb-4"><a href="{% url 'view_webinar' 81 %}">
-          <div class="feature">
-            <img src="{% static 'images/conference2.png' %}" alt="Featured Event 2" class="feature-image">
-            <h3 >UX India</h3>
-            <p class="feature-description">Learn from experts in our engaging and informative webinar series.</p>
-        </a>
-        <a class="btn btn-primary btn-lg mr-2" type="submit" href="{% url 'register_for_webinar' 81 %}">Register</a>
-          </div>
+        <div class="col-md-4 mb-4">
+          <a href="{% url 'view_webinar' 81 %}">
+            <div class="card">
+              <img src="{% static 'images/conference2.png' %}" alt="Featured Event 2" class="card-img-top">
+              <div class="card-body">
+                <h3 class="card-title">UX India</h3>
+                <p class="card-text">Learn from experts in our engaging and informative webinar series.</p>
+                <a class="btn btn-primary btn-lg mr-2" href="{% url 'register_for_webinar' 81 %}">Register</a>
+              </div>
+            </div>
+          </a>
         </div>
-        <div class="col-md-4 mb-4"><a href="{% url 'view_webinar' 82 %}">
-          <div class="feature">
-            <img src="{% static 'images/conference3.jfif' %}" alt="Featured Event 3" class="feature-image">
-            <h3 >Nullcon Goa</h3>
-            <p class="feature-description">Celebrate the season with an unforgettable beachside party.</p>
-        </a>
-        <a class="btn btn-primary btn-lg mr-2" type="submit" href="{% url 'register_for_webinar' 82 %}">Register</a>
-          </div>
+        <div class="col-md-4 mb-4">
+          <a href="{% url 'view_webinar' 82 %}">
+            <div class="card">
+              <img style="height:115px" src="{% static 'images/conference3.jfif' %}" alt="Featured Event 3" class="card-img-top">
+              <div class="card-body">
+                <h3 class="card-title">Nullcon Goa</h3>
+                <p class="card-text">Celebrate the season with an unforgettable beachside party.</p>
+                <a class="btn btn-primary btn-lg mr-2" href="{% url 'register_for_webinar' 82 %}">Register</a>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
     </div>
   </section>
   
-  <section id="categories" class="py-5">
+  <section id="categories" class="py-5" style="background-image: linear-gradient(45deg, #FF6B6B 50%, #FFA56B 50%);">
     <div class="container">
       <h2 class="text-center mb-4">Explore Categories</h2>
       <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <a href="{% url 'eventapp:recommendations' %}">
-                <img src="{% static 'images/webinar.jfif' %}" class="card-img-top" alt="Webinar">
+                <img style="height:200px"src="{% static 'images/webinar.jfif' %}" class="card-img-top" alt="Webinar">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">Event Recommendations</h5>
                 </div>
@@ -199,7 +206,7 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
               <a href="{% url 'eventapp:registered_webinar' %}">
-                <img src="{% static 'images/conference.jpg' %}" class="card-img-top" alt="Conference">
+                <img style="height: 200px;" src="{% static 'images/conference.jpg' %}" class="card-img-top" alt="Conference">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">View your Upcoming Webinars</h5>
                 </div>
@@ -209,7 +216,7 @@
         <div class="col-md-4 mb-4">
           <div class="card h-100">
             <a href="{% url 'eventapp:past_webinars' %}">
-              <img src="{% static 'images/complete.jpg' %}" class="card-img-top" alt="Conference">
+              <img style="height: 200px;" src="{% static 'images/complete.jpg' %}" class="card-img-top" alt="Conference">
               <div class="card-body d-flex flex-column">
                   <h5 class="card-title">View Completed Webinars</h5>
               </div>
@@ -265,36 +272,35 @@
     </div>
     <!-- Add more event highlights as needed -->
 </div> {% endcomment %}
-
-  <section class="contact-section" id="contact">
-    <div class="contact-details">
-        <h2 class="contact-heading">Contact Us</h2>
-        <p class="contact-info">Have questions or need assistance? Feel free to get in touch with us.</p>
-        <div class="contact-form">
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label class="form-label" for="name">Your Name:</label>
-                    <input class="form-input" type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="email">Your Email:</label>
-                    <input class="form-input" type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="message">Message:</label>
-                    <textarea class="form-message" id="message" name="message" rows="4" required></textarea>
-                </div>
-                <button class="form-button" href="{% url 'eventapp:attendeehome' %}" type="submit">Send Message</button>
-            </form>
-        </div>
-        <div class="social-media">
-            <a class="social-link" href="https://www.facebook.com/yourpage" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a class="social-link" href="https://www.twitter.com/yourpage" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a class="social-link" href="https://www.instagram.com/yourpage" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a class="social-link" href="https://www.linkedin.com/company/yourpage" target="_blank"><i class="fab fa-linkedin"></i></a>
-        </div>
-    </div>
+<section class="contact-section py-5" id="contact" >
+  <div class="container bg-dark text-light">
+      <h2 class="contact-heading">Contact Us</h2>
+      <p class="contact-info">Have questions or need assistance? Feel free to get in touch with us.</p>
+      <div class="row"><div class="col-md-6 offset-md-3">
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+              <label class="form-label" for="name">Your Name:</label>
+              <input class="form-control" type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+              <label class="form-label" for="email">Your Email:</label>
+              <input class="form-control" type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+              <label class="form-label" for="message">Message:</label>
+              <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+          </div>
+          <button style="background-color:#FFA56B " class="btn " href="{% url 'eventapp:attendeehome' %}" type="submit">Send Message</button>
+      </form>
+    </div></div>
+      <div class="social-media ">
+          <a class="social-link" href="https://www.facebook.com/yourpage" target="_blank"><i class="fab fa-facebook"></i></a>
+          <a class="social-link" href="https://www.twitter.com/yourpage" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a class="social-link" href="https://www.instagram.com/yourpage" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a class="social-link" href="https://www.linkedin.com/company/yourpage" target="_blank"><i class="fab fa-linkedin"></i></a>
+      </div>
+  </div>
 </section>
   <footer class="bg-dark text-white text-center py-3">
     <div class="container">

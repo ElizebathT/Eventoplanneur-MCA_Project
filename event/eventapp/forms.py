@@ -71,10 +71,14 @@ class BookServiceForm(forms.ModelForm):
 
 # forms.py
 from django import forms
-from .models import Review
+from .models import Review,ReviewWebinar
 
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['rating', 'comment']
 
+class ReviewWebinarForm(forms.ModelForm):
+    class Meta:
+        model = ReviewWebinar
+        fields = ['rating', 'comment']

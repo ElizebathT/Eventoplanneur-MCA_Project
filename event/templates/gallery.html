@@ -54,7 +54,7 @@
 <body>
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="containers">
-      <a class="navbar-brand" href="{% url 'eventapp:index' %}">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
         <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
@@ -62,8 +62,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:index' %}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:orghome' %}">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#reviews">Reviews & Ratings</a></li>
+          
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
           <li class="nav-item">
             {% if user.is_authenticated %}
             <a class="nav-link" >User: {{ user.email }}</a>

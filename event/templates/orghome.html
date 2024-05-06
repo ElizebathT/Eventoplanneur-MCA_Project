@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 {% if user.is_authenticated %}
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@
 <body>
   <nav class="navbar navbar-expand-md bg-dark navbar-dark" style=" z-index:20;">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'eventapp:providerhome' %}">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
         <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
@@ -25,6 +25,7 @@
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
           {% comment %} <li class="nav-item"><a class="nav-link dropdown-toggle" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Notifications
         </a>
@@ -33,7 +34,7 @@
           {% for notification in notifications %}
           <li><a href="#">{{ notification.message }}</a></li>
           {% endfor %}
-      </ul></li> {% endcomment %}
+      </ul></li> 
           <li class="nav-item">
               {% if user.is_authenticated %}
               <a class="nav-link" >User: {{ user.email }}</a>
@@ -108,19 +109,16 @@
     
     </div>
   </section>
-  <section id="introduction" class="introduction-section" style="background:linear-gradient(to left top, #DD2476 10%, #FF512F 90%);">
-    <div class="container">
-      <p>Experience seamless event planning with our comprehensive range of services. From conference management to social events, we've got you covered.
-    Our team of dedicated event professionals is here to help you create unforgettable moments that leave a lasting impression.
-    Ready to make your event a success? Book your desired service now and let us bring your vision to life!</p>
-    <button id="book-service-btn" class="btn"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:services' %}">Book a Service</a></button>
-    </div>
-  </section>
+ 
   <section id="services" class="our-services-section">
     <div class="container">
       <h2 class="text-center mb-4">Our Services</h2>
       
       <div class="service-card-container">
+        <p>Experience seamless event planning with our comprehensive range of services. From conference management to social events, we've got you covered.
+          Our team of dedicated event professionals is here to help you create unforgettable moments that leave a lasting impression.
+          Ready to make your event a success? Book your desired service now and let us bring your vision to life!</p>
+          
         <div class="service-card">
           <img src="{% static 'images/service1.jpg' %}" alt="Service 1" class="service-image">
           <h3 class="service-title">Catering Service</h3>
@@ -137,7 +135,8 @@
           <img src="{% static 'images/service3.jpg' %}" alt="Service 3" class="service-image">
           <h3 class="service-title">Venue Booking</h3>
           <p class="service-description">Host engaging webinars that connect and educate your audience.</p>
-        </div>
+        </div><br>
+        
         <button id="book-service-btn" class="btn"><a style="text-decoration:none;color:white;" href="{% url 'eventapp:services' %}">View all</a></button>
       </div>
     </div>
@@ -165,6 +164,206 @@
         </form>
         </div>
         <div class="social-media">
+            <a class="social-link" href="https://www.facebook.com/yourpage" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a class="social-link" href="https://www.twitter.com/yourpage" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a class="social-link" href="https://www.instagram.com/yourpage" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a class="social-link" href="https://www.linkedin.com/company/yourpage" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </div>
+</section>
+  <footer class="bg-dark text-white text-center py-3">
+    <div class="container">
+      &copy; 2023 EventoPlanneur. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
+{% endif %} {% endcomment %}
+
+{% load static %}
+{% if user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+</head>
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
+          <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" >User: {{ user.email }}</a>
+              <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+              {% endif %}
+            </li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <section class="intro" style="background:linear-gradient(to left top, #DD2476 10%, #FF512F 90%); padding: 150px 0;">
+    <div class="container text-center text-white ">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <h2 class="mb-4">Welcome to EventoPlanneur</h2>
+          <p class="lead">Where Every Occasion Finds Its Perfect Stage!</p>
+          
+        </div>
+      </div>
+      <p class="p-3">Our site, a hub of connection and inspiration, bridges passions, fuels creativity, and empowers users to collaborate seamlessly, shaping limitless possibilities together. Our comprehensive site offers seamless event planning, registration, ticketing, and promotion tools. Engage attendees with interactive features, real-time analytics, and adaptable interfaces, ensuring successful, unforgettable events. Our platform offers seamless event planning, registration, ticketing, and promotion tools, empowering users to collaborate seamlessly and shape limitless possibilities together. With interactive features and real-time analytics, we ensure successful, unforgettable events. Join us today and let's make your next occasion shine!
+      </p>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="feature">
+            <img class="feature-image img-fluid" style="height: 200px;" src="{% static 'images/booking.jpg' %}" alt="Service Booking">
+            <h4 class="feature-title">Service Booking</h4>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature">
+            <img class="feature-image img-fluid" style="height: 200px;" src="{% static 'images/register.png' %}" alt="Event Registration">
+            <h4 class="feature-title">Event Registration</h4>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature">
+            <img class="feature-image img-fluid" style="height: 200px; "src="{% static 'images/plan.jpg' %}" alt="Event Analytics">
+            <h4 class="feature-title">Event Analytics</h4>
+          </div>
+        </div>
+      </div>
+      
+      
+</div>
+  </section>
+  
+  <iframe width="100%" height="500px" src="https://www.youtube.com/embed/1zqKptk_KA0?si=Tn3XXInBmGW2JXda" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  
+  
+  <section id="categories" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Explore Categories</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <a href="{% url 'eventapp:register_webinar' %}">
+              <img src="{% static 'images/webinar.jfif' %}" class="card-img-top" alt="Webinar" style="height: 200px;">
+              <div class="card-body">
+                <h5 class="card-title">Host a Webinar</h5>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <a href="{% url 'eventapp:webinar' %}">
+              <img src="{% static 'images/conference.jpg' %}" class="card-img-top" alt="Conference" style="height: 200px;">
+              <div class="card-body">
+                <h5 class="card-title">View Upcoming Webinars</h5>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <a href="{% url 'eventapp:completed_webinar' %}">
+              <img src="{% static 'images/complete.jpg' %}" class="card-img-top" alt="Conference" style="height: 200px;">
+              <div class="card-body">
+                <h5 class="card-title">View Completed Webinars</h5>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+  </section>
+ 
+  <section id="services" style="background-color: #ff8c00;" class="our-services-section py-5">
+    <div class="container">
+      <h2 class="text-center mb-4 text-light">Our Services</h2>
+      
+        <div class="service-card-container">
+            <p class="text-light">Experience seamless event planning with our comprehensive range of services. From conference management to social events, we've got you covered. Our team of dedicated event professionals is here to help you create unforgettable moments that leave a lasting impression. Ready to make your event a success? Book your desired service now and let us bring your vision to life!</p>
+    
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{% static 'images/service1.jpg' %}" alt="Service 1" style="height: 200px;" class="card-img-top service-image">
+                        <div class="card-body">
+                            <h3 class="card-title service-title">Catering Service</h3>
+                            <p class="card-text service-description">Plan and execute successful conferences with precision and expertise.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{% static 'images/service2.jpg' %}" alt="Service 2" style="height: 200px;" class="card-img-top service-image">
+                        <div class="card-body">
+                            <h3 class="card-title service-title">Light and Sound</h3>
+                            <p class="card-text service-description">Create memorable social gatherings that leave a lasting impression.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{% static 'images/service3.jpg' %}" alt="Service 3" style="height: 200px;" class="card-img-top service-image">
+                        <div class="card-body">
+                            <h3 class="card-title service-title">Venue Booking</h3>
+                            <p class="card-text service-description">Host engaging webinars that connect and educate your audience.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <button id="view-all-btn" class="btn btn-outline-light d-block mx-auto">
+          <a style="text-decoration:none;color:white;" href="{% url 'eventapp:services' %}">View all</a>
+      </button>
+      
+      </div>
+  </section>
+  <section class="contact-section py-5" id="contact" style="background-image: linear-gradient(45deg, #FF6B6B 50%, #FFA56B 50%);">
+    <div class="container">
+        <h2 class="contact-heading">Contact Us</h2>
+        <p class="contact-info">Have questions or need assistance? Feel free to get in touch with us.</p>
+        <div class="row"><div class="col-md-6 offset-md-3">
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" for="name">Your Name:</label>
+                <input class="form-control" type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="email">Your Email:</label>
+                <input class="form-control" type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="message">Message:</label>
+                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+            </div>
+            <button style="background-color:#FFA56B " class="btn " href="{% url 'eventapp:attendeehome' %}" type="submit">Send Message</button>
+        </form>
+      </div></div>
+        <div class="social-media ">
             <a class="social-link" href="https://www.facebook.com/yourpage" target="_blank"><i class="fab fa-facebook"></i></a>
             <a class="social-link" href="https://www.twitter.com/yourpage" target="_blank"><i class="fab fa-twitter"></i></a>
             <a class="social-link" href="https://www.instagram.com/yourpage" target="_blank"><i class="fab fa-instagram"></i></a>

@@ -251,6 +251,15 @@ def delete_webinar(request, del_id):
     send_mail(subject, message, from_email, recipient_list)
     webinar.status=0
     webinar.save()
+    registrations = WebinarRegistration.objects.filter(webinar=webinar)
+    
+    # Send email to all registered attendees
+    for registration in registrations:
+        attendee_email = registration.user.email
+        attendee_subject = 'Webinar Cancellation'
+        attendee_message = f'We regret to inform you that the webinar "{webinar.title}" on {webinar.date} at {webinar.start_time} has been canceled. Sorry for the inconvenience.'
+        send_mail(attendee_subject, attendee_message, from_email, [attendee_email])
+    
     return redirect('eventapp:webinar')
 
 @login_required
@@ -826,7 +835,7 @@ def services_required(request, webinar_id):
     })
 
 from .models import Review
-from .forms import ReviewForm
+from .forms import ReviewForm,ReviewWebinarForm
 @login_required
 def review_service(request):
     review_submitted = False
@@ -852,6 +861,29 @@ def review_service(request):
         reviews = reviews.filter(service=query)    
     context = {'form': form, 'completed_services': completed_services, 'review_submitted': review_submitted,'reviews': reviews, 'services': services, 'query': query}
     return render(request, 'review_service.html', context)
+
+@login_required
+def review_events(request):
+    review_submitted = False
+    if request.method == 'POST':
+        form = ReviewWebinarForm(request.POST)
+        if form.is_valid():
+            service_id = request.POST.get('webinar_id')
+            
+            service = Webinar.objects.get(id=service_id)
+            review = form.save(commit=False)
+            review.user = request.user
+            review.webinar = service
+            review.save()
+            review_submitted = True
+    else:
+        form = ReviewForm()
+    attendee = request.user
+    current_date = timezone.now().date()
+    user = Attendee.objects.get(email=attendee.email)
+    upcoming_webinars = WebinarRegistration.objects.filter(user=user, webinar__date__lt=current_date)    
+    context = {'form': form, 'upcoming_webinars': upcoming_webinars, 'review_submitted': review_submitted}
+    return render(request, 'review_events.html', context)
 
 def display_registrations(request, webinar_id):
     webinar = Webinar.objects.get(pk=webinar_id)
@@ -895,7 +927,7 @@ def provider_profile(request):
     messages.error(request, form.errors)
     return render(request, 'provider_profile.html', {'form': form})
 
-from .models import Notification
+from .models import Notification,ReviewWebinar
 from django.db.models import F
 
 def generate_certificate(request, webinar_id):
@@ -1006,7 +1038,8 @@ def view_responses(request,webinar_id):
     for question in questions:
         responses = Response.objects.filter(question_id=question.id)
         question_responses[question] = responses
-    return render(request, 'view_responses.html', {'question_responses': question_responses})
+    reviews=ReviewWebinar.objects.filter(webinar=webinar_id)
+    return render(request, 'view_responses.html', {'question_responses': question_responses,'reviews':reviews})
 
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle

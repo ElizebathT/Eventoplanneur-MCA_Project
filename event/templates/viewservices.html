@@ -259,7 +259,7 @@
 <body>
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'eventapp:providerhome' %}">
+      <a class="navbar-brand" href="{% url 'eventapp:orghome' %}">
         <img src="{% static 'images/Eventoplanneur.png' %}"  alt="Logo" width="50"> EventoPlanneur
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
@@ -270,7 +270,7 @@
           
           {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li> {% endcomment %}
           {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li> {% endcomment %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:provider_profile' %}">Profile</a></li>
+         
           {% comment %} <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li> {% endcomment %}
           <li class="nav-item">
               {% if user.is_authenticated %}

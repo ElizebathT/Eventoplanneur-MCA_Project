@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review and Rating</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
+  <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
+</head>
+<style>
+  
+  :root {
+    --gradient: linear-gradient(to left top, #F1D302 10%, #235789 90%) !important;
+  }
+  body{
+    background: #111 !important;;
+    
+  }
+  .input-group{
+    width:500px;
+  }
+  .card {
+    background: #222;
+  border: 1px solid #F1D302;
+    color: rgba(250, 250, 250, 0.8);
+    margin-bottom: 2rem;
+    height:250px;
+  }
+  
+  .btn {
+    margin-left:5px;
+    border: 5px solid;
+    border-image-slice: 1;
+    background: var(--gradient) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    border-image-source:  var(--gradient) !important; 
+    text-decoration: none;
+    transition: all .4s ease;
+  }
+  
+  .btn:hover, .btn:focus {
+        background: var(--gradient) !important;
+    -webkit-background-clip: none !important;
+    -webkit-text-fill-color: #fff !important;
+    border: 5px solid #fff !important; 
+    box-shadow: #222 1px 0 10px;
+    text-decoration: underline;
+  }
+</style>
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="containers">
+      <a class="navbar-brand" href="{% url 'eventapp:attendeehome' %}">
+        <img src="{% static 'images/Eventoplanneur.png' %}" alt="Logo" width="50"> EventoPlanneur
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_events' %}">Reviews & Ratings</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:attendee_profile' %}">Profile</a></li>
+          <li class="nav-item">
+            {% if user.is_authenticated %}
+            <a class="nav-link" >User: {{ user.email }}</a>
+            <li class="nav-item"><a href="{% url 'eventapp:logout' %}" class="nav-link">Logout</a></li>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div style="margin-left:100px;margin-right:225px" ><br>
+    <a class="btn2" onclick="goBack()" style="background-color: #F1D302; /* Yellow */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 40px;">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>Back
+</a>
+<script>
+  function goBack() {
+      window.history.back();
+  }
+</script>
+    <h3 style="margin-left:50px;color:white">My Webinars</h3>
+    
+    <div class="container mx-auto mt-4" >
+      
+
+        {% block content %}
+        <div class="container mt-5">
+          <div class="row">
+            <div class="col-md-25 offset-md-2">
+              <h2 class="text-center mb-4">Review Webinar</h2>
+      
+              {% if review_submitted %}
+                <p class="alert alert-success">Review submitted successfully!</p>
+              {% endif %}
+            <form method="post" action="{% url 'eventapp:review_events' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="webinar_id">Select Webinar:</label>
+                  <select class="form-control" name="webinar_id" id="webinar_id">
+                    {% for service in upcoming_webinars %}
+                      <option value="{{ service.webinar.id }}">{{ service.webinar.title }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <br><label for="rating">Rating:</label><br>
+                <div class="rating">
+        <input type="radio" id="star5" name="rating" value="5">
+        <label for="star5"></label>
+        <input type="radio" id="star4" name="rating" value="4">
+        <label for="star4"></label>
+        <input type="radio" id="star3" name="rating" value="3">
+        <label for="star3"></label>
+        <input type="radio" id="star2" name="rating" value="2">
+        <label for="star2"></label>
+        <input type="radio" id="star1" name="rating" value="1">
+        <label for="star1"></label>
+      </div>
+      
+      <style>
+      .rating {
+        display: inline-block;
+      }
+      nav{
+        position: fixed;
+        z-index:20;
+      }
+      .rating input {
+        display: none;
+      }
+      
+      .rating label {
+        float: right;
+        cursor: pointer;
+        transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
+      }
+      
+      .rating label:before {
+        content: '\2605';
+        font-size: 30px;
+        transition: color 0.3s;
+      }
+      
+      .rating input:checked ~ label,
+      .rating label:hover,
+      .rating label:hover ~ label {
+        color: #ffc300;
+        transform: scale(1.2);
+        transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
+      }
+      
+      @keyframes bounce {
+        to {
+          transform: scale(1.3);
+        }
+      }
+      </style>
+      <br><label for="comment">Review:</label><br>
+      {{ form.comment }}
+      <style>
+        textarea {
+          width:100%;
+          height:200px;
+        }
+      </style>  
+      
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endblock %}
+       
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

@@ -93,12 +93,11 @@ p{
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:bookings' %}">Bookings</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:services' %}">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:gallery' %}">Gallery</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:review_service' %}">Reviews & Ratings</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:org_profile' %}">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#notifications">Notifications</a></li>
+                    
                     <li class="nav-item">
                         {% if user.is_authenticated %}
                         <a class="nav-link" >User: {{ user.email }}</a>

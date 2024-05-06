@@ -10,7 +10,7 @@
   <link rel="stylesheet"type="text/css" href="{% static 'css/webinar.css' %}">
   <link rel="icon" href="{% static 'images/eventoplanneur.png' %}" type="image/x-icon">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <style>
   
@@ -139,5 +139,21 @@
 </div>
 {% endfor %}
 
+{% for review in reviews%}
+<div class="col-md-6">
+    <div class="review">
+        <p><strong>User:</strong> {{ review.user }}</p>
+        <p><strong>Rating:</strong> 
+            {% for _ in ""|ljust:review.rating %}
+                <i class="fas fa-star" style="color: #ffd700;"></i>
+            {% endfor %}
+        </p>
+        <p><strong>Comment:</strong> {{ review.comment }}</p>
+    </div>
+</div>
+<hr>
+{% empty %}
+<p>No reviews found.</p>
+{% endfor %}
 </body>
 </html>

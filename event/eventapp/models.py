@@ -227,6 +227,14 @@ class Review(models.Model):
     def __str__(self):
         return f"Review for {self.service.name} by {self.user.username}"
     
+class ReviewWebinar(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField()
+    def __str__(self):
+        return f"Review for {self.webinar.title} by {self.user.username}"
+    
 class ServiceProvider(models.Model):
     name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
