@@ -169,9 +169,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online'},
         'FIELDS': ['id', 'email', 'name'], 
-    
-    # 'SOCIAL_APP_ID': '799420171321-gqmgnvf2dk07d47j0rb462limp38kbf7.apps.googleusercontent.com',
-    #     'SOCIAL_APP_SECRET': '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',
     }
 }
 
