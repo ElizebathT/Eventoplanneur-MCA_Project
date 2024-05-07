@@ -36,10 +36,10 @@
           </form>
             <p class="text-center mt-3 mb-0 text-secondary"> <a href="{% url 'eventapp:registration' %}" class="text-bronze">Don't have an account? <strong>Register</strong></a></p>
             <button class="btn btn-secondary btn-block signupBtn mt-3">
-              <a href="{% provider_login_url 'google' %}?next=/" style="color:white;">
+              {% comment %} <a href="{% provider_login_url 'google' %}?next=/" style="color:white;"> {% endcomment %}
                   <img src="https://greatneckfamilyfootcare.com/wp-content/uploads/2019/09/new-google-logo-transparent-14.png" alt="G Logo" class="img-fluid w-25" >
                   Login with Google
-              </a>
+              {% comment %} </a> {% endcomment %}
           </button>
           
             {% if messages %}
