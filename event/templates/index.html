@@ -32,6 +32,9 @@
           {% if user.is_attendee %}
             <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:attendeehome' %}">Home Page</a></li>
           {% endif %}
+          {% if user.is_provider %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:providerhome' %}">Home Page</a></li>
+          {% endif %}
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:logout' %}">Logout</a></li>
         {% else %}
           <li class="nav-item"><a class="nav-link" href="{% url 'eventapp:login' %}">Login</a></li>
