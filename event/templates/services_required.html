@@ -181,7 +181,7 @@ p{
                         {% else %}
                         <li class="list-group-item service-item" data-category="{{ service.category }}">
                             <a href="{% url 'viewservices' service.id %}" class="d-block text-decoration-none">{{ service.name }}</a><br>
-                            <small class="text-muted ms-auto" id="rate">${{ service.rate }}/person</small>
+                            <small class="text-muted ms-auto" id="rate">₹{{ service.rate }}/person</small>
     
                             {% if service.date == webinar_date %}
                                 <span class="badge bg-danger">Booked</span>

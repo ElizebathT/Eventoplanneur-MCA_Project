@@ -621,7 +621,7 @@ $(document).ready(function() {
             </div>
             
             <script>
-                /*function checkAvailability() {
+                function checkAvailability() {
                     var selectedDate = document.getElementById('date').value;
                     var selectedLocation = document.getElementById('location').value;  // Replace 'location' with the actual id of your location input field
                     var service_id = document.getElementById('service_id').value;
@@ -658,7 +658,7 @@ $(document).ready(function() {
                             console.log(error);
                         }
                     });
-                } */
+                } 
                 $(document).ready(function() {
                   $("#date").on("input", function() {
                       var selectedDate = document.getElementById('date').value;
@@ -693,7 +693,7 @@ $(document).ready(function() {
                                   if (!response.available) {
                                       document.getElementById('dateError').innerHTML = 'Bookings full on this date';
                                   } else {
-                                      document.getElementById('dateError').innerHTML = 'Number of participants exceeds limit';
+                                      document.getElementById('dateError').innerHTML = '';
                                   }
                               }
                           },

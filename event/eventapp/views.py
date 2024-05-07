@@ -486,13 +486,13 @@ def register_for_webinar(request, webinar_id):
             recipient_list = [recipient_email]             
             send_mail(subject, message, from_email, recipient_list)
             pay_id=webinar_id
-            message_body = f"Webinar Registration Confirmed for {webinar.title} on {webinar.date} hosted by {webinar.organizer_name}."
-            client = Client("AC5649992a1008a1d4e8455e183b97072d", "11aac5884cccdfd8869d78de65606fb5")
-            message = client.messages.create(
-                from_='whatsapp:+14155238886',
-                body=message_body,
-                to='whatsapp:+919061849932'  
-            )
+            # message_body = f"Webinar Registration Confirmed for {webinar.title} on {webinar.date} hosted by {webinar.organizer_name}."
+            # client = Client("AC5649992a1008a1d4e8455e183b97072d", "11aac5884cccdfd8869d78de65606fb5")
+            # message = client.messages.create(
+            #     from_='whatsapp:+14155238886',
+            #     body=message_body,
+            #     to='whatsapp:+919061849932'  
+            # )
             return redirect('payment', pay_id=pay_id) 
         else:
             messages.success(request, "You are already registered for this webinar.")
